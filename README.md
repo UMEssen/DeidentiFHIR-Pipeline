@@ -14,7 +14,7 @@ Which implementation should be used, can be configured in the [application.yaml]
 Available implementations can be found in the [transfer](./src/main/java/de/ume/deidentifhirpipeline/transfer/) folder. 
 
 #### Architecture
-![](./architecture.png)
+![](./architecture.svg)
 
 #### Quickstart
 Prerequisite:  
