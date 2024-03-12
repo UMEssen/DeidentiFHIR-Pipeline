@@ -18,7 +18,7 @@ Available implementations can be found in the [transfer](./src/main/java/de/ume/
 
 #### Quickstart
 Prerequisite:  
-A running [gPAS](https://www.ths-greifswald.de/forscher/gpas/) instance on port 8081. 
+- a running [gPAS](https://www.ths-greifswald.de/forscher/gpas/) instance on port `8081`. 
 
 Log in to Github Container Registry:
 ```bash
@@ -105,9 +105,7 @@ docker-compose up -d
 #### Endpoints:
 
 POST:  
-See [start-consent-process.sh](./start-consent-process.sh), 
-[start-all-bundles-process.sh](./start-all-bundles-process.sh) or 
-[start-custom-process.sh](./start-custom-process.sh)  
+See [start-configured-process.sh](./start-configured-process.sh).  
 You get back a UUID which you can use to get the status of the transfer via GET requests.
 
 GET:
