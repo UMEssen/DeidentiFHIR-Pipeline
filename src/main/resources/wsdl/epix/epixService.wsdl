@@ -1,0 +1,2076 @@
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://service.epix.ttp.icmvc.emau.org/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="EPIXServiceImplService" targetNamespace="http://service.epix.ttp.icmvc.emau.org/">
+    <wsdl:types>
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.ttp.icmvc.emau.org/epix/common/model" targetNamespace="http://www.ttp.icmvc.emau.org/epix/common/model" version="1.0">
+            <xs:complexType name="identityInDTO">
+                <xs:complexContent>
+                    <xs:extension base="tns:identityInBaseDTO">
+                        <xs:sequence>
+                            <xs:element maxOccurs="unbounded" minOccurs="0" name="contacts" nillable="true" type="tns:contactInDTO"/>
+                        </xs:sequence>
+                    </xs:extension>
+                </xs:complexContent>
+            </xs:complexType>
+            <xs:complexType name="identityInBaseDTO">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="birthDate" type="xs:dateTime"/>
+                    <xs:element minOccurs="0" name="birthPlace" type="xs:string"/>
+                    <xs:element minOccurs="0" name="civilStatus" type="xs:string"/>
+                    <xs:element minOccurs="0" name="degree" type="xs:string"/>
+                    <xs:element minOccurs="0" name="externalDate" type="xs:dateTime"/>
+                    <xs:element minOccurs="0" name="firstName" type="xs:string"/>
+                    <xs:element minOccurs="0" name="gender" type="xs:string"/>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="identifiers" nillable="true" type="tns:identifierDTO"/>
+                    <xs:element minOccurs="0" name="lastName" type="xs:string"/>
+                    <xs:element minOccurs="0" name="middleName" type="xs:string"/>
+                    <xs:element minOccurs="0" name="motherTongue" type="xs:string"/>
+                    <xs:element minOccurs="0" name="mothersMaidenName" type="xs:string"/>
+                    <xs:element minOccurs="0" name="nationality" type="xs:string"/>
+                    <xs:element minOccurs="0" name="prefix" type="xs:string"/>
+                    <xs:element minOccurs="0" name="race" type="xs:string"/>
+                    <xs:element minOccurs="0" name="religion" type="xs:string"/>
+                    <xs:element minOccurs="0" name="suffix" type="xs:string"/>
+                    <xs:element minOccurs="0" name="value1" type="xs:string"/>
+                    <xs:element minOccurs="0" name="value10" type="xs:string"/>
+                    <xs:element minOccurs="0" name="value2" type="xs:string"/>
+                    <xs:element minOccurs="0" name="value3" type="xs:string"/>
+                    <xs:element minOccurs="0" name="value4" type="xs:string"/>
+                    <xs:element minOccurs="0" name="value5" type="xs:string"/>
+                    <xs:element minOccurs="0" name="value6" type="xs:string"/>
+                    <xs:element minOccurs="0" name="value7" type="xs:string"/>
+                    <xs:element minOccurs="0" name="value8" type="xs:string"/>
+                    <xs:element minOccurs="0" name="value9" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="contactInDTO">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="city" type="xs:string"/>
+                    <xs:element minOccurs="0" name="country" type="xs:string"/>
+                    <xs:element minOccurs="0" name="countryCode" type="xs:string"/>
+                    <xs:element minOccurs="0" name="district" type="xs:string"/>
+                    <xs:element minOccurs="0" name="email" type="xs:string"/>
+                    <xs:element minOccurs="0" name="externalDate" type="xs:dateTime"/>
+                    <xs:element minOccurs="0" name="municipalityKey" type="xs:string"/>
+                    <xs:element minOccurs="0" name="phone" type="xs:string"/>
+                    <xs:element minOccurs="0" name="state" type="xs:string"/>
+                    <xs:element minOccurs="0" name="street" type="xs:string"/>
+                    <xs:element minOccurs="0" name="zipCode" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="identifierDTO">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="description" type="xs:string"/>
+                    <xs:element minOccurs="0" name="entryDate" type="xs:dateTime"/>
+                    <xs:element minOccurs="0" name="identifierDomain" type="tns:identifierDomainDTO"/>
+                    <xs:element minOccurs="0" name="value" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="identifierDomainDTO">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="description" type="xs:string"/>
+                    <xs:element minOccurs="0" name="entryDate" type="xs:dateTime"/>
+                    <xs:element minOccurs="0" name="label" type="xs:string"/>
+                    <xs:element minOccurs="0" name="name" type="xs:string"/>
+                    <xs:element minOccurs="0" name="oid" type="xs:string"/>
+                    <xs:element minOccurs="0" name="updateDate" type="xs:dateTime"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="responseEntryDTO">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="matchStatus" type="xs:string"/>
+                    <xs:element minOccurs="0" name="person" type="tns:personDTO"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="personDTO">
+                <xs:complexContent>
+                    <xs:extension base="tns:personBaseDTO">
+                        <xs:sequence>
+                            <xs:element maxOccurs="unbounded" minOccurs="0" name="otherIdentities" nillable="true" type="tns:identityOutDTO"/>
+                            <xs:element minOccurs="0" name="referenceIdentity" type="tns:identityOutDTO"/>
+                        </xs:sequence>
+                    </xs:extension>
+                </xs:complexContent>
+            </xs:complexType>
+            <xs:complexType name="personBaseDTO">
+                <xs:sequence>
+                    <xs:element name="deactivated" type="xs:boolean"/>
+                    <xs:element minOccurs="0" name="mpiId" type="tns:identifierDTO"/>
+                    <xs:element minOccurs="0" name="personCreated" type="xs:dateTime"/>
+                    <xs:element name="personId" type="xs:long"/>
+                    <xs:element minOccurs="0" name="personLastEdited" type="xs:dateTime"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="identityOutDTO">
+                <xs:complexContent>
+                    <xs:extension base="tns:identityOutBaseDTO">
+                        <xs:sequence>
+                            <xs:element maxOccurs="unbounded" minOccurs="0" name="contacts" nillable="true" type="tns:contactOutDTO"/>
+                        </xs:sequence>
+                    </xs:extension>
+                </xs:complexContent>
+            </xs:complexType>
+            <xs:complexType name="identityOutBaseDTO">
+                <xs:complexContent>
+                    <xs:extension base="tns:identityInBaseDTO">
+                        <xs:sequence>
+                            <xs:element name="deactivated" type="xs:boolean"/>
+                            <xs:element minOccurs="0" name="identityCreated" type="xs:dateTime"/>
+                            <xs:element name="identityId" type="xs:long"/>
+                            <xs:element minOccurs="0" name="identityLastEdited" type="xs:dateTime"/>
+                            <xs:element minOccurs="0" name="identityVersion" type="xs:int"/>
+                            <xs:element name="personId" type="xs:long"/>
+                            <xs:element minOccurs="0" name="source" type="tns:sourceDTO"/>
+                        </xs:sequence>
+                    </xs:extension>
+                </xs:complexContent>
+            </xs:complexType>
+            <xs:complexType name="contactOutDTO">
+                <xs:complexContent>
+                    <xs:extension base="tns:contactInDTO">
+                        <xs:sequence>
+                            <xs:element minOccurs="0" name="contactCreated" type="xs:dateTime"/>
+                            <xs:element name="contactId" type="xs:long"/>
+                            <xs:element minOccurs="0" name="contactLastEdited" type="xs:dateTime"/>
+                            <xs:element minOccurs="0" name="contactVersion" type="xs:int"/>
+                            <xs:element name="deactivated" type="xs:boolean"/>
+                            <xs:element name="identityId" type="xs:long"/>
+                        </xs:sequence>
+                    </xs:extension>
+                </xs:complexContent>
+            </xs:complexType>
+            <xs:complexType name="sourceDTO">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="description" type="xs:string"/>
+                    <xs:element minOccurs="0" name="entryDate" type="xs:dateTime"/>
+                    <xs:element minOccurs="0" name="label" type="xs:string"/>
+                    <xs:element minOccurs="0" name="name" type="xs:string"/>
+                    <xs:element minOccurs="0" name="updateDate" type="xs:dateTime"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="mpiRequestDTO">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="comment" type="xs:string"/>
+                    <xs:element minOccurs="0" name="domainName" type="xs:string"/>
+                    <xs:element minOccurs="0" name="requestConfig" type="tns:requestConfig"/>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="requestEntries" nillable="true" type="tns:identityInDTO"/>
+                    <xs:element minOccurs="0" name="sourceName" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="requestConfig">
+                <xs:sequence>
+                    <xs:element name="forceReferenceUpdate" type="xs:boolean"/>
+                    <xs:element minOccurs="0" name="saveAction" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="mpiResponseDTO">
+                <xs:sequence>
+                    <xs:element name="responseEntries">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element maxOccurs="unbounded" minOccurs="0" name="entry">
+                                    <xs:complexType>
+                                        <xs:sequence>
+                                            <xs:element minOccurs="0" name="key" type="tns:identityInBaseDTO"/>
+                                            <xs:element minOccurs="0" name="value" type="tns:responseEntryDTO"/>
+                                        </xs:sequence>
+                                    </xs:complexType>
+                                </xs:element>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="possibleMatchDTO">
+                <xs:sequence>
+                    <xs:element name="linkId" type="xs:long"/>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="matchingMPIIdentities" nillable="true" type="tns:mpiIdentityDTO"/>
+                    <xs:element minOccurs="0" name="possibleMatchCreated" type="xs:dateTime"/>
+                    <xs:element minOccurs="0" name="probability" type="xs:double"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="mpiIdentityDTO">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="identity" type="tns:identityOutDTO"/>
+                    <xs:element minOccurs="0" name="mpiId" type="tns:identifierDTO"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="possibleMatchForMPIDTO">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="assignedIdentity" type="tns:identityOutDTO"/>
+                    <xs:element name="linkId" type="xs:long"/>
+                    <xs:element minOccurs="0" name="matchingMPIIdentity" type="tns:mpiIdentityDTO"/>
+                    <xs:element minOccurs="0" name="possibleMatchCreated" type="xs:dateTime"/>
+                    <xs:element minOccurs="0" name="probability" type="xs:double"/>
+                    <xs:element minOccurs="0" name="requestedMPI" type="tns:identifierDTO"/>
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://service.epix.ttp.icmvc.emau.org/" xmlns:ns1="http://www.ttp.icmvc.emau.org/epix/common/model" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://service.epix.ttp.icmvc.emau.org/" version="1.0">
+            <xs:import namespace="http://www.ttp.icmvc.emau.org/epix/common/model"/>
+            <xs:element name="addContact" type="tns:addContact"/>
+            <xs:element name="addContactResponse" type="tns:addContactResponse"/>
+            <xs:element name="addLocalIdentifierToIdentifier" type="tns:addLocalIdentifierToIdentifier"/>
+            <xs:element name="addLocalIdentifierToIdentifierResponse" type="tns:addLocalIdentifierToIdentifierResponse"/>
+            <xs:element name="addLocalIdentifierToMPI" type="tns:addLocalIdentifierToMPI"/>
+            <xs:element name="addLocalIdentifierToMPIResponse" type="tns:addLocalIdentifierToMPIResponse"/>
+            <xs:element name="addPerson" type="tns:addPerson"/>
+            <xs:element name="addPersonResponse" type="tns:addPersonResponse"/>
+            <xs:element name="assignIdentity" type="tns:assignIdentity"/>
+            <xs:element name="assignIdentityResponse" type="tns:assignIdentityResponse"/>
+            <xs:element name="deactivateIdentity" type="tns:deactivateIdentity"/>
+            <xs:element name="deactivateIdentityResponse" type="tns:deactivateIdentityResponse"/>
+            <xs:element name="deactivatePerson" type="tns:deactivatePerson"/>
+            <xs:element name="deactivatePersonResponse" type="tns:deactivatePersonResponse"/>
+            <xs:element name="deleteIdentity" type="tns:deleteIdentity"/>
+            <xs:element name="deleteIdentityResponse" type="tns:deleteIdentityResponse"/>
+            <xs:element name="deletePerson" type="tns:deletePerson"/>
+            <xs:element name="deletePersonResponse" type="tns:deletePersonResponse"/>
+            <xs:element name="externalPossibleMatchForIdentity" type="tns:externalPossibleMatchForIdentity"/>
+            <xs:element name="externalPossibleMatchForIdentityResponse" type="tns:externalPossibleMatchForIdentityResponse"/>
+            <xs:element name="externalPossibleMatchForPerson" type="tns:externalPossibleMatchForPerson"/>
+            <xs:element name="externalPossibleMatchForPersonResponse" type="tns:externalPossibleMatchForPersonResponse"/>
+            <xs:element name="getAllIdentifierForIdentifier" type="tns:getAllIdentifierForIdentifier"/>
+            <xs:element name="getAllIdentifierForIdentifierResponse" type="tns:getAllIdentifierForIdentifierResponse"/>
+            <xs:element name="getAllIdentifierForMPI" type="tns:getAllIdentifierForMPI"/>
+            <xs:element name="getAllIdentifierForMPIResponse" type="tns:getAllIdentifierForMPIResponse"/>
+            <xs:element name="getAllMPIFromPersonByMPI" type="tns:getAllMPIFromPersonByMPI"/>
+            <xs:element name="getAllMPIFromPersonByMPIResponse" type="tns:getAllMPIFromPersonByMPIResponse"/>
+            <xs:element name="getIdentitiesForDomain" type="tns:getIdentitiesForDomain"/>
+            <xs:element name="getIdentitiesForDomainFiltered" type="tns:getIdentitiesForDomainFiltered"/>
+            <xs:element name="getIdentitiesForDomainFilteredResponse" type="tns:getIdentitiesForDomainFilteredResponse"/>
+            <xs:element name="getIdentitiesForDomainPaginated" type="tns:getIdentitiesForDomainPaginated"/>
+            <xs:element name="getIdentitiesForDomainPaginatedResponse" type="tns:getIdentitiesForDomainPaginatedResponse"/>
+            <xs:element name="getIdentitiesForDomainResponse" type="tns:getIdentitiesForDomainResponse"/>
+            <xs:element name="getMPIForIdentifier" type="tns:getMPIForIdentifier"/>
+            <xs:element name="getMPIForIdentifierResponse" type="tns:getMPIForIdentifierResponse"/>
+            <xs:element name="getPersonByLocalIdentifier" type="tns:getPersonByLocalIdentifier"/>
+            <xs:element name="getPersonByLocalIdentifierResponse" type="tns:getPersonByLocalIdentifierResponse"/>
+            <xs:element name="getPersonByMPI" type="tns:getPersonByMPI"/>
+            <xs:element name="getPersonByMPIResponse" type="tns:getPersonByMPIResponse"/>
+            <xs:element name="getPersonByMultipleLocalIdentifier" type="tns:getPersonByMultipleLocalIdentifier"/>
+            <xs:element name="getPersonByMultipleLocalIdentifierResponse" type="tns:getPersonByMultipleLocalIdentifierResponse"/>
+            <xs:element name="getPersonsForDomain" type="tns:getPersonsForDomain"/>
+            <xs:element name="getPersonsForDomainFiltered" type="tns:getPersonsForDomainFiltered"/>
+            <xs:element name="getPersonsForDomainFilteredResponse" type="tns:getPersonsForDomainFilteredResponse"/>
+            <xs:element name="getPersonsForDomainPaginated" type="tns:getPersonsForDomainPaginated"/>
+            <xs:element name="getPersonsForDomainPaginatedResponse" type="tns:getPersonsForDomainPaginatedResponse"/>
+            <xs:element name="getPersonsForDomainResponse" type="tns:getPersonsForDomainResponse"/>
+            <xs:element name="getPossibleMatchesForDomain" type="tns:getPossibleMatchesForDomain"/>
+            <xs:element name="getPossibleMatchesForDomainFiltered" type="tns:getPossibleMatchesForDomainFiltered"/>
+            <xs:element name="getPossibleMatchesForDomainFilteredResponse" type="tns:getPossibleMatchesForDomainFilteredResponse"/>
+            <xs:element name="getPossibleMatchesForDomainPaginated" type="tns:getPossibleMatchesForDomainPaginated"/>
+            <xs:element name="getPossibleMatchesForDomainPaginatedResponse" type="tns:getPossibleMatchesForDomainPaginatedResponse"/>
+            <xs:element name="getPossibleMatchesForDomainResponse" type="tns:getPossibleMatchesForDomainResponse"/>
+            <xs:element name="getPossibleMatchesForPerson" type="tns:getPossibleMatchesForPerson"/>
+            <xs:element name="getPossibleMatchesForPersonResponse" type="tns:getPossibleMatchesForPersonResponse"/>
+            <xs:element name="moveIdentitiesForIdentifierToPerson" type="tns:moveIdentitiesForIdentifierToPerson"/>
+            <xs:element name="moveIdentitiesForIdentifierToPersonResponse" type="tns:moveIdentitiesForIdentifierToPersonResponse"/>
+            <xs:element name="removePossibleMatch" type="tns:removePossibleMatch"/>
+            <xs:element name="removePossibleMatchResponse" type="tns:removePossibleMatchResponse"/>
+            <xs:element name="removePossibleMatches" type="tns:removePossibleMatches"/>
+            <xs:element name="removePossibleMatchesResponse" type="tns:removePossibleMatchesResponse"/>
+            <xs:element name="requestMPI" type="tns:requestMPI"/>
+            <xs:element name="requestMPIBatch" type="tns:requestMPIBatch"/>
+            <xs:element name="requestMPIBatchResponse" type="tns:requestMPIBatchResponse"/>
+            <xs:element name="requestMPIResponse" type="tns:requestMPIResponse"/>
+            <xs:element name="requestMPIWithConfig" type="tns:requestMPIWithConfig"/>
+            <xs:element name="requestMPIWithConfigResponse" type="tns:requestMPIWithConfigResponse"/>
+            <xs:element name="searchPersonsByPDQ" type="tns:searchPersonsByPDQ"/>
+            <xs:element name="searchPersonsByPDQResponse" type="tns:searchPersonsByPDQResponse"/>
+            <xs:element name="setReferenceIdentity" type="tns:setReferenceIdentity"/>
+            <xs:element name="setReferenceIdentityResponse" type="tns:setReferenceIdentityResponse"/>
+            <xs:element name="updatePerson" type="tns:updatePerson"/>
+            <xs:element name="updatePersonResponse" type="tns:updatePersonResponse"/>
+            <xs:element name="updatePersonWithConfig" type="tns:updatePersonWithConfig"/>
+            <xs:element name="updatePersonWithConfigResponse" type="tns:updatePersonWithConfigResponse"/>
+            <xs:complexType name="deactivateIdentity">
+                <xs:sequence>
+                    <xs:element name="identityId" type="xs:long"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="deactivateIdentityResponse">
+                <xs:sequence/>
+            </xs:complexType>
+            <xs:complexType name="requestMPI">
+                <xs:sequence>
+                    <xs:element name="domainName" type="xs:string"/>
+                    <xs:element name="identity" type="ns1:identityInDTO"/>
+                    <xs:element name="sourceName" type="xs:string"/>
+                    <xs:element minOccurs="0" name="comment" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="requestMPIResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="return" type="ns1:responseEntryDTO"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="deletePerson">
+                <xs:sequence>
+                    <xs:element name="domainName" type="xs:string"/>
+                    <xs:element name="mpiId" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="deletePersonResponse">
+                <xs:sequence/>
+            </xs:complexType>
+            <xs:complexType name="getAllIdentifierForMPI">
+                <xs:sequence>
+                    <xs:element name="domainName" type="xs:string"/>
+                    <xs:element name="mpiId" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getAllIdentifierForMPIResponse">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns1:identifierDTO"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getPersonByLocalIdentifier">
+                <xs:sequence>
+                    <xs:element name="domainName" type="xs:string"/>
+                    <xs:element name="identifier" type="ns1:identifierDTO"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getPersonByLocalIdentifierResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="return" type="ns1:personDTO"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getPersonByMultipleLocalIdentifier">
+                <xs:sequence>
+                    <xs:element name="domainName" type="xs:string"/>
+                    <xs:element maxOccurs="unbounded" name="identifier" type="ns1:identifierDTO"/>
+                    <xs:element name="allIdentifierRequired" type="xs:boolean"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getPersonByMultipleLocalIdentifierResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="return" type="ns1:personDTO"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="setReferenceIdentity">
+                <xs:sequence>
+                    <xs:element name="domainName" type="xs:string"/>
+                    <xs:element name="mpiId" type="xs:string"/>
+                    <xs:element name="identityId" type="xs:long"/>
+                    <xs:element minOccurs="0" name="comment" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="setReferenceIdentityResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="return" type="ns1:responseEntryDTO"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="removePossibleMatches">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" name="possibleMatchIds" type="xs:long"/>
+                    <xs:element name="comment" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="removePossibleMatchesResponse">
+                <xs:sequence/>
+            </xs:complexType>
+            <xs:complexType name="requestMPIBatch">
+                <xs:sequence>
+                    <xs:element name="mpiRequest" type="ns1:mpiRequestDTO"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="requestMPIBatchResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="return" type="ns1:mpiResponseDTO"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getPersonByMPI">
+                <xs:sequence>
+                    <xs:element name="domainName" type="xs:string"/>
+                    <xs:element name="mpiId" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getPersonByMPIResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="return" type="ns1:personDTO"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="externalPossibleMatchForIdentity">
+                <xs:sequence>
+                    <xs:element name="domainName" type="xs:string"/>
+                    <xs:element name="identityId" type="xs:long"/>
+                    <xs:element name="aliasIdentityId" type="xs:long"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="externalPossibleMatchForIdentityResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="return" type="ns1:possibleMatchDTO"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getIdentitiesForDomain">
+                <xs:sequence>
+                    <xs:element name="domainName" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getIdentitiesForDomainResponse">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns1:identityOutDTO"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getPersonsForDomainPaginated">
+                <xs:sequence>
+                    <xs:element name="domainName" type="xs:string"/>
+                    <xs:element name="firstEntry" type="xs:int"/>
+                    <xs:element name="pageSize" type="xs:int"/>
+                    <xs:element name="sortField" type="xs:string"/>
+                    <xs:element name="sortIsAscending" type="xs:boolean"/>
+                    <xs:element name="filter">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element maxOccurs="unbounded" minOccurs="0" name="entry">
+                                    <xs:complexType>
+                                        <xs:sequence>
+                                            <xs:element minOccurs="0" name="key" type="tns:personField"/>
+                                            <xs:element minOccurs="0" name="value" type="xs:string"/>
+                                        </xs:sequence>
+                                    </xs:complexType>
+                                </xs:element>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="filterIsCaseSensitive" type="xs:boolean"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getPersonsForDomainPaginatedResponse">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns1:personDTO"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getPossibleMatchesForDomainFiltered">
+                <xs:sequence>
+                    <xs:element name="domainName" type="xs:string"/>
+                    <xs:element name="filter">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element maxOccurs="unbounded" minOccurs="0" name="entry">
+                                    <xs:complexType>
+                                        <xs:sequence>
+                                            <xs:element minOccurs="0" name="key" type="tns:identityField"/>
+                                            <xs:element minOccurs="0" name="value" type="xs:string"/>
+                                        </xs:sequence>
+                                    </xs:complexType>
+                                </xs:element>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="filterIsCaseSensitive" type="xs:boolean"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getPossibleMatchesForDomainFilteredResponse">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns1:possibleMatchDTO"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="removePossibleMatch">
+                <xs:sequence>
+                    <xs:element name="possibleMatchId" type="xs:long"/>
+                    <xs:element name="comment" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="removePossibleMatchResponse">
+                <xs:sequence/>
+            </xs:complexType>
+            <xs:complexType name="getAllMPIFromPersonByMPI">
+                <xs:sequence>
+                    <xs:element name="domainName" type="xs:string"/>
+                    <xs:element name="mpiId" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getAllMPIFromPersonByMPIResponse">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getPersonsForDomainFiltered">
+                <xs:sequence>
+                    <xs:element name="domainName" type="xs:string"/>
+                    <xs:element name="filter">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element maxOccurs="unbounded" minOccurs="0" name="entry">
+                                    <xs:complexType>
+                                        <xs:sequence>
+                                            <xs:element minOccurs="0" name="key" type="tns:personField"/>
+                                            <xs:element minOccurs="0" name="value" type="xs:string"/>
+                                        </xs:sequence>
+                                    </xs:complexType>
+                                </xs:element>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="filterIsCaseSensitive" type="xs:boolean"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getPersonsForDomainFilteredResponse">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns1:personDTO"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="addLocalIdentifierToIdentifier">
+                <xs:sequence>
+                    <xs:element name="domainName" type="xs:string"/>
+                    <xs:element name="identifier" type="ns1:identifierDTO"/>
+                    <xs:element maxOccurs="unbounded" name="localIds" type="ns1:identifierDTO"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="addLocalIdentifierToIdentifierResponse">
+                <xs:sequence/>
+            </xs:complexType>
+            <xs:complexType name="getIdentitiesForDomainFiltered">
+                <xs:sequence>
+                    <xs:element name="domainName" type="xs:string"/>
+                    <xs:element name="filter">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element maxOccurs="unbounded" minOccurs="0" name="entry">
+                                    <xs:complexType>
+                                        <xs:sequence>
+                                            <xs:element minOccurs="0" name="key" type="tns:identityField"/>
+                                            <xs:element minOccurs="0" name="value" type="xs:string"/>
+                                        </xs:sequence>
+                                    </xs:complexType>
+                                </xs:element>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="filterIsCaseSensitive" type="xs:boolean"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getIdentitiesForDomainFilteredResponse">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns1:identityOutDTO"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="updatePersonWithConfig">
+                <xs:sequence>
+                    <xs:element name="domainName" type="xs:string"/>
+                    <xs:element name="mpiId" type="xs:string"/>
+                    <xs:element name="identity" type="ns1:identityInDTO"/>
+                    <xs:element name="sourceName" type="xs:string"/>
+                    <xs:element name="force" type="xs:boolean"/>
+                    <xs:element minOccurs="0" name="comment" type="xs:string"/>
+                    <xs:element name="requestConfig" type="ns1:requestConfig"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="updatePersonWithConfigResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="return" type="ns1:responseEntryDTO"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="assignIdentity">
+                <xs:sequence>
+                    <xs:element name="possibleMatchId" type="xs:long"/>
+                    <xs:element name="winningIdentityId" type="xs:long"/>
+                    <xs:element minOccurs="0" name="comment" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="assignIdentityResponse">
+                <xs:sequence/>
+            </xs:complexType>
+            <xs:complexType name="getPossibleMatchesForPerson">
+                <xs:sequence>
+                    <xs:element name="domainName" type="xs:string"/>
+                    <xs:element name="mpiId" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getPossibleMatchesForPersonResponse">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns1:possibleMatchForMPIDTO"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getPossibleMatchesForDomain">
+                <xs:sequence>
+                    <xs:element name="domainName" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getPossibleMatchesForDomainResponse">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns1:possibleMatchDTO"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getIdentitiesForDomainPaginated">
+                <xs:sequence>
+                    <xs:element name="domainName" type="xs:string"/>
+                    <xs:element name="firstEntry" type="xs:int"/>
+                    <xs:element name="pageSize" type="xs:int"/>
+                    <xs:element name="sortField" type="xs:string"/>
+                    <xs:element name="sortIsAscending" type="xs:boolean"/>
+                    <xs:element name="filter">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element maxOccurs="unbounded" minOccurs="0" name="entry">
+                                    <xs:complexType>
+                                        <xs:sequence>
+                                            <xs:element minOccurs="0" name="key" type="tns:identityField"/>
+                                            <xs:element minOccurs="0" name="value" type="xs:string"/>
+                                        </xs:sequence>
+                                    </xs:complexType>
+                                </xs:element>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="filterIsCaseSensitive" type="xs:boolean"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getIdentitiesForDomainPaginatedResponse">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns1:identityOutDTO"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getAllIdentifierForIdentifier">
+                <xs:sequence>
+                    <xs:element name="domainName" type="xs:string"/>
+                    <xs:element name="identifier" type="ns1:identifierDTO"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getAllIdentifierForIdentifierResponse">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns1:identifierDTO"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="moveIdentitiesForIdentifierToPerson">
+                <xs:sequence>
+                    <xs:element name="domainName" type="xs:string"/>
+                    <xs:element name="identifier" type="ns1:identifierDTO"/>
+                    <xs:element name="mpiId" type="xs:string"/>
+                    <xs:element minOccurs="0" name="comment" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="moveIdentitiesForIdentifierToPersonResponse">
+                <xs:sequence/>
+            </xs:complexType>
+            <xs:complexType name="updatePerson">
+                <xs:sequence>
+                    <xs:element name="domainName" type="xs:string"/>
+                    <xs:element name="mpiId" type="xs:string"/>
+                    <xs:element name="identity" type="ns1:identityInDTO"/>
+                    <xs:element name="sourceName" type="xs:string"/>
+                    <xs:element name="force" type="xs:boolean"/>
+                    <xs:element minOccurs="0" name="comment" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="updatePersonResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="return" type="ns1:responseEntryDTO"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="deleteIdentity">
+                <xs:sequence>
+                    <xs:element name="identityId" type="xs:long"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="deleteIdentityResponse">
+                <xs:sequence/>
+            </xs:complexType>
+            <xs:complexType name="getPossibleMatchesForDomainPaginated">
+                <xs:sequence>
+                    <xs:element name="domainName" type="xs:string"/>
+                    <xs:element name="firstEntry" type="xs:int"/>
+                    <xs:element name="pageSize" type="xs:int"/>
+                    <xs:element name="sortField" type="xs:string"/>
+                    <xs:element name="sortIsAscending" type="xs:boolean"/>
+                    <xs:element name="filter">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element maxOccurs="unbounded" minOccurs="0" name="entry">
+                                    <xs:complexType>
+                                        <xs:sequence>
+                                            <xs:element minOccurs="0" name="key" type="tns:identityField"/>
+                                            <xs:element minOccurs="0" name="value" type="xs:string"/>
+                                        </xs:sequence>
+                                    </xs:complexType>
+                                </xs:element>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="filterIsCaseSensitive" type="xs:boolean"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getPossibleMatchesForDomainPaginatedResponse">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns1:possibleMatchDTO"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="addContact">
+                <xs:sequence>
+                    <xs:element name="identityId" type="xs:long"/>
+                    <xs:element name="contact" type="ns1:contactInDTO"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="addContactResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="return" type="ns1:identityOutDTO"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="addLocalIdentifierToMPI">
+                <xs:sequence>
+                    <xs:element name="domainName" type="xs:string"/>
+                    <xs:element name="mpiId" type="xs:string"/>
+                    <xs:element maxOccurs="unbounded" name="localIds" type="ns1:identifierDTO"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="addLocalIdentifierToMPIResponse">
+                <xs:sequence/>
+            </xs:complexType>
+            <xs:complexType name="searchPersonsByPDQ">
+                <xs:sequence>
+                    <xs:element name="searchMask" type="tns:searchMask"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="searchMask">
+                <xs:sequence>
+                    <xs:element name="and" type="xs:boolean"/>
+                    <xs:element name="dayOfBirth" type="xs:int"/>
+                    <xs:element minOccurs="0" name="domainName" type="xs:string"/>
+                    <xs:element minOccurs="0" name="fuzzySearchParams" type="tns:fuzzySearchParams"/>
+                    <xs:element minOccurs="0" name="identity" type="ns1:identityInDTO"/>
+                    <xs:element name="maxResults" type="xs:int"/>
+                    <xs:element name="monthOfBirth" type="xs:int"/>
+                    <xs:element name="yearOfBirth" type="xs:int"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="fuzzySearchParams">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="matchType" type="tns:matchTypeForSearch"/>
+                    <xs:element name="thresholdAutomaticMatch" type="xs:double"/>
+                    <xs:element name="thresholdPossibleMatch" type="xs:double"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="searchPersonsByPDQResponse">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns1:personDTO"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="addPerson">
+                <xs:sequence>
+                    <xs:element name="domainName" type="xs:string"/>
+                    <xs:element name="identity" type="ns1:identityInDTO"/>
+                    <xs:element name="sourceName" type="xs:string"/>
+                    <xs:element minOccurs="0" name="comment" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="addPersonResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="return" type="ns1:responseEntryDTO"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="deactivatePerson">
+                <xs:sequence>
+                    <xs:element name="domainName" type="xs:string"/>
+                    <xs:element name="mpiId" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="deactivatePersonResponse">
+                <xs:sequence/>
+            </xs:complexType>
+            <xs:complexType name="getMPIForIdentifier">
+                <xs:sequence>
+                    <xs:element name="domainName" type="xs:string"/>
+                    <xs:element name="identifier" type="ns1:identifierDTO"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getMPIForIdentifierResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="return" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="requestMPIWithConfig">
+                <xs:sequence>
+                    <xs:element name="domainName" type="xs:string"/>
+                    <xs:element name="identity" type="ns1:identityInDTO"/>
+                    <xs:element name="sourceName" type="xs:string"/>
+                    <xs:element minOccurs="0" name="comment" type="xs:string"/>
+                    <xs:element name="requestConfig" type="ns1:requestConfig"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="requestMPIWithConfigResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="return" type="ns1:responseEntryDTO"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="externalPossibleMatchForPerson">
+                <xs:sequence>
+                    <xs:element name="domainName" type="xs:string"/>
+                    <xs:element name="mpiId" type="xs:string"/>
+                    <xs:element name="aliasMpiId" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="externalPossibleMatchForPersonResponse">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="return" type="ns1:possibleMatchDTO"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getPersonsForDomain">
+                <xs:sequence>
+                    <xs:element name="domainName" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="getPersonsForDomainResponse">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns1:personDTO"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:simpleType name="unknownObjectType">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="DOMAIN"/>
+                    <xs:enumeration value="IDENTITFIER_DOMAIN"/>
+                    <xs:enumeration value="SOURCE"/>
+                    <xs:enumeration value="PERSON"/>
+                    <xs:enumeration value="IDENTIFIER"/>
+                    <xs:enumeration value="IDENTITY"/>
+                    <xs:enumeration value="CONTACT"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:simpleType name="mpiErrorCode">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="MPIID_ALREADY_EXISTS"/>
+                    <xs:enumeration value="MULTIPLE_PERSONS_FOR_IDENTIFIER"/>
+                    <xs:enumeration value="IDAT_DONT_FIT_TO_IDENTIFIER"/>
+                    <xs:enumeration value="PERSONS_IN_DIFFERENT_DOMAINS"/>
+                    <xs:enumeration value="INTERNAL_ERROR"/>
+                    <xs:enumeration value="WRONG_MATCHING_TYPE"/>
+                    <xs:enumeration value="RESTRICTIONS_VIOLATED"/>
+                    <xs:enumeration value="TO_MANY_VALUES_FOR_MULTIVALUE_FIELD"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:simpleType name="personField">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="NONE"/>
+                    <xs:enumeration value="PERSON_ID"/>
+                    <xs:enumeration value="MPI"/>
+                    <xs:enumeration value="PERSON_CREATED"/>
+                    <xs:enumeration value="PERSON_LAST_EDITED"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:simpleType name="identityField">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="NONE"/>
+                    <xs:enumeration value="IDENTITY_ID"/>
+                    <xs:enumeration value="PERSON_ID"/>
+                    <xs:enumeration value="FIRST_NAME"/>
+                    <xs:enumeration value="LAST_NAME"/>
+                    <xs:enumeration value="MIDDLE_NAME"/>
+                    <xs:enumeration value="PREFIX"/>
+                    <xs:enumeration value="SUFFIX"/>
+                    <xs:enumeration value="GENDER"/>
+                    <xs:enumeration value="BIRTH_DATE"/>
+                    <xs:enumeration value="BIRTHPLACE"/>
+                    <xs:enumeration value="RACE"/>
+                    <xs:enumeration value="RELIGION"/>
+                    <xs:enumeration value="MOTHERS_MAIDEN_NAME"/>
+                    <xs:enumeration value="DEGREE"/>
+                    <xs:enumeration value="MOTHER_TONGUE"/>
+                    <xs:enumeration value="NATIONALITY"/>
+                    <xs:enumeration value="CIVIL_STATUS"/>
+                    <xs:enumeration value="EXTERNAL_DATE"/>
+                    <xs:enumeration value="VALUE1"/>
+                    <xs:enumeration value="VALUE2"/>
+                    <xs:enumeration value="VALUE3"/>
+                    <xs:enumeration value="VALUE4"/>
+                    <xs:enumeration value="VALUE5"/>
+                    <xs:enumeration value="VALUE6"/>
+                    <xs:enumeration value="VALUE7"/>
+                    <xs:enumeration value="VALUE8"/>
+                    <xs:enumeration value="VALUE9"/>
+                    <xs:enumeration value="VALUE10"/>
+                    <xs:enumeration value="IDENTITY_CREATED"/>
+                    <xs:enumeration value="IDENTITY_LAST_EDITED"/>
+                    <xs:enumeration value="SOURCE"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:simpleType name="matchTypeForSearch">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="PERFECT_MATCH"/>
+                    <xs:enumeration value="MATCH"/>
+                    <xs:enumeration value="POSSIBLE_MATCH"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:element name="UnknownObjectException" type="tns:UnknownObjectException"/>
+            <xs:complexType name="UnknownObjectException">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="objectType" type="tns:unknownObjectType"/>
+                    <xs:element minOccurs="0" name="objectId" type="xs:string"/>
+                    <xs:element minOccurs="0" name="message" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="MPIException" type="tns:MPIException"/>
+            <xs:complexType name="MPIException">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="errorCode" type="tns:mpiErrorCode"/>
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="relatedMPIIds" type="xs:string"/>
+                    <xs:element minOccurs="0" name="message" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="InvalidParameterException" type="tns:InvalidParameterException"/>
+            <xs:complexType name="InvalidParameterException">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="parameterName" type="xs:string"/>
+                    <xs:element minOccurs="0" name="message" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="IllegalOperationException" type="tns:IllegalOperationException"/>
+            <xs:complexType name="IllegalOperationException">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="message" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="DuplicateEntryException" type="tns:DuplicateEntryException"/>
+            <xs:complexType name="DuplicateEntryException">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="message" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message name="deactivateIdentity">
+        <wsdl:part element="tns:deactivateIdentity" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="requestMPI">
+        <wsdl:part element="tns:requestMPI" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="deletePerson">
+        <wsdl:part element="tns:deletePerson" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getPersonByLocalIdentifier">
+        <wsdl:part element="tns:getPersonByLocalIdentifier" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getPersonByMultipleLocalIdentifier">
+        <wsdl:part element="tns:getPersonByMultipleLocalIdentifier" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="setReferenceIdentity">
+        <wsdl:part element="tns:setReferenceIdentity" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="removePossibleMatches">
+        <wsdl:part element="tns:removePossibleMatches" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getIdentitiesForDomainResponse">
+        <wsdl:part element="tns:getIdentitiesForDomainResponse" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="deleteIdentityResponse">
+        <wsdl:part element="tns:deleteIdentityResponse" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getPersonByMPI">
+        <wsdl:part element="tns:getPersonByMPI" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="requestMPIResponse">
+        <wsdl:part element="tns:requestMPIResponse" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getPersonByMultipleLocalIdentifierResponse">
+        <wsdl:part element="tns:getPersonByMultipleLocalIdentifierResponse" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getPersonsForDomainPaginatedResponse">
+        <wsdl:part element="tns:getPersonsForDomainPaginatedResponse" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="IllegalOperationException">
+        <wsdl:part element="tns:IllegalOperationException" name="IllegalOperationException"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getPossibleMatchesForDomainPaginatedResponse">
+        <wsdl:part element="tns:getPossibleMatchesForDomainPaginatedResponse" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="removePossibleMatch">
+        <wsdl:part element="tns:removePossibleMatch" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getAllMPIFromPersonByMPI">
+        <wsdl:part element="tns:getAllMPIFromPersonByMPI" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getPersonsForDomainFiltered">
+        <wsdl:part element="tns:getPersonsForDomainFiltered" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="addLocalIdentifierToMPIResponse">
+        <wsdl:part element="tns:addLocalIdentifierToMPIResponse" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getPersonsForDomainFilteredResponse">
+        <wsdl:part element="tns:getPersonsForDomainFilteredResponse" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getAllIdentifierForIdentifierResponse">
+        <wsdl:part element="tns:getAllIdentifierForIdentifierResponse" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getIdentitiesForDomainPaginatedResponse">
+        <wsdl:part element="tns:getIdentitiesForDomainPaginatedResponse" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="requestMPIWithConfigResponse">
+        <wsdl:part element="tns:requestMPIWithConfigResponse" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="moveIdentitiesForIdentifierToPerson">
+        <wsdl:part element="tns:moveIdentitiesForIdentifierToPerson" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="deleteIdentity">
+        <wsdl:part element="tns:deleteIdentity" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="addPersonResponse">
+        <wsdl:part element="tns:addPersonResponse" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="addContactResponse">
+        <wsdl:part element="tns:addContactResponse" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="UnknownObjectException">
+        <wsdl:part element="tns:UnknownObjectException" name="UnknownObjectException"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="addLocalIdentifierToIdentifierResponse">
+        <wsdl:part element="tns:addLocalIdentifierToIdentifierResponse" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="addLocalIdentifierToMPI">
+        <wsdl:part element="tns:addLocalIdentifierToMPI" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="searchPersonsByPDQ">
+        <wsdl:part element="tns:searchPersonsByPDQ" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="deletePersonResponse">
+        <wsdl:part element="tns:deletePersonResponse" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="deactivatePerson">
+        <wsdl:part element="tns:deactivatePerson" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getMPIForIdentifier">
+        <wsdl:part element="tns:getMPIForIdentifier" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="InvalidParameterException">
+        <wsdl:part element="tns:InvalidParameterException" name="InvalidParameterException"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getPossibleMatchesForDomainFilteredResponse">
+        <wsdl:part element="tns:getPossibleMatchesForDomainFilteredResponse" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="assignIdentityResponse">
+        <wsdl:part element="tns:assignIdentityResponse" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="moveIdentitiesForIdentifierToPersonResponse">
+        <wsdl:part element="tns:moveIdentitiesForIdentifierToPersonResponse" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getPersonsForDomain">
+        <wsdl:part element="tns:getPersonsForDomain" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getPossibleMatchesForDomainResponse">
+        <wsdl:part element="tns:getPossibleMatchesForDomainResponse" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="setReferenceIdentityResponse">
+        <wsdl:part element="tns:setReferenceIdentityResponse" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="removePossibleMatchResponse">
+        <wsdl:part element="tns:removePossibleMatchResponse" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getAllIdentifierForMPI">
+        <wsdl:part element="tns:getAllIdentifierForMPI" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="requestMPIBatch">
+        <wsdl:part element="tns:requestMPIBatch" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="externalPossibleMatchForIdentity">
+        <wsdl:part element="tns:externalPossibleMatchForIdentity" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getIdentitiesForDomain">
+        <wsdl:part element="tns:getIdentitiesForDomain" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="deactivatePersonResponse">
+        <wsdl:part element="tns:deactivatePersonResponse" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getPersonByLocalIdentifierResponse">
+        <wsdl:part element="tns:getPersonByLocalIdentifierResponse" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="removePossibleMatchesResponse">
+        <wsdl:part element="tns:removePossibleMatchesResponse" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getIdentitiesForDomainFilteredResponse">
+        <wsdl:part element="tns:getIdentitiesForDomainFilteredResponse" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getPersonsForDomainPaginated">
+        <wsdl:part element="tns:getPersonsForDomainPaginated" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getPossibleMatchesForDomainFiltered">
+        <wsdl:part element="tns:getPossibleMatchesForDomainFiltered" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="MPIException">
+        <wsdl:part element="tns:MPIException" name="MPIException"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="externalPossibleMatchForIdentityResponse">
+        <wsdl:part element="tns:externalPossibleMatchForIdentityResponse" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="updatePersonResponse">
+        <wsdl:part element="tns:updatePersonResponse" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getAllMPIFromPersonByMPIResponse">
+        <wsdl:part element="tns:getAllMPIFromPersonByMPIResponse" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="addLocalIdentifierToIdentifier">
+        <wsdl:part element="tns:addLocalIdentifierToIdentifier" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getIdentitiesForDomainFiltered">
+        <wsdl:part element="tns:getIdentitiesForDomainFiltered" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getMPIForIdentifierResponse">
+        <wsdl:part element="tns:getMPIForIdentifierResponse" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="updatePersonWithConfig">
+        <wsdl:part element="tns:updatePersonWithConfig" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="DuplicateEntryException">
+        <wsdl:part element="tns:DuplicateEntryException" name="DuplicateEntryException"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="assignIdentity">
+        <wsdl:part element="tns:assignIdentity" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getPossibleMatchesForPerson">
+        <wsdl:part element="tns:getPossibleMatchesForPerson" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getPossibleMatchesForPersonResponse">
+        <wsdl:part element="tns:getPossibleMatchesForPersonResponse" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getPossibleMatchesForDomain">
+        <wsdl:part element="tns:getPossibleMatchesForDomain" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getIdentitiesForDomainPaginated">
+        <wsdl:part element="tns:getIdentitiesForDomainPaginated" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="requestMPIBatchResponse">
+        <wsdl:part element="tns:requestMPIBatchResponse" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getAllIdentifierForIdentifier">
+        <wsdl:part element="tns:getAllIdentifierForIdentifier" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="updatePerson">
+        <wsdl:part element="tns:updatePerson" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getAllIdentifierForMPIResponse">
+        <wsdl:part element="tns:getAllIdentifierForMPIResponse" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getPossibleMatchesForDomainPaginated">
+        <wsdl:part element="tns:getPossibleMatchesForDomainPaginated" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="addContact">
+        <wsdl:part element="tns:addContact" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="addPerson">
+        <wsdl:part element="tns:addPerson" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="requestMPIWithConfig">
+        <wsdl:part element="tns:requestMPIWithConfig" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getPersonByMPIResponse">
+        <wsdl:part element="tns:getPersonByMPIResponse" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="searchPersonsByPDQResponse">
+        <wsdl:part element="tns:searchPersonsByPDQResponse" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="externalPossibleMatchForPersonResponse">
+        <wsdl:part element="tns:externalPossibleMatchForPersonResponse" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="updatePersonWithConfigResponse">
+        <wsdl:part element="tns:updatePersonWithConfigResponse" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getPersonsForDomainResponse">
+        <wsdl:part element="tns:getPersonsForDomainResponse" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="externalPossibleMatchForPerson">
+        <wsdl:part element="tns:externalPossibleMatchForPerson" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="deactivateIdentityResponse">
+        <wsdl:part element="tns:deactivateIdentityResponse" name="parameters"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:portType name="EPIXService">
+        <wsdl:operation name="deactivateIdentity">
+            <wsdl:input message="tns:deactivateIdentity" name="deactivateIdentity"> </wsdl:input>
+            <wsdl:output message="tns:deactivateIdentityResponse" name="deactivateIdentityResponse"> </wsdl:output>
+            <wsdl:fault message="tns:MPIException" name="MPIException"> </wsdl:fault>
+            <wsdl:fault message="tns:UnknownObjectException" name="UnknownObjectException"> </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="requestMPI">
+            <wsdl:input message="tns:requestMPI" name="requestMPI"> </wsdl:input>
+            <wsdl:output message="tns:requestMPIResponse" name="requestMPIResponse"> </wsdl:output>
+            <wsdl:fault message="tns:MPIException" name="MPIException"> </wsdl:fault>
+            <wsdl:fault message="tns:InvalidParameterException" name="InvalidParameterException"> </wsdl:fault>
+            <wsdl:fault message="tns:UnknownObjectException" name="UnknownObjectException"> </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="deletePerson">
+            <wsdl:input message="tns:deletePerson" name="deletePerson"> </wsdl:input>
+            <wsdl:output message="tns:deletePersonResponse" name="deletePersonResponse"> </wsdl:output>
+            <wsdl:fault message="tns:MPIException" name="MPIException"> </wsdl:fault>
+            <wsdl:fault message="tns:InvalidParameterException" name="InvalidParameterException"> </wsdl:fault>
+            <wsdl:fault message="tns:UnknownObjectException" name="UnknownObjectException"> </wsdl:fault>
+            <wsdl:fault message="tns:IllegalOperationException" name="IllegalOperationException"> </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getAllIdentifierForMPI">
+            <wsdl:input message="tns:getAllIdentifierForMPI" name="getAllIdentifierForMPI"> </wsdl:input>
+            <wsdl:output message="tns:getAllIdentifierForMPIResponse" name="getAllIdentifierForMPIResponse"> </wsdl:output>
+            <wsdl:fault message="tns:MPIException" name="MPIException"> </wsdl:fault>
+            <wsdl:fault message="tns:InvalidParameterException" name="InvalidParameterException"> </wsdl:fault>
+            <wsdl:fault message="tns:UnknownObjectException" name="UnknownObjectException"> </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getPersonByLocalIdentifier">
+            <wsdl:input message="tns:getPersonByLocalIdentifier" name="getPersonByLocalIdentifier"> </wsdl:input>
+            <wsdl:output message="tns:getPersonByLocalIdentifierResponse" name="getPersonByLocalIdentifierResponse"> </wsdl:output>
+            <wsdl:fault message="tns:InvalidParameterException" name="InvalidParameterException"> </wsdl:fault>
+            <wsdl:fault message="tns:UnknownObjectException" name="UnknownObjectException"> </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getPersonByMultipleLocalIdentifier">
+            <wsdl:input message="tns:getPersonByMultipleLocalIdentifier" name="getPersonByMultipleLocalIdentifier"> </wsdl:input>
+            <wsdl:output message="tns:getPersonByMultipleLocalIdentifierResponse" name="getPersonByMultipleLocalIdentifierResponse"> </wsdl:output>
+            <wsdl:fault message="tns:MPIException" name="MPIException"> </wsdl:fault>
+            <wsdl:fault message="tns:InvalidParameterException" name="InvalidParameterException"> </wsdl:fault>
+            <wsdl:fault message="tns:UnknownObjectException" name="UnknownObjectException"> </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="setReferenceIdentity">
+            <wsdl:input message="tns:setReferenceIdentity" name="setReferenceIdentity"> </wsdl:input>
+            <wsdl:output message="tns:setReferenceIdentityResponse" name="setReferenceIdentityResponse"> </wsdl:output>
+            <wsdl:fault message="tns:MPIException" name="MPIException"> </wsdl:fault>
+            <wsdl:fault message="tns:InvalidParameterException" name="InvalidParameterException"> </wsdl:fault>
+            <wsdl:fault message="tns:UnknownObjectException" name="UnknownObjectException"> </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="removePossibleMatches">
+            <wsdl:input message="tns:removePossibleMatches" name="removePossibleMatches"> </wsdl:input>
+            <wsdl:output message="tns:removePossibleMatchesResponse" name="removePossibleMatchesResponse"> </wsdl:output>
+            <wsdl:fault message="tns:MPIException" name="MPIException"> </wsdl:fault>
+            <wsdl:fault message="tns:InvalidParameterException" name="InvalidParameterException"> </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="requestMPIBatch">
+            <wsdl:input message="tns:requestMPIBatch" name="requestMPIBatch"> </wsdl:input>
+            <wsdl:output message="tns:requestMPIBatchResponse" name="requestMPIBatchResponse"> </wsdl:output>
+            <wsdl:fault message="tns:MPIException" name="MPIException"> </wsdl:fault>
+            <wsdl:fault message="tns:InvalidParameterException" name="InvalidParameterException"> </wsdl:fault>
+            <wsdl:fault message="tns:UnknownObjectException" name="UnknownObjectException"> </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getPersonByMPI">
+            <wsdl:input message="tns:getPersonByMPI" name="getPersonByMPI"> </wsdl:input>
+            <wsdl:output message="tns:getPersonByMPIResponse" name="getPersonByMPIResponse"> </wsdl:output>
+            <wsdl:fault message="tns:InvalidParameterException" name="InvalidParameterException"> </wsdl:fault>
+            <wsdl:fault message="tns:UnknownObjectException" name="UnknownObjectException"> </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="externalPossibleMatchForIdentity">
+            <wsdl:input message="tns:externalPossibleMatchForIdentity" name="externalPossibleMatchForIdentity"> </wsdl:input>
+            <wsdl:output message="tns:externalPossibleMatchForIdentityResponse" name="externalPossibleMatchForIdentityResponse"> </wsdl:output>
+            <wsdl:fault message="tns:MPIException" name="MPIException"> </wsdl:fault>
+            <wsdl:fault message="tns:InvalidParameterException" name="InvalidParameterException"> </wsdl:fault>
+            <wsdl:fault message="tns:DuplicateEntryException" name="DuplicateEntryException"> </wsdl:fault>
+            <wsdl:fault message="tns:UnknownObjectException" name="UnknownObjectException"> </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getIdentitiesForDomain">
+            <wsdl:input message="tns:getIdentitiesForDomain" name="getIdentitiesForDomain"> </wsdl:input>
+            <wsdl:output message="tns:getIdentitiesForDomainResponse" name="getIdentitiesForDomainResponse"> </wsdl:output>
+            <wsdl:fault message="tns:InvalidParameterException" name="InvalidParameterException"> </wsdl:fault>
+            <wsdl:fault message="tns:UnknownObjectException" name="UnknownObjectException"> </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getPersonsForDomainPaginated">
+            <wsdl:input message="tns:getPersonsForDomainPaginated" name="getPersonsForDomainPaginated"> </wsdl:input>
+            <wsdl:output message="tns:getPersonsForDomainPaginatedResponse" name="getPersonsForDomainPaginatedResponse"> </wsdl:output>
+            <wsdl:fault message="tns:InvalidParameterException" name="InvalidParameterException"> </wsdl:fault>
+            <wsdl:fault message="tns:UnknownObjectException" name="UnknownObjectException"> </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getPossibleMatchesForDomainFiltered">
+            <wsdl:input message="tns:getPossibleMatchesForDomainFiltered" name="getPossibleMatchesForDomainFiltered"> </wsdl:input>
+            <wsdl:output message="tns:getPossibleMatchesForDomainFilteredResponse" name="getPossibleMatchesForDomainFilteredResponse"> </wsdl:output>
+            <wsdl:fault message="tns:InvalidParameterException" name="InvalidParameterException"> </wsdl:fault>
+            <wsdl:fault message="tns:UnknownObjectException" name="UnknownObjectException"> </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="removePossibleMatch">
+            <wsdl:input message="tns:removePossibleMatch" name="removePossibleMatch"> </wsdl:input>
+            <wsdl:output message="tns:removePossibleMatchResponse" name="removePossibleMatchResponse"> </wsdl:output>
+            <wsdl:fault message="tns:MPIException" name="MPIException"> </wsdl:fault>
+            <wsdl:fault message="tns:InvalidParameterException" name="InvalidParameterException"> </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getAllMPIFromPersonByMPI">
+            <wsdl:input message="tns:getAllMPIFromPersonByMPI" name="getAllMPIFromPersonByMPI"> </wsdl:input>
+            <wsdl:output message="tns:getAllMPIFromPersonByMPIResponse" name="getAllMPIFromPersonByMPIResponse"> </wsdl:output>
+            <wsdl:fault message="tns:MPIException" name="MPIException"> </wsdl:fault>
+            <wsdl:fault message="tns:InvalidParameterException" name="InvalidParameterException"> </wsdl:fault>
+            <wsdl:fault message="tns:UnknownObjectException" name="UnknownObjectException"> </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getPersonsForDomainFiltered">
+            <wsdl:input message="tns:getPersonsForDomainFiltered" name="getPersonsForDomainFiltered"> </wsdl:input>
+            <wsdl:output message="tns:getPersonsForDomainFilteredResponse" name="getPersonsForDomainFilteredResponse"> </wsdl:output>
+            <wsdl:fault message="tns:InvalidParameterException" name="InvalidParameterException"> </wsdl:fault>
+            <wsdl:fault message="tns:UnknownObjectException" name="UnknownObjectException"> </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="addLocalIdentifierToIdentifier">
+            <wsdl:input message="tns:addLocalIdentifierToIdentifier" name="addLocalIdentifierToIdentifier"> </wsdl:input>
+            <wsdl:output message="tns:addLocalIdentifierToIdentifierResponse" name="addLocalIdentifierToIdentifierResponse"> </wsdl:output>
+            <wsdl:fault message="tns:MPIException" name="MPIException"> </wsdl:fault>
+            <wsdl:fault message="tns:InvalidParameterException" name="InvalidParameterException"> </wsdl:fault>
+            <wsdl:fault message="tns:UnknownObjectException" name="UnknownObjectException"> </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getIdentitiesForDomainFiltered">
+            <wsdl:input message="tns:getIdentitiesForDomainFiltered" name="getIdentitiesForDomainFiltered"> </wsdl:input>
+            <wsdl:output message="tns:getIdentitiesForDomainFilteredResponse" name="getIdentitiesForDomainFilteredResponse"> </wsdl:output>
+            <wsdl:fault message="tns:InvalidParameterException" name="InvalidParameterException"> </wsdl:fault>
+            <wsdl:fault message="tns:UnknownObjectException" name="UnknownObjectException"> </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="updatePersonWithConfig">
+            <wsdl:input message="tns:updatePersonWithConfig" name="updatePersonWithConfig"> </wsdl:input>
+            <wsdl:output message="tns:updatePersonWithConfigResponse" name="updatePersonWithConfigResponse"> </wsdl:output>
+            <wsdl:fault message="tns:MPIException" name="MPIException"> </wsdl:fault>
+            <wsdl:fault message="tns:InvalidParameterException" name="InvalidParameterException"> </wsdl:fault>
+            <wsdl:fault message="tns:UnknownObjectException" name="UnknownObjectException"> </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="assignIdentity">
+            <wsdl:input message="tns:assignIdentity" name="assignIdentity"> </wsdl:input>
+            <wsdl:output message="tns:assignIdentityResponse" name="assignIdentityResponse"> </wsdl:output>
+            <wsdl:fault message="tns:MPIException" name="MPIException"> </wsdl:fault>
+            <wsdl:fault message="tns:InvalidParameterException" name="InvalidParameterException"> </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getPossibleMatchesForPerson">
+            <wsdl:input message="tns:getPossibleMatchesForPerson" name="getPossibleMatchesForPerson"> </wsdl:input>
+            <wsdl:output message="tns:getPossibleMatchesForPersonResponse" name="getPossibleMatchesForPersonResponse"> </wsdl:output>
+            <wsdl:fault message="tns:InvalidParameterException" name="InvalidParameterException"> </wsdl:fault>
+            <wsdl:fault message="tns:UnknownObjectException" name="UnknownObjectException"> </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getPossibleMatchesForDomain">
+            <wsdl:input message="tns:getPossibleMatchesForDomain" name="getPossibleMatchesForDomain"> </wsdl:input>
+            <wsdl:output message="tns:getPossibleMatchesForDomainResponse" name="getPossibleMatchesForDomainResponse"> </wsdl:output>
+            <wsdl:fault message="tns:InvalidParameterException" name="InvalidParameterException"> </wsdl:fault>
+            <wsdl:fault message="tns:UnknownObjectException" name="UnknownObjectException"> </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getIdentitiesForDomainPaginated">
+            <wsdl:input message="tns:getIdentitiesForDomainPaginated" name="getIdentitiesForDomainPaginated"> </wsdl:input>
+            <wsdl:output message="tns:getIdentitiesForDomainPaginatedResponse" name="getIdentitiesForDomainPaginatedResponse"> </wsdl:output>
+            <wsdl:fault message="tns:InvalidParameterException" name="InvalidParameterException"> </wsdl:fault>
+            <wsdl:fault message="tns:UnknownObjectException" name="UnknownObjectException"> </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getAllIdentifierForIdentifier">
+            <wsdl:input message="tns:getAllIdentifierForIdentifier" name="getAllIdentifierForIdentifier"> </wsdl:input>
+            <wsdl:output message="tns:getAllIdentifierForIdentifierResponse" name="getAllIdentifierForIdentifierResponse"> </wsdl:output>
+            <wsdl:fault message="tns:InvalidParameterException" name="InvalidParameterException"> </wsdl:fault>
+            <wsdl:fault message="tns:UnknownObjectException" name="UnknownObjectException"> </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="moveIdentitiesForIdentifierToPerson">
+            <wsdl:input message="tns:moveIdentitiesForIdentifierToPerson" name="moveIdentitiesForIdentifierToPerson"> </wsdl:input>
+            <wsdl:output message="tns:moveIdentitiesForIdentifierToPersonResponse" name="moveIdentitiesForIdentifierToPersonResponse"> </wsdl:output>
+            <wsdl:fault message="tns:MPIException" name="MPIException"> </wsdl:fault>
+            <wsdl:fault message="tns:InvalidParameterException" name="InvalidParameterException"> </wsdl:fault>
+            <wsdl:fault message="tns:UnknownObjectException" name="UnknownObjectException"> </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="updatePerson">
+            <wsdl:input message="tns:updatePerson" name="updatePerson"> </wsdl:input>
+            <wsdl:output message="tns:updatePersonResponse" name="updatePersonResponse"> </wsdl:output>
+            <wsdl:fault message="tns:MPIException" name="MPIException"> </wsdl:fault>
+            <wsdl:fault message="tns:InvalidParameterException" name="InvalidParameterException"> </wsdl:fault>
+            <wsdl:fault message="tns:UnknownObjectException" name="UnknownObjectException"> </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="deleteIdentity">
+            <wsdl:input message="tns:deleteIdentity" name="deleteIdentity"> </wsdl:input>
+            <wsdl:output message="tns:deleteIdentityResponse" name="deleteIdentityResponse"> </wsdl:output>
+            <wsdl:fault message="tns:MPIException" name="MPIException"> </wsdl:fault>
+            <wsdl:fault message="tns:UnknownObjectException" name="UnknownObjectException"> </wsdl:fault>
+            <wsdl:fault message="tns:IllegalOperationException" name="IllegalOperationException"> </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getPossibleMatchesForDomainPaginated">
+            <wsdl:input message="tns:getPossibleMatchesForDomainPaginated" name="getPossibleMatchesForDomainPaginated"> </wsdl:input>
+            <wsdl:output message="tns:getPossibleMatchesForDomainPaginatedResponse" name="getPossibleMatchesForDomainPaginatedResponse"> </wsdl:output>
+            <wsdl:fault message="tns:InvalidParameterException" name="InvalidParameterException"> </wsdl:fault>
+            <wsdl:fault message="tns:UnknownObjectException" name="UnknownObjectException"> </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="addContact">
+            <wsdl:input message="tns:addContact" name="addContact"> </wsdl:input>
+            <wsdl:output message="tns:addContactResponse" name="addContactResponse"> </wsdl:output>
+            <wsdl:fault message="tns:MPIException" name="MPIException"> </wsdl:fault>
+            <wsdl:fault message="tns:InvalidParameterException" name="InvalidParameterException"> </wsdl:fault>
+            <wsdl:fault message="tns:DuplicateEntryException" name="DuplicateEntryException"> </wsdl:fault>
+            <wsdl:fault message="tns:UnknownObjectException" name="UnknownObjectException"> </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="addLocalIdentifierToMPI">
+            <wsdl:input message="tns:addLocalIdentifierToMPI" name="addLocalIdentifierToMPI"> </wsdl:input>
+            <wsdl:output message="tns:addLocalIdentifierToMPIResponse" name="addLocalIdentifierToMPIResponse"> </wsdl:output>
+            <wsdl:fault message="tns:MPIException" name="MPIException"> </wsdl:fault>
+            <wsdl:fault message="tns:InvalidParameterException" name="InvalidParameterException"> </wsdl:fault>
+            <wsdl:fault message="tns:UnknownObjectException" name="UnknownObjectException"> </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="searchPersonsByPDQ">
+            <wsdl:input message="tns:searchPersonsByPDQ" name="searchPersonsByPDQ"> </wsdl:input>
+            <wsdl:output message="tns:searchPersonsByPDQResponse" name="searchPersonsByPDQResponse"> </wsdl:output>
+            <wsdl:fault message="tns:MPIException" name="MPIException"> </wsdl:fault>
+            <wsdl:fault message="tns:InvalidParameterException" name="InvalidParameterException"> </wsdl:fault>
+            <wsdl:fault message="tns:UnknownObjectException" name="UnknownObjectException"> </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="addPerson">
+            <wsdl:input message="tns:addPerson" name="addPerson"> </wsdl:input>
+            <wsdl:output message="tns:addPersonResponse" name="addPersonResponse"> </wsdl:output>
+            <wsdl:fault message="tns:MPIException" name="MPIException"> </wsdl:fault>
+            <wsdl:fault message="tns:InvalidParameterException" name="InvalidParameterException"> </wsdl:fault>
+            <wsdl:fault message="tns:UnknownObjectException" name="UnknownObjectException"> </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="deactivatePerson">
+            <wsdl:input message="tns:deactivatePerson" name="deactivatePerson"> </wsdl:input>
+            <wsdl:output message="tns:deactivatePersonResponse" name="deactivatePersonResponse"> </wsdl:output>
+            <wsdl:fault message="tns:MPIException" name="MPIException"> </wsdl:fault>
+            <wsdl:fault message="tns:InvalidParameterException" name="InvalidParameterException"> </wsdl:fault>
+            <wsdl:fault message="tns:UnknownObjectException" name="UnknownObjectException"> </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getMPIForIdentifier">
+            <wsdl:input message="tns:getMPIForIdentifier" name="getMPIForIdentifier"> </wsdl:input>
+            <wsdl:output message="tns:getMPIForIdentifierResponse" name="getMPIForIdentifierResponse"> </wsdl:output>
+            <wsdl:fault message="tns:InvalidParameterException" name="InvalidParameterException"> </wsdl:fault>
+            <wsdl:fault message="tns:UnknownObjectException" name="UnknownObjectException"> </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="requestMPIWithConfig">
+            <wsdl:input message="tns:requestMPIWithConfig" name="requestMPIWithConfig"> </wsdl:input>
+            <wsdl:output message="tns:requestMPIWithConfigResponse" name="requestMPIWithConfigResponse"> </wsdl:output>
+            <wsdl:fault message="tns:MPIException" name="MPIException"> </wsdl:fault>
+            <wsdl:fault message="tns:InvalidParameterException" name="InvalidParameterException"> </wsdl:fault>
+            <wsdl:fault message="tns:UnknownObjectException" name="UnknownObjectException"> </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="externalPossibleMatchForPerson">
+            <wsdl:input message="tns:externalPossibleMatchForPerson" name="externalPossibleMatchForPerson"> </wsdl:input>
+            <wsdl:output message="tns:externalPossibleMatchForPersonResponse" name="externalPossibleMatchForPersonResponse"> </wsdl:output>
+            <wsdl:fault message="tns:MPIException" name="MPIException"> </wsdl:fault>
+            <wsdl:fault message="tns:InvalidParameterException" name="InvalidParameterException"> </wsdl:fault>
+            <wsdl:fault message="tns:DuplicateEntryException" name="DuplicateEntryException"> </wsdl:fault>
+            <wsdl:fault message="tns:UnknownObjectException" name="UnknownObjectException"> </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getPersonsForDomain">
+            <wsdl:input message="tns:getPersonsForDomain" name="getPersonsForDomain"> </wsdl:input>
+            <wsdl:output message="tns:getPersonsForDomainResponse" name="getPersonsForDomainResponse"> </wsdl:output>
+            <wsdl:fault message="tns:InvalidParameterException" name="InvalidParameterException"> </wsdl:fault>
+            <wsdl:fault message="tns:UnknownObjectException" name="UnknownObjectException"> </wsdl:fault>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="EPIXServiceImplServiceSoapBinding" type="tns:EPIXService">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="deactivateIdentity">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="deactivateIdentity">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="deactivateIdentityResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="MPIException">
+                <soap:fault name="MPIException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="UnknownObjectException">
+                <soap:fault name="UnknownObjectException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="requestMPI">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="requestMPI">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="requestMPIResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="MPIException">
+                <soap:fault name="MPIException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="InvalidParameterException">
+                <soap:fault name="InvalidParameterException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="UnknownObjectException">
+                <soap:fault name="UnknownObjectException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="deletePerson">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="deletePerson">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="deletePersonResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="MPIException">
+                <soap:fault name="MPIException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="InvalidParameterException">
+                <soap:fault name="InvalidParameterException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="UnknownObjectException">
+                <soap:fault name="UnknownObjectException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="IllegalOperationException">
+                <soap:fault name="IllegalOperationException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getAllIdentifierForMPI">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="getAllIdentifierForMPI">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="getAllIdentifierForMPIResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="MPIException">
+                <soap:fault name="MPIException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="InvalidParameterException">
+                <soap:fault name="InvalidParameterException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="UnknownObjectException">
+                <soap:fault name="UnknownObjectException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getPersonByLocalIdentifier">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="getPersonByLocalIdentifier">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="getPersonByLocalIdentifierResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="InvalidParameterException">
+                <soap:fault name="InvalidParameterException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="UnknownObjectException">
+                <soap:fault name="UnknownObjectException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getPersonByMultipleLocalIdentifier">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="getPersonByMultipleLocalIdentifier">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="getPersonByMultipleLocalIdentifierResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="MPIException">
+                <soap:fault name="MPIException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="InvalidParameterException">
+                <soap:fault name="InvalidParameterException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="UnknownObjectException">
+                <soap:fault name="UnknownObjectException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="setReferenceIdentity">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="setReferenceIdentity">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="setReferenceIdentityResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="MPIException">
+                <soap:fault name="MPIException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="InvalidParameterException">
+                <soap:fault name="InvalidParameterException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="UnknownObjectException">
+                <soap:fault name="UnknownObjectException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="removePossibleMatches">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="removePossibleMatches">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="removePossibleMatchesResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="MPIException">
+                <soap:fault name="MPIException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="InvalidParameterException">
+                <soap:fault name="InvalidParameterException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="requestMPIBatch">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="requestMPIBatch">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="requestMPIBatchResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="MPIException">
+                <soap:fault name="MPIException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="InvalidParameterException">
+                <soap:fault name="InvalidParameterException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="UnknownObjectException">
+                <soap:fault name="UnknownObjectException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getPersonByMPI">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="getPersonByMPI">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="getPersonByMPIResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="InvalidParameterException">
+                <soap:fault name="InvalidParameterException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="UnknownObjectException">
+                <soap:fault name="UnknownObjectException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="externalPossibleMatchForIdentity">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="externalPossibleMatchForIdentity">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="externalPossibleMatchForIdentityResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="MPIException">
+                <soap:fault name="MPIException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="InvalidParameterException">
+                <soap:fault name="InvalidParameterException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="DuplicateEntryException">
+                <soap:fault name="DuplicateEntryException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="UnknownObjectException">
+                <soap:fault name="UnknownObjectException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getIdentitiesForDomain">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="getIdentitiesForDomain">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="getIdentitiesForDomainResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="InvalidParameterException">
+                <soap:fault name="InvalidParameterException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="UnknownObjectException">
+                <soap:fault name="UnknownObjectException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getPersonsForDomainPaginated">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="getPersonsForDomainPaginated">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="getPersonsForDomainPaginatedResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="InvalidParameterException">
+                <soap:fault name="InvalidParameterException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="UnknownObjectException">
+                <soap:fault name="UnknownObjectException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getPossibleMatchesForDomainFiltered">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="getPossibleMatchesForDomainFiltered">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="getPossibleMatchesForDomainFilteredResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="InvalidParameterException">
+                <soap:fault name="InvalidParameterException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="UnknownObjectException">
+                <soap:fault name="UnknownObjectException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="removePossibleMatch">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="removePossibleMatch">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="removePossibleMatchResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="MPIException">
+                <soap:fault name="MPIException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="InvalidParameterException">
+                <soap:fault name="InvalidParameterException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getAllMPIFromPersonByMPI">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="getAllMPIFromPersonByMPI">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="getAllMPIFromPersonByMPIResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="MPIException">
+                <soap:fault name="MPIException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="InvalidParameterException">
+                <soap:fault name="InvalidParameterException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="UnknownObjectException">
+                <soap:fault name="UnknownObjectException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getPersonsForDomainFiltered">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="getPersonsForDomainFiltered">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="getPersonsForDomainFilteredResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="InvalidParameterException">
+                <soap:fault name="InvalidParameterException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="UnknownObjectException">
+                <soap:fault name="UnknownObjectException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="addLocalIdentifierToIdentifier">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="addLocalIdentifierToIdentifier">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="addLocalIdentifierToIdentifierResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="MPIException">
+                <soap:fault name="MPIException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="InvalidParameterException">
+                <soap:fault name="InvalidParameterException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="UnknownObjectException">
+                <soap:fault name="UnknownObjectException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getIdentitiesForDomainFiltered">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="getIdentitiesForDomainFiltered">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="getIdentitiesForDomainFilteredResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="InvalidParameterException">
+                <soap:fault name="InvalidParameterException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="UnknownObjectException">
+                <soap:fault name="UnknownObjectException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="updatePersonWithConfig">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="updatePersonWithConfig">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="updatePersonWithConfigResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="MPIException">
+                <soap:fault name="MPIException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="InvalidParameterException">
+                <soap:fault name="InvalidParameterException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="UnknownObjectException">
+                <soap:fault name="UnknownObjectException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="assignIdentity">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="assignIdentity">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="assignIdentityResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="MPIException">
+                <soap:fault name="MPIException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="InvalidParameterException">
+                <soap:fault name="InvalidParameterException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getPossibleMatchesForPerson">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="getPossibleMatchesForPerson">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="getPossibleMatchesForPersonResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="InvalidParameterException">
+                <soap:fault name="InvalidParameterException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="UnknownObjectException">
+                <soap:fault name="UnknownObjectException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getPossibleMatchesForDomain">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="getPossibleMatchesForDomain">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="getPossibleMatchesForDomainResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="InvalidParameterException">
+                <soap:fault name="InvalidParameterException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="UnknownObjectException">
+                <soap:fault name="UnknownObjectException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getIdentitiesForDomainPaginated">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="getIdentitiesForDomainPaginated">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="getIdentitiesForDomainPaginatedResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="InvalidParameterException">
+                <soap:fault name="InvalidParameterException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="UnknownObjectException">
+                <soap:fault name="UnknownObjectException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getAllIdentifierForIdentifier">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="getAllIdentifierForIdentifier">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="getAllIdentifierForIdentifierResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="InvalidParameterException">
+                <soap:fault name="InvalidParameterException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="UnknownObjectException">
+                <soap:fault name="UnknownObjectException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="moveIdentitiesForIdentifierToPerson">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="moveIdentitiesForIdentifierToPerson">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="moveIdentitiesForIdentifierToPersonResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="MPIException">
+                <soap:fault name="MPIException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="InvalidParameterException">
+                <soap:fault name="InvalidParameterException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="UnknownObjectException">
+                <soap:fault name="UnknownObjectException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="updatePerson">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="updatePerson">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="updatePersonResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="MPIException">
+                <soap:fault name="MPIException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="InvalidParameterException">
+                <soap:fault name="InvalidParameterException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="UnknownObjectException">
+                <soap:fault name="UnknownObjectException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="deleteIdentity">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="deleteIdentity">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="deleteIdentityResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="MPIException">
+                <soap:fault name="MPIException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="UnknownObjectException">
+                <soap:fault name="UnknownObjectException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="IllegalOperationException">
+                <soap:fault name="IllegalOperationException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getPossibleMatchesForDomainPaginated">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="getPossibleMatchesForDomainPaginated">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="getPossibleMatchesForDomainPaginatedResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="InvalidParameterException">
+                <soap:fault name="InvalidParameterException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="UnknownObjectException">
+                <soap:fault name="UnknownObjectException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="addContact">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="addContact">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="addContactResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="MPIException">
+                <soap:fault name="MPIException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="InvalidParameterException">
+                <soap:fault name="InvalidParameterException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="DuplicateEntryException">
+                <soap:fault name="DuplicateEntryException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="UnknownObjectException">
+                <soap:fault name="UnknownObjectException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="addLocalIdentifierToMPI">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="addLocalIdentifierToMPI">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="addLocalIdentifierToMPIResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="MPIException">
+                <soap:fault name="MPIException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="InvalidParameterException">
+                <soap:fault name="InvalidParameterException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="UnknownObjectException">
+                <soap:fault name="UnknownObjectException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="searchPersonsByPDQ">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="searchPersonsByPDQ">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="searchPersonsByPDQResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="MPIException">
+                <soap:fault name="MPIException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="InvalidParameterException">
+                <soap:fault name="InvalidParameterException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="UnknownObjectException">
+                <soap:fault name="UnknownObjectException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="addPerson">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="addPerson">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="addPersonResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="MPIException">
+                <soap:fault name="MPIException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="InvalidParameterException">
+                <soap:fault name="InvalidParameterException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="UnknownObjectException">
+                <soap:fault name="UnknownObjectException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="deactivatePerson">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="deactivatePerson">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="deactivatePersonResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="MPIException">
+                <soap:fault name="MPIException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="InvalidParameterException">
+                <soap:fault name="InvalidParameterException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="UnknownObjectException">
+                <soap:fault name="UnknownObjectException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getMPIForIdentifier">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="getMPIForIdentifier">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="getMPIForIdentifierResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="InvalidParameterException">
+                <soap:fault name="InvalidParameterException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="UnknownObjectException">
+                <soap:fault name="UnknownObjectException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="requestMPIWithConfig">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="requestMPIWithConfig">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="requestMPIWithConfigResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="MPIException">
+                <soap:fault name="MPIException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="InvalidParameterException">
+                <soap:fault name="InvalidParameterException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="UnknownObjectException">
+                <soap:fault name="UnknownObjectException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="externalPossibleMatchForPerson">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="externalPossibleMatchForPerson">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="externalPossibleMatchForPersonResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="MPIException">
+                <soap:fault name="MPIException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="InvalidParameterException">
+                <soap:fault name="InvalidParameterException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="DuplicateEntryException">
+                <soap:fault name="DuplicateEntryException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="UnknownObjectException">
+                <soap:fault name="UnknownObjectException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="getPersonsForDomain">
+            <soap:operation soapAction="" style="document"/>
+            <wsdl:input name="getPersonsForDomain">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="getPersonsForDomainResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="InvalidParameterException">
+                <soap:fault name="InvalidParameterException" use="literal"/>
+            </wsdl:fault>
+            <wsdl:fault name="UnknownObjectException">
+                <soap:fault name="UnknownObjectException" use="literal"/>
+            </wsdl:fault>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="EPIXServiceImplService">
+        <wsdl:port binding="tns:EPIXServiceImplServiceSoapBinding" name="epixServicePort">
+            <soap:address location="http://localhost:8080/epix/epixService"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

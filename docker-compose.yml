@@ -1,0 +1,34 @@
+services:
+
+  dp-cd-fhir-server:
+    image: samply/blaze:0.23.2
+    container_name: dp-cd-fhir-server
+    ports:
+      - 8082:8080
+    environment:
+      BASE_URL: "http://localhost:8082"
+      STORAGE: "in-memory"
+
+  dp-rd-fhir-server:
+    image: samply/blaze:0.23.2
+    container_name: dp-rd-fhir-server
+    ports:
+      - 8083:8080
+    environment:
+      BASE_URL: "http://localhost:8083"
+      STORAGE: "in-memory"
+      ENFORCE_REFERENTIAL_INTEGRITY: "false"
+
+  dp-deidentifhir-pipeline:
+    image: ghcr.io/umessen/deidentifhir-pipeline:latest
+    container_name: dp-deidentifhir-pipeline
+    volumes:
+      - ./src/main/resources/application.yaml:/conf/application.yaml
+      - ./deidentifhir:/deidentifhir
+    network_mode: "host"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "-u", "user:pwd", "http://localhost:8042/healthcheck" ]
+      interval: 5s
+      timeout: 5s
+      retries: 100
+      start_period: 5s

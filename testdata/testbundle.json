@@ -1,0 +1,228 @@
+{
+  "resourceType": "Bundle",
+  "type": "transaction",
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "1234",
+        "meta": {
+          "profile": [
+            "https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/Patient"
+          ]
+        },
+        "identifier": [
+          {
+            "use": "usual",
+            "type": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                  "code": "MR"
+                }
+              ]
+            },
+            "system": "https://www.example.org/fhir/sid/patienten",
+            "value": "1234-identifier",
+            "assigner": {
+              "display": "Charité – Universitätsmedizin Berlin",
+              "identifier": {
+                "system": "http://fhir.de/NamingSystem/arge-ik/iknr",
+                "value": "111101010"
+              }
+            }
+          },
+          {
+            "use": "official",
+            "type": {
+              "coding": [
+                {
+                  "system": "http://fhir.de/CodeSystem/identifier-type-de-basis",
+                  "code": "GKV"
+                }
+              ]
+            },
+            "system": "http://fhir.de/NamingSystem/gkv/kvid-10",
+            "value": "A999999999",
+            "assigner": {
+              "identifier": {
+                "use": "official",
+                "system": "http://fhir.de/NamingSystem/arge-ik/iknr",
+                "value": "260326822"
+              }
+            }
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "TestFamily",
+            "given": [
+              "TestNameOne",
+              "TestNameTwo"
+            ]
+          }
+        ],
+        "address": [
+          {
+            "type": "both",
+            "line": [
+              "Teststraße 2"
+            ],
+            "city": "Köln",
+            "postalCode": "50823",
+            "country": "DE"
+          }
+        ],
+        "gender": "other",
+        "_gender": {
+          "extension": [
+            {
+              "url": "http://fhir.de/StructureDefinition/gender-amtlich-de",
+              "valueCoding": {
+                "system": "http://fhir.de/CodeSystem/gender-amtlich-de",
+                "code": "D",
+                "display": "divers"
+              }
+            }
+          ]
+        },
+        "birthDate": "1998-09-19"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Patient/1234"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "12345",
+        "meta": {
+          "profile": [
+            "https://www.medizininformatik-initiative.de/fhir/core/modul-fall/StructureDefinition/KontaktGesundheitseinrichtung"
+          ]
+        },
+        "status": "finished",
+        "identifier": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                  "code": "VN"
+                }
+              ]
+            },
+            "system": "http://medizininformatik-initiative.de/fhir/NamingSystem/Aufnahmenummer/MusterKrankenhaus",
+            "value": "F_0000002"
+          }
+        ],
+        "class": {
+          "code": "IMP",
+          "display": "Inpatient",
+          "system": "http://hl7.org/fhir/v3/ActCode/cs.html"
+        },
+        "subject": {
+          "reference": "Patient/1234"
+        },
+        "serviceProvider": {
+          "identifier": {
+            "system": "http://medizininformatik-initiative.de/fhir/NamingSystem/Einrichtungsidentifikator/MusterKrankenhaus",
+            "value": "260123451_MusterKrankenhaus"
+          }
+        },
+        "diagnosis": [
+          {
+            "condition": {
+              "reference": "Condition/123456"
+            }
+          }
+        ],
+        "hospitalization": {
+          "admitSource": {
+            "coding": [
+              {
+                "system": "https://www.medizininformatik-initiative.de/fhir/core/modul-fall/CodeSystem/Aufnahmeanlass",
+                "code": "N"
+              }
+            ]
+          },
+          "dischargeDisposition": {
+            "coding": [
+              {
+                "system": "https://www.medizininformatik-initiative.de/fhir/core/modul-fall/CodeSystem/Entlassungsgrund",
+                "code": "12.0"
+              }
+            ]
+          }
+        },
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "system": "https://www.medizininformatik-initiative.de/fhir/modul-fall/core/CodeSystem/Aufnahmegrund",
+                "code": "107"
+              }
+            ]
+          }
+        ],
+        "period": {
+          "start": "2020-01-08T07:00:00+01:00",
+          "end": "2020-06-11T05:00:00+01:00"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Encounter/12345"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "123456",
+        "meta": {
+          "profile":  [
+            "https://www.medizininformatik-initiative.de/fhir/core/modul-diagnose/StructureDefinition/Diagnose"
+          ]
+        },
+        "clinicalStatus": {
+          "coding":  [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "code": {
+          "coding":  [
+            {
+              "system": "http://fhir.de/CodeSystem/dimdi/icd-10-gm",
+              "version": "2020",
+              "code": "S50.0",
+              "display": "Prellung des Ellenbogens"
+            },
+            {
+              "system": "http://snomed.info/sct",
+              "code": "91613004",
+              "display": "Contusion of elbow (disorder)"
+            }
+          ],
+          "text": "Prellung des linken Ellenbogens"
+        },
+        "subject": {
+          "reference": "Patient/1234"
+        },
+        "onsetPeriod": {
+          "start": "2020-02-26T12:00:00+01:00",
+          "end": "2020-03-05T13:00:00+01:00"
+        },
+        "recordedDate": "2020-02-26T12:00:00+01:00"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Condition/123456"
+      }
+    }
+  ]
+}

@@ -1,0 +1,105 @@
+<mxfile host="Electron" modified="2024-03-07T09:05:19.886Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.0.3 Chrome/114.0.5735.289 Electron/25.8.4 Safari/537.36" etag="-zftUGfREIc3N5J8gG8H" version="22.0.3" type="device">
+  <diagram name="Seite-1" id="Zue00mF-nvQ-Dz8i3X26">
+    <mxGraphModel dx="1380" dy="843" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="f2MBryZA49qkPividRBn-2" value="deidentifhir-pipeline" style="swimlane;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="150" y="120" width="890" height="260" as="geometry" />
+        </mxCell>
+        <mxCell id="f2MBryZA49qkPividRBn-10" value="IDs" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;shape=flexArrow;strokeWidth=1;endSize=6;" parent="f2MBryZA49qkPividRBn-2" source="f2MBryZA49qkPividRBn-5" target="f2MBryZA49qkPividRBn-6" edge="1">
+          <mxGeometry x="-0.3333" y="20" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="f2MBryZA49qkPividRBn-5" value="cohort-selection" style="rounded=1;whiteSpace=wrap;html=1;" parent="f2MBryZA49qkPividRBn-2" vertex="1">
+          <mxGeometry x="30" y="70" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="f2MBryZA49qkPividRBn-11" value="FHIR Bundles" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;shape=flexArrow;" parent="f2MBryZA49qkPividRBn-2" source="f2MBryZA49qkPividRBn-6" target="f2MBryZA49qkPividRBn-7" edge="1">
+          <mxGeometry x="-0.1111" y="20" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="f2MBryZA49qkPividRBn-6" value="data-selection" style="rounded=1;whiteSpace=wrap;html=1;" parent="f2MBryZA49qkPividRBn-2" vertex="1">
+          <mxGeometry x="250" y="70" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="f2MBryZA49qkPividRBn-12" value="FHIR Bundles" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;shape=flexArrow;" parent="f2MBryZA49qkPividRBn-2" source="f2MBryZA49qkPividRBn-7" target="f2MBryZA49qkPividRBn-8" edge="1">
+          <mxGeometry x="-0.1155" y="20" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="f2MBryZA49qkPividRBn-7" value="pseudonymization" style="rounded=1;whiteSpace=wrap;html=1;" parent="f2MBryZA49qkPividRBn-2" vertex="1">
+          <mxGeometry x="494.5" y="70" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="f2MBryZA49qkPividRBn-8" value="data-storing" style="rounded=1;whiteSpace=wrap;html=1;" parent="f2MBryZA49qkPividRBn-2" vertex="1">
+          <mxGeometry x="740" y="70" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="f2MBryZA49qkPividRBn-4" value="Source&lt;br&gt;FHIR Server" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="400" y="430" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="f2MBryZA49qkPividRBn-9" value="1. execute cohort &lt;br&gt;selection query &lt;br&gt;to get cohort IDs" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="f2MBryZA49qkPividRBn-5" target="f2MBryZA49qkPividRBn-31" edge="1">
+          <mxGeometry x="-0.3333" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="f2MBryZA49qkPividRBn-16" value="description" style="swimlane;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="215" y="540" width="740" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="f2MBryZA49qkPividRBn-14" value="" style="shape=flexArrow;endArrow=classic;html=1;rounded=0;" parent="f2MBryZA49qkPividRBn-16" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="20" y="54.5" as="sourcePoint" />
+            <mxPoint x="80" y="54.5" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="f2MBryZA49qkPividRBn-15" value="data flow" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="f2MBryZA49qkPividRBn-16" vertex="1">
+          <mxGeometry x="90" y="40" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="f2MBryZA49qkPividRBn-18" value="data access" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="f2MBryZA49qkPividRBn-16" vertex="1">
+          <mxGeometry x="250" y="40" width="70" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="f2MBryZA49qkPividRBn-21" value="" style="endArrow=classic;html=1;rounded=0;" parent="f2MBryZA49qkPividRBn-16" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="180" y="54.5" as="sourcePoint" />
+            <mxPoint x="240" y="55" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="f2MBryZA49qkPividRBn-27" value="" style="rounded=0;whiteSpace=wrap;html=1;" parent="f2MBryZA49qkPividRBn-16" vertex="1">
+          <mxGeometry x="360" y="40" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="f2MBryZA49qkPividRBn-28" value="external system" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="f2MBryZA49qkPividRBn-16" vertex="1">
+          <mxGeometry x="430" y="40" width="90" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="f2MBryZA49qkPividRBn-29" value="" style="rounded=1;whiteSpace=wrap;html=1;" parent="f2MBryZA49qkPividRBn-16" vertex="1">
+          <mxGeometry x="570" y="40" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="f2MBryZA49qkPividRBn-30" value="functionality" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="f2MBryZA49qkPividRBn-16" vertex="1">
+          <mxGeometry x="640" y="40" width="70" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="f2MBryZA49qkPividRBn-19" value="Target&lt;br&gt;FHIR Server" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="890" y="430" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="f2MBryZA49qkPividRBn-20" value="4. store FHIR bundle &lt;br&gt;in target FHIR server" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="f2MBryZA49qkPividRBn-8" target="f2MBryZA49qkPividRBn-19" edge="1">
+          <mxGeometry x="-0.3333" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="f2MBryZA49qkPividRBn-23" value="gPAS" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="645" y="430" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="f2MBryZA49qkPividRBn-24" value="3. store pseudonymization &lt;br&gt;data in gPAS" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="f2MBryZA49qkPividRBn-7" target="f2MBryZA49qkPividRBn-23" edge="1">
+          <mxGeometry x="-0.3352" y="1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="f2MBryZA49qkPividRBn-25" value="2. execute data &lt;br&gt;selection query &lt;br&gt;to get FHIR data" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="f2MBryZA49qkPividRBn-6" target="f2MBryZA49qkPividRBn-4" edge="1">
+          <mxGeometry x="-0.3333" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="f2MBryZA49qkPividRBn-31" value="gICS" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="180" y="430" width="120" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
