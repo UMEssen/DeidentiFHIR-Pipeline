@@ -11,7 +11,7 @@ projects:
     parallelism: 16
     cohort-selection:
       via-ids:
-        ids: ["1234-identifier"]
+        ids: ["1234-identifier", "234-identifier"]
     data-selection:
       fhir-server:
         url: http://localhost:8082/fhir

@@ -223,6 +223,115 @@
         "method": "PUT",
         "url": "Condition/123456"
       }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationAdministration",
+        "id": "1234567",
+        "meta": {
+          "profile":  [
+            "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationAdministration"
+          ]
+        },
+        "dosage": {
+          "dose": {
+            "system": "http://unitsofmeasure.org",
+            "value": 85,
+            "code": "mg",
+            "unit": "mg"
+          },
+          "rateRatio": {
+            "denominator": {
+              "system": "http://unitsofmeasure.org",
+              "value": 1,
+              "code": "h",
+              "unit": "hour"
+            },
+            "numerator": {
+              "system": "http://unitsofmeasure.org",
+              "value": 250,
+              "code": "mL",
+              "unit": "milliliter"
+            }
+          },
+          "route": {
+            "coding":  [
+              {
+                "code": "20045000",
+                "system": "http://standardterms.edqm.eu",
+                "display": "Intravenous use"
+              }
+            ]
+          }
+        },
+        "effectivePeriod": {
+          "end": "2020-01-06T11:20:00.000+00:00",
+          "start": "2020-01-06T10:20:00.000+00:00"
+        },
+        "medicationReference": {
+          "reference": "Medication/123"
+        },
+        "status": "completed",
+        "subject": {
+          "reference": "Patient/1234"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "MedicationAdministration/1234567"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Medication",
+        "id": "123",
+        "meta": {
+          "profile":  [
+            "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/Medication"
+          ]
+        },
+        "code": {
+          "coding":  [
+            {
+              "system": "http://fhir.de/CodeSystem/ifa/pzn",
+              "code": "02758994",
+              "display": "dolomo® TN"
+            },
+            {
+              "system": "http://fhir.de/CodeSystem/bfarm/atc",
+              "code": "N02BE51",
+              "display": "Paracetamol, Kombinationen exkl. Psycholeptika"
+            }
+          ]
+        },
+        "form": {
+          "coding":  [
+            {
+              "system": "http://standardterms.edqm.eu",
+              "code": "10219000",
+              "display": "Tablet"
+            }
+          ]
+        },
+        "amount": {
+          "numerator": {
+            "value": 27,
+            "unit": "Tablet",
+            "system": "http://standardterms.edqm.eu",
+            "code": "10219000"
+          },
+          "denominator": {
+            "value": 1,
+            "unit": "Package",
+            "system": "http://unitsofmeasure.org",
+            "code": "1"
+          }
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Medication/123"
+      }
     }
   ]
 }

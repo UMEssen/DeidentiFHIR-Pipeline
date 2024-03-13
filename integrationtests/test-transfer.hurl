@@ -9,7 +9,7 @@ POST http://localhost:8082/fhir
 Content-Type: application/json
 [Options]
 retry: 50
-file,testbundle.json;
+file,testbundle1.json;
 HTTP 200
 
 # Start transfer
@@ -36,7 +36,8 @@ retry: 100
 retry-interval: 100
 HTTP 200
 [Asserts]
-jsonpath "$.status" == "COMPLETED"
+# jsonpath "$.status" == "COMPLETED"
+jsonpath "$.status" == "PARTIALLY_FAILED"
 
 # Check if Patient resource was transfered
 GET http://localhost:8083/fhir/Patient
