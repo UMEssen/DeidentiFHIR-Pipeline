@@ -27,7 +27,7 @@ docker compose up -d
 ```
 Post testbundles to FHIR server:
 ```bash
-./post-testbundle-to-fhir-server.sh
+./post-testbundles-to-fhir-server.sh
 ```
 Start transfer: 
 ```bash
@@ -93,12 +93,6 @@ Compile project with:
 Run with:
 ```bash
 java -jar target/deidentifhir-pipeline-0.1.1.jar --spring.config.location=src/main/resources/application.yaml
-```
-
-#### For a complete development setup:
-```bash 
-cd integrationtests
-docker-compose up -d
 ```
 
 #### Endpoints:
