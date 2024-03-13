@@ -92,7 +92,7 @@ Compile project with:
 ```
 Run with:
 ```bash
-java -jar target/deidentifhir-pipeline-0.1.0.jar --spring.config.location=src/main/resources/application.yaml
+java -jar target/deidentifhir-pipeline-0.1.1.jar --spring.config.location=src/main/resources/application.yaml
 ```
 
 #### For a complete development setup:
@@ -121,6 +121,13 @@ Endpoint documentation is also available as swagger-ui under
 #### Development setup:  
 See `integrationtests/docker-compose.yml`
 
+#### Integrationtests
+Integrationtests are executed with [hurl](https://github.com/Orange-OpenSource/hurl).  
+Run with: 
+```bash
+cd integrationtests && ./start-integrationtests.sh
+```
+
 #### Examples:
 Post bundles to FHIR server:
 ```bash
@@ -133,13 +140,3 @@ Start transfer:
 Check transfer with:  
 http://localhost:8042/transfer/all
 
-
-#### More: 
-Generate `.jar`: 
-```bash
-mvn install 
-```
-Execute `.jar`:
-```bash 
-java -jar target/deidentifhir-pipeline-0.1.0.jar --spring.config.location=src/main/resources/application.yaml
-```
