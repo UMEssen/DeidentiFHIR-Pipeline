@@ -1,0 +1,112 @@
+services:
+
+#  dp-gics-mysql:
+#    image: mysql:8.0.27
+#    container_name: dp-gics-mysql
+#    environment:
+#      MYSQL_ROOT_PASSWORD: root
+#    volumes:
+#      - ./gics/sqls:/docker-entrypoint-initdb.d
+#    #      - ./gics/data/mysql:/var/lib/mysql # Enable for persistence
+#    ports:
+#      - "3306:3306"
+#  dp-gics:
+#    image: registry.gitlab.ume.de/ship-trust-unit/gics:6e1deb18
+#    container_name: dp-gics-wildfly
+#    ports:
+#      - "8080:8080"
+#    #      - "9990:9990"
+#    depends_on:
+#      - dp-gics-mysql
+#    environment:
+#      TTP_GICS_DB_HOST: dp-gics-mysql
+#    entrypoint: /bin/bash
+#    command: -c "./wait-for-it.sh dp-gics-mysql:3306 -t 120 && ./run.sh"
+#    healthcheck:
+#      test: [ "CMD", "curl", "-f", "http://localhost:8080/gics/gicsService?wsdl" ]
+#      interval: 5s
+#      timeout: 5s
+#      retries: 100
+#      start_period: 60s
+
+#  dp-gpas-mysql:
+#    image: mysql:8.0.27
+#    container_name: dp-gpas-mysql
+#    environment:
+#      MYSQL_ROOT_PASSWORD: root
+#    volumes:
+#      - ../gpas/sqls:/docker-entrypoint-initdb.d
+#  dp-gpas:
+#    image: registry.gitlab.ume.de/ship-trust-unit/gpas:e5372f22
+#    container_name: dp-gpas-wildfly
+#    ports:
+#      - "8081:8080"
+#    #      - "9990:9990"
+#    depends_on:
+#      - dp-gpas-mysql
+#    environment:
+#      TTP_GPAS_DB_HOST: dp-gpas-mysql
+#    entrypoint: /bin/bash
+#    command: -c "./wait-for-it.sh dp-gpas-mysql:3306 -t 120 && ./run.sh"
+#    healthcheck:
+#      test: [ "CMD", "curl", "-f", "http://localhost:8080/gpas/gpasService?wsdl" ]
+#      interval: 5s
+#      timeout: 5s
+#      retries: 100
+#      start_period: 60s
+
+  dp-cd-fhir-server:
+    image: samply/blaze:0.23.2
+    container_name: dp-cd-fhir-server
+    ports:
+      - 8082:8080
+    environment:
+      BASE_URL: "http://localhost:8082"
+      STORAGE: "in-memory"
+
+  dp-rd-fhir-server:
+    image: samply/blaze:0.23.2
+    container_name: dp-rd-fhir-server
+    ports:
+      - 8083:8080
+    environment:
+      BASE_URL: "http://localhost:8083"
+      STORAGE: "in-memory"
+      ENFORCE_REFERENTIAL_INTEGRITY: "false"
+
+  dp-deidentifhir-pipeline:
+    image: eclipse-temurin:21.0.2_13-jre
+    container_name: dp-deidentifhir-pipeline
+    volumes:
+      - ../target/deidentifhir-pipeline-0.1.0.jar:/deidentifhir-pipeline.jar
+      - ../src/main/resources/application.yaml:/conf/application.yaml
+      - ../deidentifhir:/deidentifhir
+    entrypoint: /bin/bash
+    command: -c "java -jar /deidentifhir-pipeline.jar --spring.config.location=/conf/application.yaml"
+    network_mode: "host"
+#    depends_on:
+#      dp-gpas:
+#        condition: service_healthy
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8042/healthcheck" ]
+      interval: 5s
+      timeout: 5s
+      retries: 100
+      start_period: 5s
+
+#  dp-deidentifhir-pipeline:
+#    image: ghcr.io/umessen/deidentifhir-pipeline:latest
+#    container_name: dp-deidentifhir-pipeline
+#    volumes:
+#      - ../src/main/resources/application.yaml:/conf/application.yaml
+#      - ../deidentifhir:/deidentifhir
+#    network_mode: "host"
+#    depends_on:
+#      dp-gpas:
+#        condition: service_healthy
+#    healthcheck:
+#      test: [ "CMD", "curl", "-f", "http://localhost:8042/healthcheck" ]
+#      interval: 5s
+#      timeout: 5s
+#      retries: 100
+#      start_period: 5s
