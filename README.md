@@ -17,9 +17,6 @@ Available implementations can be found in the [transfer](./src/main/java/de/ume/
 ![](./architecture.svg)
 
 #### Quickstart
-Prerequisite:  
-- a running [gPAS](https://www.ths-greifswald.de/forscher/gpas/) instance on port `8081`. 
-
 Log in to Github Container Registry:
 ```bash
 docker login ghcr.io
@@ -67,10 +64,12 @@ projects:
         pseudonymizationConfigFile: <path/to/deidentiFHIR.profile>
         generateIDScraperConfig: true
         dateShiftingInMillis: 2419200000 # equals +/-14 days
-        gpas:
-          domain: test-project1-gpas-domain
-          gpasServiceWsdlUrl: http://localhost:8081/gpas/gpasService?wsdl
-          domainServiceWsdlUrl: http://localhost:8081/gpas/DomainService?wsdl
+        hashmap: # Pseudonyms are stored in local hashmap
+          domain: test-project-domain
+#        gpas: # Alternative: Pseudonyms are stored in gPAS
+#          domain: test-project1-gpas-domain
+#          gpasServiceWsdlUrl: http://localhost:8081/gpas/gpasService?wsdl
+#          domainServiceWsdlUrl: http://localhost:8081/gpas/DomainService?wsdl
     data-storing:
       fhir-server:
         url: http://localhost:8083/fhir

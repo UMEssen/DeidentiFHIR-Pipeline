@@ -1,13 +1,18 @@
 package de.ume.deidentifhirpipeline.configuration.pseudonymization;
 
 import de.ume.deidentifhirpipeline.configuration.service.GpasServiceConfiguration;
+import de.ume.deidentifhirpipeline.configuration.service.HashmapServiceConfiguration;
 import de.ume.deidentifhirpipeline.service.GpasService;
+import de.ume.deidentifhirpipeline.service.HashmapService;
+import de.ume.deidentifhirpipeline.service.PseudonymizationServiceInterface;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 
+@Slf4j
 public class DeidentiFHIRPseudonymizationConfiguration {
   @Getter
   @Setter
@@ -22,25 +27,38 @@ public class DeidentiFHIRPseudonymizationConfiguration {
   @Getter
   @Setter
   private GpasServiceConfiguration gpas;
+  @Getter
+  @Setter
+  private HashmapServiceConfiguration hashmap;
   @Setter
   private GpasService gpasService;
+  @Setter
+  private PseudonymizationServiceInterface pseudonymizationService;
 
   public DeidentiFHIRPseudonymizationConfiguration(String scraperConfigFile,
-      String pseudonymizationConfigFile, boolean generateIDScraperConfig, long dateShiftingInMillis, GpasServiceConfiguration gpas) throws Exception {
+      String pseudonymizationConfigFile, boolean generateIDScraperConfig, long dateShiftingInMillis,
+      GpasServiceConfiguration gpas, HashmapServiceConfiguration hashmap) throws Exception {
     this.scraperConfigFile = scraperConfigFile;
     this.pseudonymizationConfigFile = pseudonymizationConfigFile;
     this.generateIDScraperConfig = generateIDScraperConfig;
     this.dateShiftingInMillis = dateShiftingInMillis;
     this.gpas = gpas;
+    this.hashmap = hashmap;
   }
 
-  public GpasService getGpasService() throws IOException, URISyntaxException {
-    if( gpasService != null ) {
-      return gpasService;
+  public PseudonymizationServiceInterface getPseudonymizationService() throws URISyntaxException, IOException {
+    if( this.pseudonymizationService != null ) {
+      return this.pseudonymizationService;
+    } else if( hashmap != null ) {
+      log.info("Hashmap PseudonymizationService configured.");
+      this.pseudonymizationService = new HashmapService(hashmap);
+      return this.pseudonymizationService;
     } else if( gpas != null ) {
+      log.info("gPAS PseudonymizationService configured.");
       this.gpasService = new GpasService(gpas);
       return this.gpasService;
     } else {
+      log.error("No PseudonymizationService (gpas, hashmap) found.");
       return null;
     }
   }

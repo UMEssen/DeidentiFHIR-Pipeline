@@ -11,7 +11,7 @@ projects:
     parallelism: 16
     cohort-selection:
       via-ids:
-        ids: ["1234-identifier"]
+        ids: ["1234-identifier", "234-identifier"]
     data-selection:
       fhir-server:
         url: http://localhost:8082/fhir
@@ -25,10 +25,12 @@ projects:
         pseudonymizationConfigFile: ./deidentifhir/mii/deidentiFHIR_CDtoTransport.profile
         generateIDScraperConfig: false
         dateShiftingInMillis: 2419200000
-        gpas:
+        hashmap:
           domain: test-project
-          gpasServiceWsdlUrl: http://localhost:8081/gpas/gpasService?wsdl
-          domainServiceWsdlUrl: http://localhost:8081/gpas/DomainService?wsdl
+#        gpas:
+#          domain: test-project
+#          gpasServiceWsdlUrl: http://localhost:8081/gpas/gpasService?wsdl
+#          domainServiceWsdlUrl: http://localhost:8081/gpas/DomainService?wsdl
     data-storing:
       fhir-server:
         url: http://localhost:8083/fhir

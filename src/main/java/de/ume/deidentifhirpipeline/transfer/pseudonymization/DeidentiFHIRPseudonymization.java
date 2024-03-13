@@ -3,6 +3,8 @@ package de.ume.deidentifhirpipeline.transfer.pseudonymization;
 import de.ume.deidentifhirpipeline.configuration.ProjectConfiguration;
 import de.ume.deidentifhirpipeline.configuration.pseudonymization.DeidentiFHIRPseudonymizationConfiguration;
 import de.ume.deidentifhirpipeline.service.GpasService;
+import de.ume.deidentifhirpipeline.service.HashmapService;
+import de.ume.deidentifhirpipeline.service.PseudonymizationServiceInterface;
 import de.ume.deidentifhirpipeline.transfer.Context;
 import de.ume.deidentifhirpipeline.transfer.Utils;
 import de.ume.deidentifhirpipeline.transfer.pseudonymization.deidentiFHIR.CDtoTransportDeidentiFHIR;
@@ -25,14 +27,21 @@ public class DeidentiFHIRPseudonymization extends Pseudonymization {
   }
 
   public void before(ProjectConfiguration projectConfiguration) throws Exception {
-    GpasService gpasService = configuration.getGpasService();
-    gpasService.createIfDomainIsNotExistent(configuration.getGpas().getDomain());
+    PseudonymizationServiceInterface pseudonymizationService = configuration.getPseudonymizationService();
+    String domain;
+    if( configuration.getHashmap() != null ) domain = configuration.getHashmap().getDomain();
+    else domain = configuration.getGpas().getDomain();
+    pseudonymizationService.createIfDomainIsNotExistent(domain);
     log.info("DateShiftingInMillis: {}", configuration.getDateShiftingInMillis());
-    gpasService.createIfDateShiftingDomainIsNotExistent(configuration.getGpas().getDomain(), configuration.getDateShiftingInMillis());
+    pseudonymizationService.createIfDateShiftingDomainIsNotExistent(domain, configuration.getDateShiftingInMillis());
   }
 
   public Context process(Context context) {
     try {
+      String domain;
+      if( configuration.getHashmap() != null ) domain = configuration.getHashmap().getDomain();
+      else domain = configuration.getGpas().getDomain();
+
       // Gather IDs
       File scraperConfigFile = new File(configuration.getScraperConfigFile());
       IDATScraper idScraper = new IDATScraper(scraperConfigFile, configuration.isGenerateIDScraperConfig());
@@ -41,13 +50,13 @@ public class DeidentiFHIRPseudonymization extends Pseudonymization {
       ).stream().toList();
 
       // Get pseudonyms from gPAS
-      GpasService gpasService = configuration.getGpasService();
-      Map<String, String> pseudonymMap = gpasService.getOrCreatePseudonyms(gatheredIDs, configuration.getGpas().getDomain());
+      PseudonymizationServiceInterface pseudonymizationService = configuration.getPseudonymizationService();
+      Map<String, String> pseudonymMap = pseudonymizationService.getOrCreatePseudonyms(gatheredIDs, domain);
 
       // Get date shifting values from gPAS
       Map<String, Long> dateShiftValueMap;
       if( configuration.getDateShiftingInMillis() != 0 ) {
-        long dateShiftValue = gpasService.getDateShiftingValue(context.getPatientId(), context.getProjectConfiguration().getPseudonymization().getDeidentifhir().getGpas().getDomain());
+        long dateShiftValue = pseudonymizationService.getDateShiftingValue(context.getPatientId(), domain);
         dateShiftValueMap = Map.of(context.getPatientId(), dateShiftValue);
       } else {
         dateShiftValueMap = Map.of();

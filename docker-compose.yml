@@ -27,7 +27,7 @@ services:
       - ./deidentifhir:/deidentifhir
     network_mode: "host"
     healthcheck:
-      test: [ "CMD", "curl", "-f", "-u", "user:pwd", "http://localhost:8042/healthcheck" ]
+      test: [ "CMD", "curl", "-f", "http://localhost:8042/healthcheck" ]
       interval: 5s
       timeout: 5s
       retries: 100
