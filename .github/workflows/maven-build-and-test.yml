@@ -1,0 +1,42 @@
+name: Build and test
+
+on:
+  push
+
+env:
+  MAVEN_USERNAME: ${{ secrets.USER }}
+  MAVEN_PASSWORD: ${{ secrets.TOKEN }}
+
+jobs:
+  build-and-test:
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'maven'
+          server-id: github-ume # Value of the distributionManagement/repository/id field of the pom.xml
+          settings-path: $GITHUB_WORKSPACE/.github/ # location for the settings.xml file
+      - uses: gacts/install-hurl@v1
+
+      - name: Build jar
+        run:
+          mvn -U clean package --batch-mode --file $GITHUB_WORKSPACE/pom.xml -s $GITHUB_WORKSPACE/.github/settings.xml
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ secrets.USER }}
+          password: ${{ secrets.TOKEN }}
+
+      - name: Integrationtests
+        run: cd integrationtests && ./start-integrationtests.sh
