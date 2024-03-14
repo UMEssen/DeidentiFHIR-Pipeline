@@ -95,7 +95,11 @@ Run with:
 java -jar target/deidentifhir-pipeline-0.1.1.jar --spring.config.location=src/main/resources/application.yaml
 ```
 
-#### Endpoints:
+Create docker image with: 
+```bash
+./build-docker-image.sh
+```
+#### Endpoints
 
 POST:  
 See [start-configured-process.sh](./start-configured-process.sh).  
@@ -112,7 +116,7 @@ GET:
 Endpoint documentation is also available as swagger-ui under 
 [localhost:8042/swagger-ui/index.html](localhost:8042/swagger-ui/index.html).
 
-#### Development setup:  
+#### Development setup
 See `integrationtests/docker-compose.yml`
 
 #### Integrationtests
@@ -122,7 +126,7 @@ Run with:
 cd integrationtests && ./start-integrationtests.sh
 ```
 
-#### Examples:
+#### Examples
 Post bundles to FHIR server:
 ```bash
 ./post-all-bundles-to-fhir-server.sh
