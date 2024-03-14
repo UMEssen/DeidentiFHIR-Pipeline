@@ -5,12 +5,12 @@ import java.util.Map;
 
 public interface PseudonymizationServiceInterface {
 
-  public void createIfDomainIsNotExistent(String domain)  throws Exception;
+  void createIfDomainIsNotExistent()  throws Exception;
 
-  public void createIfDateShiftingDomainIsNotExistent(String domain, long millis) throws Exception;
+  void createIfDateShiftingDomainIsNotExistent(long millis) throws Exception;
 
-  public Map<String, String> getOrCreatePseudonyms(List<String> ids, String domain) throws Exception;
+  Map<String, String> getOrCreatePseudonyms(List<String> ids) throws Exception;
 
-  public long getDateShiftingValue(String id, String domain) throws Exception;
+  long getDateShiftingValue(String id) throws Exception;
 
 }

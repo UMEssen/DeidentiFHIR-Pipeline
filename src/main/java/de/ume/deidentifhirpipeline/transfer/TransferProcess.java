@@ -66,27 +66,6 @@ public class TransferProcess {
           });
       transfer.setFinalStatus();
     });
-    log.info("Transfer finished");
-
-//    ParallelFlowable<Context> source = Flowable.fromIterable(contexts).parallel(8);
-//    Flowable<Context> result = source
-//        .runOn(Schedulers.io())
-//        .map(DataSelection::execute)
-//        .filter(context -> !context.isFailed())
-//        .map(Pseudonymization::execute)
-//        .filter(context -> !context.isFailed())
-//        .map(DataStoring::execute)
-//        .filter(context -> !context.isFailed())
-////        .doOnNext(context -> {
-////          context.getTransfer().getMap().put(context.getPatientId(), TransferStatus.completed());
-////        })
-//        .sequential();
-////        .throttleWithTimeout(projectConfiguration.getDataSelection().getFiremetrics().getMillisPerItem(), TimeUnit.MILLISECONDS);
-//    result.blockingForEach(context -> {
-////      Transfers.setFinalTransferStatus(uuid);
-//      log.info(String.format("Transfer for patient id: '%s' finished successfully.", context.getPatientId()));
-//    });
-//    log.info(String.format("Number of transfered bundles for transfer id '%s': %d", uuid.toString(), result.toList().blockingGet().size()));
 
     return uuid.toString();
   }

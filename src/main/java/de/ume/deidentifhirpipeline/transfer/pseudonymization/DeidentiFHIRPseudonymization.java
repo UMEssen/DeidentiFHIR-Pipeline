@@ -28,19 +28,13 @@ public class DeidentiFHIRPseudonymization extends Pseudonymization {
 
   public void before(ProjectConfiguration projectConfiguration) throws Exception {
     PseudonymizationServiceInterface pseudonymizationService = configuration.getPseudonymizationService();
-    String domain;
-    if( configuration.getHashmap() != null ) domain = configuration.getHashmap().getDomain();
-    else domain = configuration.getGpas().getDomain();
-    pseudonymizationService.createIfDomainIsNotExistent(domain);
+    pseudonymizationService.createIfDomainIsNotExistent();
     log.info("DateShiftingInMillis: {}", configuration.getDateShiftingInMillis());
-    pseudonymizationService.createIfDateShiftingDomainIsNotExistent(domain, configuration.getDateShiftingInMillis());
+    pseudonymizationService.createIfDateShiftingDomainIsNotExistent(configuration.getDateShiftingInMillis());
   }
 
   public Context process(Context context) {
     try {
-      String domain;
-      if( configuration.getHashmap() != null ) domain = configuration.getHashmap().getDomain();
-      else domain = configuration.getGpas().getDomain();
 
       // Gather IDs
       File scraperConfigFile = new File(configuration.getScraperConfigFile());
@@ -51,12 +45,12 @@ public class DeidentiFHIRPseudonymization extends Pseudonymization {
 
       // Get pseudonyms from gPAS
       PseudonymizationServiceInterface pseudonymizationService = configuration.getPseudonymizationService();
-      Map<String, String> pseudonymMap = pseudonymizationService.getOrCreatePseudonyms(gatheredIDs, domain);
+      Map<String, String> pseudonymMap = pseudonymizationService.getOrCreatePseudonyms(gatheredIDs);
 
       // Get date shifting values from gPAS
       Map<String, Long> dateShiftValueMap;
       if( configuration.getDateShiftingInMillis() != 0 ) {
-        long dateShiftValue = pseudonymizationService.getDateShiftingValue(context.getPatientId(), domain);
+        long dateShiftValue = pseudonymizationService.getDateShiftingValue(context.getPatientId());
         dateShiftValueMap = Map.of(context.getPatientId(), dateShiftValue);
       } else {
         dateShiftValueMap = Map.of();

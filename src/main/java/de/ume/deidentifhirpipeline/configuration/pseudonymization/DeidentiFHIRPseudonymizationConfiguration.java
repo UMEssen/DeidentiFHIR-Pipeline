@@ -46,15 +46,15 @@ public class DeidentiFHIRPseudonymizationConfiguration {
     this.hashmap = hashmap;
   }
 
-  public PseudonymizationServiceInterface getPseudonymizationService() throws URISyntaxException, IOException {
+  public PseudonymizationServiceInterface getPseudonymizationService() {
     if( this.pseudonymizationService != null ) {
       return this.pseudonymizationService;
     } else if( hashmap != null ) {
-      log.info("Hashmap PseudonymizationService configured.");
+      log.debug("Hashmap PseudonymizationService configured.");
       this.pseudonymizationService = new HashmapService(hashmap);
       return this.pseudonymizationService;
     } else if( gpas != null ) {
-      log.info("gPAS PseudonymizationService configured.");
+      log.debug("gPAS PseudonymizationService configured.");
       this.gpasService = new GpasService(gpas);
       return this.gpasService;
     } else {

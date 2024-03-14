@@ -17,6 +17,9 @@ public class Utils {
   public static final int LAST_UPDATED_DOMAIN_PSN_LENGTH = 32;
   public static final String LAST_UPDATED_DELIMITER = "X";
 
+  public static String getDateShiftingDomainName(String domain) {
+    return domain + DATE_SHIFTING_DOMAIN_SUFFIX;
+  }
 
   public static String fhirBundleToString(Bundle bundle) {
     if( bundle == null ) return "Bundle is empty";

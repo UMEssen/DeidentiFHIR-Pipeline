@@ -76,7 +76,7 @@ public class SoapTemplates {
     );
   }
 
-  public static String getPseudonymForXmlString(String value, String domain) {
+  public static String getPseudonymForXmlString(String value, String domainName) {
     String getPseudonymForTemplate =
         """ 
           <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:psn="http://psn.ttp.ganimed.icmvc.emau.org/">
@@ -89,7 +89,7 @@ public class SoapTemplates {
             </soapenv:Body>
           </soapenv:Envelope>
         """;
-    return String.format(getPseudonymForTemplate, value, domain);
+    return String.format(getPseudonymForTemplate, value, domainName);
   }
 
   public static String getGetPseudonymForListXmlString(List<String> values, String domain) {
@@ -124,7 +124,7 @@ public class SoapTemplates {
     return String.format(getOrCreatePseudonymForListTemplate, valuesToXmlString(values), domain);
   }
 
-  public static String deleteEntry(String value, String domain) {
+  public static String deleteEntry(String value, String domainName) {
     String deleteEntryTemplate = """
         <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:psn="http://psn.ttp.ganimed.icmvc.emau.org/">
            <soapenv:Header/>
@@ -136,10 +136,10 @@ public class SoapTemplates {
            </soapenv:Body>
         </soapenv:Envelope>
         """;
-    return String.format(deleteEntryTemplate, value, domain);
+    return String.format(deleteEntryTemplate, value, domainName);
   }
 
-  public static String getInsertValuePseudonymPairXmlString(String value, String pseudonym, String domain) {
+  public static String getInsertValuePseudonymPairXmlString(String value, String pseudonym, String domainName) {
     String insertValuePseudonymPairTemplate =
         """
             <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:psn="http://psn.ttp.ganimed.icmvc.emau.org/">
@@ -153,7 +153,7 @@ public class SoapTemplates {
                </soapenv:Body>
             </soapenv:Envelope>
         """;
-    return String.format(insertValuePseudonymPairTemplate, value, pseudonym, domain);
+    return String.format(insertValuePseudonymPairTemplate, value, pseudonym, domainName);
   }
 
   private static String valuesToXmlString(List<String> values) {

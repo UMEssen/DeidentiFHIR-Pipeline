@@ -220,33 +220,33 @@
 <!--					</dependency>-->
 <!--				</dependencies>-->
 				<executions>
-					<execution>
-						<id>wsimport-from-jdk-gpas</id>
-						<goals>
-							<goal>wsimport</goal>
-						</goals>
-						<configuration>
-							<wsdlDirectory>src/main/resources/wsdl/gpas</wsdlDirectory>
-							<wsdlLocation>/wsdl/gpas/gpasService.wsdl</wsdlLocation>
-							<packageName>de.ume.deidentifhirpipeline.service.wsdl.gpas</packageName>
-							<sourceDestDir>src/main/java</sourceDestDir>
-							<staleFile>${project.build.directory}/jaxws/gpas.stale</staleFile>
-						</configuration>
-					</execution>
-					<execution>
-						<id>wsimport-from-jdk-gpas-domain</id>
-						<goals>
-							<goal>wsimport</goal>
-						</goals>
-						<configuration>
-							<extension>true</extension>
-							<wsdlDirectory>src/main/resources/wsdl/gpasDomain</wsdlDirectory>
-							<wsdlLocation>/wsdl/gpasDomain/DomainService.wsdl</wsdlLocation>
-							<packageName>de.ume.deidentifhirpipeline.service.wsdl.gpasDomain</packageName>
-							<sourceDestDir>src/main/java</sourceDestDir>
-							<staleFile>${project.build.directory}/jaxws/gpasDomain.stale</staleFile>
-						</configuration>
-					</execution>
+<!--					<execution>-->
+<!--						<id>wsimport-from-jdk-gpas</id>-->
+<!--						<goals>-->
+<!--							<goal>wsimport</goal>-->
+<!--						</goals>-->
+<!--						<configuration>-->
+<!--							<wsdlDirectory>src/main/resources/wsdl/gpas</wsdlDirectory>-->
+<!--							<wsdlLocation>/wsdl/gpas/gpasService.wsdl</wsdlLocation>-->
+<!--							<packageName>de.ume.deidentifhirpipeline.service.wsdl.gpas</packageName>-->
+<!--							<sourceDestDir>src/main/java</sourceDestDir>-->
+<!--							<staleFile>${project.build.directory}/jaxws/gpas.stale</staleFile>-->
+<!--						</configuration>-->
+<!--					</execution>-->
+<!--					<execution>-->
+<!--						<id>wsimport-from-jdk-gpas-domain</id>-->
+<!--						<goals>-->
+<!--							<goal>wsimport</goal>-->
+<!--						</goals>-->
+<!--						<configuration>-->
+<!--							<extension>true</extension>-->
+<!--							<wsdlDirectory>src/main/resources/wsdl/gpasDomain</wsdlDirectory>-->
+<!--							<wsdlLocation>/wsdl/gpasDomain/DomainService.wsdl</wsdlLocation>-->
+<!--							<packageName>de.ume.deidentifhirpipeline.service.wsdl.gpasDomain</packageName>-->
+<!--							<sourceDestDir>src/main/java</sourceDestDir>-->
+<!--							<staleFile>${project.build.directory}/jaxws/gpasDomain.stale</staleFile>-->
+<!--						</configuration>-->
+<!--					</execution>-->
 					<execution>
 						<id>wsimport-from-jdk-gics</id>
 						<goals>
@@ -260,21 +260,21 @@
 							<staleFile>${project.build.directory}/jaxws/gics.stale</staleFile>
 						</configuration>
 					</execution>
-					<execution>
-						<id>wsimport-from-jdk-epix</id>
-						<goals>
-							<goal>wsimport</goal>
-						</goals>
-						<configuration>
-							<wsdlDirectory>src/main/resources/wsdl/epix</wsdlDirectory>
-							<wsdlLocation>/wsdl/epix/epixService.wsdl</wsdlLocation>
-							<!-- <wsdlUrls> -->
-							<!-- <wsdlUrl>http://localhost:8080/epix/epixService?wsdl</wsdlUrl> -->
-							<!-- </wsdlUrls> -->
-							<packageName>de.ume.deidentifhirpipeline.service.wsdl.epix</packageName>
-							<sourceDestDir>src/main/java</sourceDestDir>
-						</configuration>
-					</execution>
+<!--					<execution>-->
+<!--						<id>wsimport-from-jdk-epix</id>-->
+<!--						<goals>-->
+<!--							<goal>wsimport</goal>-->
+<!--						</goals>-->
+<!--						<configuration>-->
+<!--							<wsdlDirectory>src/main/resources/wsdl/epix</wsdlDirectory>-->
+<!--							<wsdlLocation>/wsdl/epix/epixService.wsdl</wsdlLocation>-->
+<!--							&lt;!&ndash; <wsdlUrls> &ndash;&gt;-->
+<!--							&lt;!&ndash; <wsdlUrl>http://localhost:8080/epix/epixService?wsdl</wsdlUrl> &ndash;&gt;-->
+<!--							&lt;!&ndash; </wsdlUrls> &ndash;&gt;-->
+<!--							<packageName>de.ume.deidentifhirpipeline.service.wsdl.epix</packageName>-->
+<!--							<sourceDestDir>src/main/java</sourceDestDir>-->
+<!--						</configuration>-->
+<!--					</execution>-->
 				</executions>
 			</plugin>
 		</plugins>
