@@ -8,7 +8,7 @@ env:
   MAVEN_PASSWORD: ${{ secrets.TOKEN }}
 
 jobs:
-  build:
+  build-and-test:
 
     runs-on: ubuntu-latest
     permissions:
@@ -25,6 +25,7 @@ jobs:
           cache: 'maven'
           server-id: github-ume # Value of the distributionManagement/repository/id field of the pom.xml
           settings-path: $GITHUB_WORKSPACE/.github/ # location for the settings.xml file
+      - uses: gacts/install-hurl@v1
 
       - name: Build jar
         run:
