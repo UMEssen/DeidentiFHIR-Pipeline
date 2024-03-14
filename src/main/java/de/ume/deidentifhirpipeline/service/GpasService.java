@@ -33,8 +33,6 @@ import java.util.Map;
 public class GpasService implements PseudonymizationServiceInterface {
 
   private final GpasServiceConfiguration configuration;
-//  private final PSNManager psnManager;
-//  private final DomainManager domainManager;
 
   private final KeycloakAuthConfiguration keycloakConfiguration;
 
@@ -355,18 +353,17 @@ public class GpasService implements PseudonymizationServiceInterface {
           HttpRequest.newBuilder().uri(URI.create(url))
               .header("Content-Type", "application/soap+xml")
               .POST(HttpRequest.BodyPublishers.ofString(body));
-      if(keycloakConfiguration != null) httpRequestBuilder.header("Authorization", "Bearer " + token);
+      if(keycloakConfiguration != null) httpRequestBuilder.header("Authorization", "Bearer " + this.token);
 
       HttpRequest httpRequest = httpRequestBuilder.build();
 
       HttpResponse<String> httpResponse =
           httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
 
-
       // check for OAuth error
       if (httpResponse.statusCode() == 500 && httpResponse.body().contains("OAuth")) {
 //        token = this.refreshToken();
-        if( keycloakConfiguration != null ) token = KeycloakService.getKeycloakToken(keycloakConfiguration);
+        if( keycloakConfiguration != null ) this.token = KeycloakService.getKeycloakToken(keycloakConfiguration);
         return gpasServiceRequest(url, body, numberOfRetries - 1);
       }
 

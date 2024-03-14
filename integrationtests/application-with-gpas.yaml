@@ -1,0 +1,61 @@
+server:
+  port: 8042
+logging:
+  level:
+    root: INFO
+    de.ume: INFO
+  file.name: ./logs/application-debug.log
+
+projects:
+  "test-project1":
+    parallelism: 16
+    cohort-selection:
+      via-ids:
+        ids: ["1234-identifier", "234-identifier"]
+    data-selection:
+      fhir-server:
+        url: http://localhost:8082/fhir
+        fhirIdQueryPlaceholder: <id>
+        fhirIdQuery: Patient?identifier=<id>
+        bundleQueryPlaceholder: <fhir-id>
+        bundleQuery: Patient/<fhir-id>/$everything?_count=100000
+    pseudonymization:
+      deidentifhir:
+        scraperConfigFile: ./deidentifhir/mii/deidentiFHIR_IDScraper.profile
+        pseudonymizationConfigFile: ./deidentifhir/mii/deidentiFHIR_CDtoTransport.profile
+        generateIDScraperConfig: false
+        dateShiftingInMillis: 2419200000
+        gpas:
+          domain: test-project
+          gpasServiceWsdlUrl: http://localhost:8081/gpas/gpasService?wsdl
+          domainServiceWsdlUrl: http://localhost:8081/gpas/DomainService?wsdl
+    data-storing:
+      fhir-server:
+        url: http://localhost:8083/fhir
+
+  "test-project2":
+    cohort-selection:
+      gics:
+        main-wsdl-uri: http://localhost:8080/gics/gicsService?wsdl
+        domain: MII
+        policies: [ "IDAT_erheben", "IDAT_speichern_verarbeiten", "MDAT_erheben", "MDAT_speichern_verarbeiten" ]
+    data-selection:
+      fhir-server:
+        url: http://localhost:8082/fhir
+        fhirIdQueryPlaceholder: <id>
+        fhirIdQuery: Patient?identifier=<id>
+        bundleQueryPlaceholder: <fhir-id>
+        bundleQuery: Patient/<fhir-id>/$everything?_count=100000
+    pseudonymization:
+      deidentifhir:
+        scraperConfigFile: ./deidentifhir/mii/deidentiFHIR_IDScraper.profile
+        pseudonymizationConfigFile: ./deidentifhir/mii/deidentiFHIR_CDtoTransport.profile
+        generateIDScraperConfig: false
+        dateShiftingInMillis: 2419200000
+        gpas:
+          domain: test-project
+          gpasServiceWsdlUrl: http://localhost:8081/gpas/gpasService?wsdl
+          domainServiceWsdlUrl: http://localhost:8081/gpas/DomainService?wsdl
+    data-storing:
+      fhir-server:
+        url: http://localhost:8083/fhir
