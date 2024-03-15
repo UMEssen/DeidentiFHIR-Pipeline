@@ -1,3 +1,4 @@
+# Wait till program started
 GET http://localhost:8042/healthcheck
 [Options]
 retry: 100
@@ -8,7 +9,7 @@ HTTP 200
 POST http://localhost:8082/fhir
 Content-Type: application/json
 [Options]
-retry: 50
+retry: 50 # Could take some time till the fhir server started
 file,testbundle1.json;
 HTTP 200
 
@@ -59,6 +60,14 @@ jsonpath "$.entry[0].resource.id" != "12345"
 jsonpath "$.entry[0].resource.subject.reference" != "Patient/1234"
 jsonpath "$.entry[0].resource.diagnosis[0].condition.reference" != "Condition/123456"
 
+# Check if Condition resource was transfered
+GET http://localhost:8083/fhir/Condition
+[Options]
+retry: 10
+HTTP 200
+[Asserts]
+jsonpath "$.total" == 2
+
 # Check if Medication resource was transfered
 GET http://localhost:8083/fhir/Medication
 [Options]
@@ -72,6 +81,12 @@ jsonpath "$.total" == 1
 ### Start second transfer with another testbundle ###
 #####################################################
 
+# Wait till program started
+GET http://localhost:8042/healthcheck
+[Options]
+retry: 100
+retry-interval: 1000
+HTTP 200
 
 # Post test bundle2
 POST http://localhost:8082/fhir
@@ -80,7 +95,6 @@ Content-Type: application/json
 retry: 50
 file,testbundle2.json;
 HTTP 200
-
 
 # Start transfer
 POST http://localhost:8042/start
@@ -115,6 +129,14 @@ retry: 10
 HTTP 200
 [Asserts]
 jsonpath "$.total" == 2 # two Patients now
+
+# Check if Condition resource was transfered
+GET http://localhost:8083/fhir/Condition
+[Options]
+retry: 10
+HTTP 200
+[Asserts]
+jsonpath "$.total" == 2
 
 # Check if Medication resource was transfered
 GET http://localhost:8083/fhir/Medication
