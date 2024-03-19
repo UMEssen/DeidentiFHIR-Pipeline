@@ -1,6 +1,5 @@
 package de.ume.deidentifhirpipeline.configuration.datastoring;
 
-import de.ume.deidentifhirpipeline.configuration.dataselection.FiremetricsDataSelectionConfiguration;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;

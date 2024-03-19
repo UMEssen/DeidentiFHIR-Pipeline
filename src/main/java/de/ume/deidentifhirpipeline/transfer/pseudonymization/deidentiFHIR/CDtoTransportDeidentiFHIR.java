@@ -47,10 +47,8 @@ public class CDtoTransportDeidentiFHIR {
         JavaCompat.partiallyApply(dsp, Handlers::shiftDateHandler));
 
     deidentiFHIR = Deidentifhir.apply(config, registry);
-    // TODO Encounter.class_ needs to be kept as well
   }
 
-  // TODO patientID and patientPrefix is the same?
   public Resource deidentify(String patientID, String patientPrefix, Resource resource,
       java.util.Map<String, String> pseudonymMap, java.util.Map<String, Long> dateShiftValueMap) {
     ths.setPseudonymTableKeyCreator(new CDtoTransportKeyCreator(patientPrefix));

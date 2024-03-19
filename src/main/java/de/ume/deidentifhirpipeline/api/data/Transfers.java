@@ -11,6 +11,10 @@ public class Transfers {
   @Getter
   private static final ConcurrentMap<String, Transfer> map = new ConcurrentHashMap<>();
 
+  private Transfers() {
+    throw new IllegalStateException("Utility class");
+  }
+
   public static void setFinalTransferStatus(UUID uuid) {
     Transfer transfer = Transfers.map.get(uuid.toString());
     transfer.setStatusDateTime(LocalDateTime.now());

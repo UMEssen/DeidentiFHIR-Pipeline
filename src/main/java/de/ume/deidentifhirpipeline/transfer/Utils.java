@@ -1,8 +1,10 @@
 package de.ume.deidentifhirpipeline.transfer;
 
 import ca.uhn.fhir.context.FhirContext;
+import ca.uhn.fhir.parser.IParser;
 import de.ume.deidentifhirpipeline.api.data.TransferStatus;
 import org.hl7.fhir.r4.model.Bundle;
+import org.hl7.fhir.r4.model.Resource;
 
 public class Utils {
   public static final FhirContext fctx = FhirContext.forR4();
@@ -17,6 +19,10 @@ public class Utils {
   public static final int LAST_UPDATED_DOMAIN_PSN_LENGTH = 32;
   public static final String LAST_UPDATED_DELIMITER = "X";
 
+  private Utils() {
+    throw new IllegalStateException("Utility class");
+  }
+
   public static String getDateShiftingDomainName(String domain) {
     return domain + DATE_SHIFTING_DOMAIN_SUFFIX;
   }
@@ -28,6 +34,11 @@ public class Utils {
 
   public static String fhirBundleToStringPrettyPrint(Bundle bundle) {
     return Utils.fctx.newJsonParser().setPrettyPrint(true).encodeResourceToString(bundle);
+  }
+
+  public static String fhirResourceToString(Resource resource) {
+    IParser parser = Utils.fctx.newJsonParser();
+    return parser.setPrettyPrint(true).encodeResourceToString(resource);
   }
 
   public static Context handleException(Context context, Exception e) {

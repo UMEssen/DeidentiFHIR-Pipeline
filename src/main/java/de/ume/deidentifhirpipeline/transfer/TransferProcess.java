@@ -18,6 +18,10 @@ import java.util.concurrent.ForkJoinPool;
 @Slf4j
 public class TransferProcess {
 
+  private TransferProcess() {
+    throw new IllegalStateException("Utility class");
+  }
+
   public static String start(List<String> ids,
       ProjectConfiguration projectConfiguration) throws Exception {
     UUID uuid = UUID.randomUUID();

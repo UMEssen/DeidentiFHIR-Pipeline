@@ -34,7 +34,7 @@ public class FiremetricsDataStoring extends DataStoring {
 
   public Context process(Context context) {
     try {
-      List<String> resourcesAsString = context.getBundle().getEntry().stream().map(e -> fhirResourceToString(e.getResource())).toList();
+      List<String> resourcesAsString = context.getBundle().getEntry().stream().map(e -> Utils.fhirResourceToString(e.getResource())).toList();
 
       // log bundle
       if( config.isWriteBundlesToFiles() ) {
@@ -79,13 +79,6 @@ public class FiremetricsDataStoring extends DataStoring {
       e.printStackTrace();
       return Utils.handleException(context, e);
     }
-  }
-
-
-  private static String fhirResourceToString(Resource resource) {
-    IParser parser = Utils.fctx.newJsonParser();
-    String output = parser.setPrettyPrint(true).encodeResourceToString(resource);
-    return output;
   }
 
 }

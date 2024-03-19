@@ -37,7 +37,7 @@ public class DeidentiFHIRPseudonymizationConfiguration {
 
   public DeidentiFHIRPseudonymizationConfiguration(String scraperConfigFile,
       String pseudonymizationConfigFile, boolean generateIDScraperConfig, long dateShiftingInMillis,
-      GpasServiceConfiguration gpas, HashmapServiceConfiguration hashmap) throws Exception {
+      GpasServiceConfiguration gpas, HashmapServiceConfiguration hashmap) {
     this.scraperConfigFile = scraperConfigFile;
     this.pseudonymizationConfigFile = pseudonymizationConfigFile;
     this.generateIDScraperConfig = generateIDScraperConfig;

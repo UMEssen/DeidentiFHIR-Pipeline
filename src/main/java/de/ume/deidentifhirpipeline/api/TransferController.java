@@ -111,27 +111,4 @@ public class TransferController {
     return new ResponseEntity<>("OK", HttpStatusCode.valueOf(200));
   }
 
-//  @GetMapping(value = "/test")
-//  public ResponseEntity<TransferResponse> getTest() throws Exception {
-
-//    CASMgr casMgr = CASFactory.createCAS();
-//    CAS cas = casMgr.getCAS();
-//    CAS cas = CasFactory.createCas();
-//    File initialFile = new File("test-document.xmi");
-//    File typeSystemFile = new File("typeSystem.xml");
-//    URL url = initialFile.toURI().toURL();
-//    InputStream targetStream = new FileInputStream(initialFile);
-//    InputStream typeSystemStream = new FileInputStream(typeSystemFile);
-//    SerialFormat sf = CasIOUtils.load(url, cas);
-//
-//
-//    return new ResponseEntity<>(
-//        new TransferResponse(
-//            projectsConfiguration.getProjects().get("testProject").getPseudonymization()
-//                .getDeidentifhir().getPseudonymizationConfigFile()
-//        ),
-//        HttpStatusCode.valueOf(200)
-//    );
-//  }
-
 }

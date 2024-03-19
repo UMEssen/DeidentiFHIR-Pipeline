@@ -35,7 +35,6 @@ public class FiremetricsDataSelection extends DataSelection {
 
 
     // load fhirql statement from variable if existent or from file
-//    String fhirqlStatementWithReplacementString = (String) execution.getVariable("data-selection-via-fhirql");
     String fhirqlStatementWithReplacementString = config.getQuery();
     String replacementString = config.getQueryIdPlaceholderString();
 

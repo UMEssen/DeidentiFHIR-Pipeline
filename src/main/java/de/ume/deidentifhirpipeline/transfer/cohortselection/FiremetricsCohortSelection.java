@@ -22,7 +22,6 @@ public class FiremetricsCohortSelection extends CohortSelection {
   @Override
   public List<String> before(ProjectConfiguration projectConfiguration) throws Exception {
     // read fhirql statement from variable if provided or from file
-//    String fhirqlStatement = (String) delegateExecution.getVariable("cohort-selection-via-fhirql");
     String fhirqlStatement = config.getQuery();
     if( fhirqlStatement == null ) fhirqlStatement = Files.readString(Path.of(config.getQueryFile()));
 
