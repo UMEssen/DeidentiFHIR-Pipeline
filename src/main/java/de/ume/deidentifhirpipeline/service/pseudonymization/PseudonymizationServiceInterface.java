@@ -1,4 +1,4 @@
-package de.ume.deidentifhirpipeline.service;
+package de.ume.deidentifhirpipeline.service.pseudonymization;
 
 import java.util.List;
 import java.util.Map;

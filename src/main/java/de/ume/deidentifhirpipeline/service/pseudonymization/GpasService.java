@@ -1,12 +1,14 @@
-package de.ume.deidentifhirpipeline.service;
+package de.ume.deidentifhirpipeline.service.pseudonymization;
 
 import de.ume.deidentifhirpipeline.configuration.auth.KeycloakAuthConfiguration;
 import de.ume.deidentifhirpipeline.configuration.service.GpasServiceConfiguration;
+import de.ume.deidentifhirpipeline.service.KeycloakService;
 import de.ume.deidentifhirpipeline.service.exception.AddDomainException;
 import de.ume.deidentifhirpipeline.service.exception.GetDomainException;
 import de.ume.deidentifhirpipeline.service.exception.InsertValuePseudonymPairException;
 import de.ume.deidentifhirpipeline.service.exception.TokenException;
 import de.ume.deidentifhirpipeline.service.gpas.SoapTemplates;
+import de.ume.deidentifhirpipeline.service.lastupdated.LastUpdatedServiceInterface;
 import de.ume.deidentifhirpipeline.transfer.Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.math3.random.RandomDataGenerator;
@@ -30,7 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
-public class GpasService implements PseudonymizationServiceInterface {
+public class GpasService implements PseudonymizationServiceInterface, LastUpdatedServiceInterface {
 
   private final GpasServiceConfiguration configuration;
 
@@ -50,6 +52,7 @@ public class GpasService implements PseudonymizationServiceInterface {
     this.keycloakConfiguration = configuration.getKeycloak();
   }
 
+  @Override
   public Map<String, String> getOrCreatePseudonyms(List<String> ids) throws Exception {
     return this.getOrCreatePseudonymForListClient(ids, this.domain);
   }
@@ -75,6 +78,7 @@ public class GpasService implements PseudonymizationServiceInterface {
     }
   }
 
+  @Override
   public long getDateShiftingValue(String id) throws Exception {
     long rangeInMillis = Long.parseLong(this.getPseudonymClient(Utils.DATE_SHIFTING_DOMAIN_VALUE, this.dateShiftingDomain));
     return this.getDateShiftingValue(id, rangeInMillis);
@@ -92,6 +96,32 @@ public class GpasService implements PseudonymizationServiceInterface {
       return calculateDateShiftingValue(pseudonym, rangeInMillis);
     }
 
+  }
+
+
+  @Override
+  public synchronized void createIfDomainIsNotExistent() throws Exception {
+    if(!this.isDomainExistingViaHttpClient(this.domain)) this.addDomainViaHttpClient(this.domain);
+  }
+
+  @Override
+  public synchronized void createIfLastUpdatedDomainIsNotExistent() throws Exception {
+    //    if(!this.isDomainExistingViaHttpClient(this.domain)) this.addDomainViaHttpClient(this.domain);
+    // TODO
+  }
+
+  @Override
+  public synchronized void createIfDateShiftingDomainIsNotExistent(long millis) throws Exception {
+    if(!this.isDomainExistingViaHttpClient(this.dateShiftingDomain)) {
+      this.addDateShiftingDomainViaHttpClient(this.dateShiftingDomain);
+      try {
+        String millisWithCorrectLength = this.buildDomainDateShiftingPseudonym(millis);
+        log.debug("Milliscorrect: " + millisWithCorrectLength);
+        this.insertValuePseudonymPairViaHttpClient(Utils.DATE_SHIFTING_DOMAIN_VALUE, millisWithCorrectLength, this.dateShiftingDomain);
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    }
   }
 
   private long calculateDateShiftingValue(long value, long rangeInMillis) {
@@ -134,23 +164,6 @@ public class GpasService implements PseudonymizationServiceInterface {
 
   private long getRandomLong(long lower, long upper) {
     return new RandomDataGenerator().nextLong(lower, upper);
-  }
-
-  public synchronized void createIfDomainIsNotExistent() throws Exception {
-    if(!this.isDomainExistingViaHttpClient(this.domain)) this.addDomainViaHttpClient(this.domain);
-  }
-
-  public synchronized void createIfDateShiftingDomainIsNotExistent(long millis) throws Exception {
-    if(!this.isDomainExistingViaHttpClient(this.dateShiftingDomain)) {
-      this.addDateShiftingDomainViaHttpClient(this.dateShiftingDomain);
-      try {
-        String millisWithCorrectLength = this.buildDomainDateShiftingPseudonym(millis);
-        log.debug("Milliscorrect: " + millisWithCorrectLength);
-        this.insertValuePseudonymPairViaHttpClient(Utils.DATE_SHIFTING_DOMAIN_VALUE, millisWithCorrectLength, this.dateShiftingDomain);
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-    }
   }
 
   private static String buildDomainDateShiftingPseudonym(Long dateShiftingInMillis) throws Exception {
@@ -218,6 +231,17 @@ public class GpasService implements PseudonymizationServiceInterface {
 //    }
 //    return null;
 //  }
+
+  @Override
+  public long getLastUpdatedValue(String id) throws Exception {
+    // TODO
+    return 0L;
+  }
+
+  @Override
+  public void setLastUpdatedValue(String id, long lastUpdated) {
+    // TODO
+  }
 
   public long getLastUpdated(String id, String domain) throws Exception {
     String response = getPseudonymClient(id, domain);

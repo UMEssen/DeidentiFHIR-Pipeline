@@ -3,6 +3,7 @@ package de.ume.deidentifhirpipeline.configuration;
 import de.ume.deidentifhirpipeline.configuration.cohortselection.CohortSelectionConfiguration;
 import de.ume.deidentifhirpipeline.configuration.dataselection.DataSelectionConfiguration;
 import de.ume.deidentifhirpipeline.configuration.datastoring.DataStoringConfiguration;
+import de.ume.deidentifhirpipeline.configuration.lastupdated.LastUpdatedConfiguration;
 import de.ume.deidentifhirpipeline.configuration.pseudonymization.PseudonymizationConfiguration;
 import de.ume.deidentifhirpipeline.transfer.cohortselection.CohortSelection;
 import de.ume.deidentifhirpipeline.transfer.cohortselection.FiremetricsCohortSelection;
@@ -15,14 +16,22 @@ import de.ume.deidentifhirpipeline.transfer.dataselection.FiremetricsDataSelecti
 import de.ume.deidentifhirpipeline.transfer.datastoring.DataStoring;
 import de.ume.deidentifhirpipeline.transfer.datastoring.FhirServerDataStoring;
 import de.ume.deidentifhirpipeline.transfer.datastoring.FiremetricsDataStoring;
+import de.ume.deidentifhirpipeline.transfer.lastupdated.GetLastUpdated;
+import de.ume.deidentifhirpipeline.transfer.lastupdated.HashmapGetLastUpdated;
+import de.ume.deidentifhirpipeline.transfer.lastupdated.HashmapSetLastUpdated;
+import de.ume.deidentifhirpipeline.transfer.lastupdated.SetLastUpdated;
 import de.ume.deidentifhirpipeline.transfer.pseudonymization.DeidentiFHIRPseudonymization;
 import de.ume.deidentifhirpipeline.transfer.pseudonymization.Pseudonymization;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Optional;
+
 @Getter
 public class ProjectConfiguration {
   private int parallelism = 1;
+  @Setter
+  private LastUpdatedConfiguration lastUpdated;
   @Setter
   private CohortSelectionConfiguration cohortSelection;
   @Setter
@@ -32,23 +41,32 @@ public class ProjectConfiguration {
   @Setter
   private DataStoringConfiguration dataStoring;
 
+  private Optional<GetLastUpdated> getLastUpdatedImpl = Optional.empty();
+  private Optional<SetLastUpdated> setLastUpdatedImpl = Optional.empty();
   private CohortSelection cohortSelectionImpl;
   private DataSelection dataSelectionImpl;
   private Pseudonymization pseudonymizationImpl;
   private DataStoring dataStoringImpl;
 
   public ProjectConfiguration(int parallelism,
+      LastUpdatedConfiguration lastUpdated,
       CohortSelectionConfiguration cohortSelection,
       DataSelectionConfiguration dataSelection,
       PseudonymizationConfiguration pseudonymization,
       DataStoringConfiguration dataStoring) throws Exception {
+
     this.parallelism = parallelism;
+    this.lastUpdated = lastUpdated;
     this.cohortSelection = cohortSelection;
     this.dataSelection = dataSelection;
     this.pseudonymization = pseudonymization;
     this.dataStoring = dataStoring;
 
     if( parallelism <= 0 ) this.parallelism = 1;
+    if( lastUpdated != null && lastUpdated.getHashmap() != null) {
+      getLastUpdatedImpl = Optional.of(new HashmapGetLastUpdated(lastUpdated));
+      setLastUpdatedImpl = Optional.of(new HashmapSetLastUpdated(lastUpdated));
+    }
     if( cohortSelection != null && cohortSelection.getGics() != null )            cohortSelectionImpl = new GicsCohortSelection(cohortSelection.getGics());
     if( cohortSelection != null && cohortSelection.getViaIds() != null )          cohortSelectionImpl = new IdCohortSelection(cohortSelection.getViaIds());
     if( cohortSelection != null && cohortSelection.getFiremetrics() != null )     cohortSelectionImpl = new FiremetricsCohortSelection(cohortSelection.getFiremetrics());
@@ -72,23 +90,26 @@ public class ProjectConfiguration {
     if( projectConfiguration == null ) {
       return this;
     }
-    int paralellism = projectConfiguration.getParallelism() != 0 ? projectConfiguration.getParallelism() : this.parallelism;
+    int configuredParallelism = projectConfiguration.getParallelism() != 0 ? projectConfiguration.getParallelism() : this.parallelism;
+
+    LastUpdatedConfiguration lastUpdatedConfiguration =
+        projectConfiguration.getLastUpdated() != null ? projectConfiguration.getLastUpdated() : this.lastUpdated;
+
     CohortSelectionConfiguration cohortSelectionConfiguration =
         projectConfiguration.getCohortSelection() != null ? projectConfiguration.getCohortSelection() : this.cohortSelection;
 
     DataSelectionConfiguration dataSelectionConfiguration =
         projectConfiguration.getDataSelection() != null ? projectConfiguration.getDataSelection() : this.dataSelection;
 
-
     PseudonymizationConfiguration pseudonymizationConfiguration =
         projectConfiguration.getPseudonymization() != null ? projectConfiguration.getPseudonymization() : this.pseudonymization;
-
 
     DataStoringConfiguration dataStoringConfiguration =
         projectConfiguration.getDataStoring() != null ? projectConfiguration.getDataStoring(): this.dataStoring;
 
     return new ProjectConfiguration(
-        parallelism,
+        configuredParallelism,
+        lastUpdatedConfiguration,
         cohortSelectionConfiguration,
         dataSelectionConfiguration,
         pseudonymizationConfiguration,
