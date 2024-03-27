@@ -35,15 +35,11 @@ import java.util.Map;
 public class GpasService implements PseudonymizationServiceInterface, LastUpdatedServiceInterface {
 
   private final GpasServiceConfiguration configuration;
-
   private final KeycloakAuthConfiguration keycloakConfiguration;
-
   private final String domain;
   private final String dateShiftingDomain;
   private final String lastUpdatedDomain;
-
   private static String token;
-
   private final int numberOfRetries = 2;
 
   public GpasService(GpasServiceConfiguration configuration) {
@@ -246,18 +242,6 @@ public class GpasService implements PseudonymizationServiceInterface, LastUpdate
     if(httpResponse.statusCode() != 200) throw new AddDomainException(httpResponse.body());
   }
 
-//  private String refreshToken() throws IOException {
-//    if( keycloakConfiguration != null ) {
-//      KeycloakService.refreshToken(keycloakConfiguration, (BindingProvider) psnManager);
-//      return KeycloakService.refreshToken(keycloakConfiguration, (BindingProvider) domainManager);
-//    }
-//    return null;
-//  }
-
-  /*
-  Begin lastUpdated
-   */
-
   @Override
   public long getLastUpdatedValue(String id) throws Exception {
     return getLastUpdated(id, this.lastUpdatedDomain);
@@ -284,14 +268,13 @@ public class GpasService implements PseudonymizationServiceInterface, LastUpdate
     return Long.parseLong(response.split(Utils.DATE_SHIFTING_DELIMITER)[1]);
   }
 
-  public void setLastUpdate(String id, long lastUpdated) throws Exception {
+  private void setLastUpdate(String id, long lastUpdated) throws Exception {
     this.deleteEntry(id, this.lastUpdatedDomain);
     setLastUpdate(id, lastUpdated, 0);
   }
-  public void setLastUpdate(String id, long lastUpdated, int x) throws Exception {
+  private void setLastUpdate(String id, long lastUpdated, int x) throws Exception {
     this.deleteEntry(id, domain);
     String generatedPseudonym = longToGpasString(lastUpdated, x);
-//    this.insertValuePseudonymPairViaHttpClient(id, generatedPseudonym, domain);
     try {
       this.insertValuePseudonymPairViaHttpClient(id, generatedPseudonym, this.lastUpdatedDomain);
     } catch (InsertValuePseudonymPairException e) {
@@ -303,7 +286,6 @@ public class GpasService implements PseudonymizationServiceInterface, LastUpdate
   private String longToGpasString(long value, int duplicate) throws Exception {
     String dateShiftingInMillisString = duplicate + Utils.LAST_UPDATED_DELIMITER + value;
     int length = dateShiftingInMillisString.length();
-//    int lengthOfDuplicate = String.valueOf(duplicate).length();
     int diff = Utils.LAST_UPDATED_DOMAIN_PSN_LENGTH - length;
     if (diff < 0)
       throw new Exception("dateShifting value is too large");
@@ -311,17 +293,6 @@ public class GpasService implements PseudonymizationServiceInterface, LastUpdate
       dateShiftingInMillisString = "0" + dateShiftingInMillisString;
     }
     return dateShiftingInMillisString;
-  }
-
-  private static String buildLastUpdatedPseudonym(long duplicate, String dateShiftingInMillis) {
-    int length = dateShiftingInMillis.length();
-    int lengthOfDuplicate = String.valueOf(duplicate).length();
-    int diff = Utils.DATE_SHIFTING_DOMAIN_PSN_LENGTH - length - lengthOfDuplicate - 1;
-    dateShiftingInMillis = duplicate + Utils.DATE_SHIFTING_DELIMITER + dateShiftingInMillis;
-    for (int i = 0; i < diff; i++) {
-      dateShiftingInMillis = "0" + dateShiftingInMillis;
-    }
-    return dateShiftingInMillis;
   }
 
   private String getPseudonymClient(String value, String domainName) throws Exception {
@@ -346,8 +317,6 @@ public class GpasService implements PseudonymizationServiceInterface, LastUpdate
     }
 
   }
-
-
 
   private static Document loadXMLString(String response) throws Exception
   {
@@ -403,7 +372,6 @@ public class GpasService implements PseudonymizationServiceInterface, LastUpdate
   private HttpResponse<String> gpasDomainRequest(String body) throws IOException, InterruptedException, TokenException {
     return gpasServiceRequest(configuration.getDomainServiceWsdlUrl(), body, this.numberOfRetries);
   }
-
   private HttpResponse<String> gpasServiceRequest(String url, String body, int numberOfRetries)
       throws IOException, InterruptedException, TokenException {
     if( numberOfRetries <= 0) throw new TokenException();
@@ -424,7 +392,8 @@ public class GpasService implements PseudonymizationServiceInterface, LastUpdate
           HttpRequest.newBuilder().uri(URI.create(url))
               .header("Content-Type", "application/soap+xml")
               .POST(HttpRequest.BodyPublishers.ofString(body));
-      if(keycloakConfiguration != null) httpRequestBuilder.header("Authorization", "Bearer " + this.token);
+      
+      if( keycloakConfiguration != null ) httpRequestBuilder.header("Authorization", "Bearer " + this.token);
 
       HttpRequest httpRequest = httpRequestBuilder.build();
 
@@ -442,5 +411,12 @@ public class GpasService implements PseudonymizationServiceInterface, LastUpdate
     }
   }
 
+  //  private String refreshToken() throws IOException {
+  //    if( keycloakConfiguration != null ) {
+  //      KeycloakService.refreshToken(keycloakConfiguration, (BindingProvider) psnManager);
+  //      return KeycloakService.refreshToken(keycloakConfiguration, (BindingProvider) domainManager);
+  //    }
+  //    return null;
+  //  }
 
 }

@@ -17,16 +17,18 @@ import de.ume.deidentifhirpipeline.transfer.datastoring.DataStoring;
 import de.ume.deidentifhirpipeline.transfer.datastoring.FhirServerDataStoring;
 import de.ume.deidentifhirpipeline.transfer.datastoring.FiremetricsDataStoring;
 import de.ume.deidentifhirpipeline.transfer.lastupdated.GetLastUpdated;
-import de.ume.deidentifhirpipeline.transfer.lastupdated.HashmapGetLastUpdated;
-import de.ume.deidentifhirpipeline.transfer.lastupdated.HashmapSetLastUpdated;
+import de.ume.deidentifhirpipeline.transfer.lastupdated.GetLastUpdatedImpl;
+import de.ume.deidentifhirpipeline.transfer.lastupdated.SetLastUpdatedImpl;
 import de.ume.deidentifhirpipeline.transfer.lastupdated.SetLastUpdated;
 import de.ume.deidentifhirpipeline.transfer.pseudonymization.DeidentiFHIRPseudonymization;
 import de.ume.deidentifhirpipeline.transfer.pseudonymization.Pseudonymization;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Optional;
 
+@Slf4j
 @Getter
 public class ProjectConfiguration {
   private int parallelism = 1;
@@ -63,10 +65,9 @@ public class ProjectConfiguration {
     this.dataStoring = dataStoring;
 
     if( parallelism <= 0 ) this.parallelism = 1;
-//    if( lastUpdated != null && lastUpdated.getHashmap() != null) {
-    if( lastUpdated != null ) {
-      getLastUpdatedImpl = Optional.of(new HashmapGetLastUpdated(lastUpdated));
-      setLastUpdatedImpl = Optional.of(new HashmapSetLastUpdated(lastUpdated));
+    if( lastUpdated != null && (lastUpdated.getHashmap() != null || lastUpdated.getGpas() != null )) {
+      getLastUpdatedImpl = Optional.of(new GetLastUpdatedImpl(lastUpdated));
+      setLastUpdatedImpl = Optional.of(new SetLastUpdatedImpl(lastUpdated));
     }
     if( cohortSelection != null && cohortSelection.getGics() != null )            cohortSelectionImpl = new GicsCohortSelection(cohortSelection.getGics());
     if( cohortSelection != null && cohortSelection.getViaIds() != null )          cohortSelectionImpl = new IdCohortSelection(cohortSelection.getViaIds());
@@ -81,6 +82,7 @@ public class ProjectConfiguration {
   }
 
   public void validate() throws Exception {
+    if( getLastUpdatedImpl.isEmpty() || setLastUpdatedImpl.isEmpty() ) log.info("LastUpdated implementation not configured.");
     if( cohortSelectionImpl == null )   throw new Exception("No CohortSelection implementation found. Check configuration.");
     if( dataSelectionImpl == null )     throw new Exception("No DataSelection implementation found. Check configuration.");
     if( pseudonymizationImpl == null )  throw new Exception("No Pseudonymization implementation found. Check configuration.");
