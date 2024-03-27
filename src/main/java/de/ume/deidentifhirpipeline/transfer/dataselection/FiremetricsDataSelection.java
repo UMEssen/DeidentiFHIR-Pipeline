@@ -1,9 +1,6 @@
 package de.ume.deidentifhirpipeline.transfer.dataselection;
 
-import ca.uhn.fhir.rest.client.api.IGenericClient;
-import ca.uhn.fhir.rest.client.interceptor.BasicAuthInterceptor;
 import de.ume.deidentifhirpipeline.configuration.ProjectConfiguration;
-import de.ume.deidentifhirpipeline.configuration.dataselection.FhirServerDataSelectionConfiguration;
 import de.ume.deidentifhirpipeline.configuration.dataselection.FiremetricsDataSelectionConfiguration;
 import de.ume.deidentifhirpipeline.transfer.Context;
 import de.ume.deidentifhirpipeline.transfer.Utils;
@@ -12,9 +9,10 @@ import org.hl7.fhir.instance.model.api.IBaseResource;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Resource;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.sql.*;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.OptionalLong;
 
 @Slf4j
 public class FiremetricsDataSelection extends DataSelection {
@@ -33,18 +31,25 @@ public class FiremetricsDataSelection extends DataSelection {
   @Override
   public Context process(Context context) throws Exception {
 
-
     // load fhirql statement from variable if existent or from file
     String fhirqlStatementWithReplacementString = config.getQuery();
-    String replacementString = config.getQueryIdPlaceholderString();
+    String queryIdPlaceholderString = config.getQueryIdPlaceholderString();
+    String queryLastUpdatedPlaceholderString = config.getQueryLastUpdatedPlaceholderString();
 
 //    if( fhirqlStatementWithReplacementString == null && config.getQueryFile() != null)
 //      fhirqlStatementWithReplacementString = Files.readString(Path.of(config.getQueryFile()));
 //    if( fhirqlStatementWithReplacementString == null ) fhirqlStatementWithReplacementString = config.getQuery();
-//    if( replacementString == null ) replacementString = config.getQueryIdPlaceholderString();
+//    if( queryIdPlaceholderString == null ) queryIdPlaceholderString = config.getQueryIdPlaceholderString();
 
     // replace id placeholder with the actual id
-    String fhirqlStatement = fhirqlStatementWithReplacementString.replace(replacementString, context.getPatientId());
+    String fhirqlStatement = fhirqlStatementWithReplacementString.replace(queryIdPlaceholderString, context.getPatientId());
+
+    // replace lastUpdated placeholder with the actual date if present
+    if( context.getOldLastUpdated().isPresent() ) {
+      String dateString = Utils.longToFiremetricsDateString(context.getOldLastUpdated().getAsLong(), ZoneId.of("UTC"));
+      fhirqlStatement = fhirqlStatement.replace(queryLastUpdatedPlaceholderString, dateString);
+    }
+
     log.debug(fhirqlStatement);
 
 
@@ -61,13 +66,17 @@ public class FiremetricsDataSelection extends DataSelection {
         jdbcConnectionUrl,
         config.getUser(),
         config.getPassword())) {
-
+      if( context.getOldLastUpdated().isPresent() ) {
+        context.setNewLastUpdated(OptionalLong.of(ZonedDateTime.now().toInstant().toEpochMilli()));
+      }
       log.debug("Connected to FHIRQL database!");
       Statement statement = connection.createStatement();
       ResultSet resultSet = statement.executeQuery(fhirqlStatement);
 
       while (resultSet.next()) {
-        IBaseResource resource = Utils.fctx.newJsonParser().parseResource(resultSet.getString("_json"));
+        String result = resultSet.getString("_json");
+        log.debug(result);
+        IBaseResource resource = Utils.fctx.newJsonParser().parseResource(result);
         returnBundle.addEntry(new Bundle.BundleEntryComponent().setResource((Resource) resource));
       }
       context.setBundle(returnBundle);

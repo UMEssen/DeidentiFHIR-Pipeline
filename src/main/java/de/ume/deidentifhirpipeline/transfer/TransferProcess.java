@@ -6,6 +6,8 @@ import de.ume.deidentifhirpipeline.configuration.ProjectConfiguration;
 import de.ume.deidentifhirpipeline.transfer.cohortselection.CohortSelection;
 import de.ume.deidentifhirpipeline.transfer.dataselection.DataSelection;
 import de.ume.deidentifhirpipeline.transfer.datastoring.DataStoring;
+import de.ume.deidentifhirpipeline.transfer.lastupdated.GetLastUpdated;
+import de.ume.deidentifhirpipeline.transfer.lastupdated.SetLastUpdated;
 import de.ume.deidentifhirpipeline.transfer.pseudonymization.Pseudonymization;
 import lombok.extern.slf4j.Slf4j;
 
@@ -44,6 +46,7 @@ public class TransferProcess {
   }
 
   private static void beforeExecution(ProjectConfiguration projectConfiguration) throws Exception {
+    GetLastUpdated.beforeExecution(projectConfiguration);
     DataSelection.beforeExecution(projectConfiguration);
     Pseudonymization.beforeExecution(projectConfiguration);
     DataStoring.beforeExecution(projectConfiguration);
@@ -60,10 +63,13 @@ public class TransferProcess {
 
     ForkJoinPool pool = new ForkJoinPool(projectConfiguration.getParallelism());
     pool.submit(() -> {
-      contexts.stream().parallel().map(DataSelection::execute)
-          .filter(context -> !context.isFailed()).map(Pseudonymization::execute)
-          .filter(context -> !context.isFailed()).map(DataStoring::execute)
-          .filter(context -> !context.isFailed()).forEach(context -> {
+      contexts.stream().parallel()
+          .map(GetLastUpdated::execute).filter(context -> !context.isFailed())
+          .map(DataSelection::execute).filter(context -> !context.isFailed())
+          .map(Pseudonymization::execute).filter(context -> !context.isFailed())
+          .map(DataStoring::execute).filter(context -> !context.isFailed())
+          .map(SetLastUpdated::execute).filter(context -> !context.isFailed())
+          .forEach(context -> {
             context.getTransfer().getMap().put(context.getPatientId(), TransferStatus.completed());
             log.info(String.format("Transfer for patient id: '%s' finished successfully.",
                 context.getPatientId()));
@@ -79,7 +85,7 @@ public class TransferProcess {
     List<Context> contexts = new ArrayList<>();
     for( String id : ids ) {
       transfer.getMap().put(id, new TransferStatus());
-      Context context = new Context(transfer, projectConfiguration, id,null, false, null);
+      Context context = new Context(transfer, projectConfiguration, id);
       contexts.add(context);
     }
     return contexts;

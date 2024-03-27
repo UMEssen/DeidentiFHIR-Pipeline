@@ -2,15 +2,12 @@ package de.ume.deidentifhirpipeline.configuration.pseudonymization;
 
 import de.ume.deidentifhirpipeline.configuration.service.GpasServiceConfiguration;
 import de.ume.deidentifhirpipeline.configuration.service.HashmapServiceConfiguration;
-import de.ume.deidentifhirpipeline.service.GpasService;
-import de.ume.deidentifhirpipeline.service.HashmapService;
-import de.ume.deidentifhirpipeline.service.PseudonymizationServiceInterface;
+import de.ume.deidentifhirpipeline.service.pseudonymization.GpasService;
+import de.ume.deidentifhirpipeline.service.pseudonymization.HashmapService;
+import de.ume.deidentifhirpipeline.service.pseudonymization.PseudonymizationServiceInterface;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-
-import java.io.IOException;
-import java.net.URISyntaxException;
 
 @Slf4j
 public class DeidentiFHIRPseudonymizationConfiguration {

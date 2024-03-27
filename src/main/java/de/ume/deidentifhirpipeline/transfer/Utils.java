@@ -6,6 +6,10 @@ import de.ume.deidentifhirpipeline.api.data.TransferStatus;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Resource;
 
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+
 public class Utils {
   public static final FhirContext fctx = FhirContext.forR4();
 
@@ -25,6 +29,10 @@ public class Utils {
 
   public static String getDateShiftingDomainName(String domain) {
     return domain + DATE_SHIFTING_DOMAIN_SUFFIX;
+  }
+
+  public static String getLastUpdatedDomainName(String domain) {
+    return domain + LAST_UPDATED_DOMAIN_SUFFIX;
   }
 
   public static String fhirBundleToString(Bundle bundle) {
@@ -47,5 +55,34 @@ public class Utils {
     context.setException(e);
     e.printStackTrace();
     return context;
+  }
+
+  public static ZonedDateTime longToZonedDateTime(long millis, ZoneId zoneId) {
+    Instant instant = Instant.ofEpochMilli(millis);
+    return ZonedDateTime.ofInstant(instant, zoneId);
+  }
+
+  public static String zonedDateTimeToFhirSearchString(ZonedDateTime zonedDateTime) {
+    int year = zonedDateTime.getYear();
+    int month = zonedDateTime.getMonthValue();
+    int day = zonedDateTime.getDayOfMonth();
+    int hour = zonedDateTime.getHour();
+    int minute = zonedDateTime.getMinute();
+    int second = zonedDateTime.getSecond();
+
+    return String.format("%s-%02d-%02dT%02d:%02d:%02d", year, month, day, hour, minute, second);
+  }
+
+  public static String longToFiremetricsDateString(long inMillis, ZoneId zoneId) {
+    ZonedDateTime zonedDateTime = longToZonedDateTime(inMillis, zoneId);
+    int year = zonedDateTime.getYear();
+    int month = zonedDateTime.getMonthValue();
+    int day = zonedDateTime.getDayOfMonth();
+    int hour = zonedDateTime.getHour();
+    int minute = zonedDateTime.getMinute();
+    int second = zonedDateTime.getSecond();
+    int millis = zonedDateTime.getNano() / 1000000;
+
+    return String.format("%s-%02d-%02d %02d:%02d:%02d.%03d", year, month, day, hour, minute, second, millis);
   }
 }

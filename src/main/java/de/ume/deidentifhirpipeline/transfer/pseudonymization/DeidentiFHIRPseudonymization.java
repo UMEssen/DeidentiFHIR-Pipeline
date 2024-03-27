@@ -2,9 +2,7 @@ package de.ume.deidentifhirpipeline.transfer.pseudonymization;
 
 import de.ume.deidentifhirpipeline.configuration.ProjectConfiguration;
 import de.ume.deidentifhirpipeline.configuration.pseudonymization.DeidentiFHIRPseudonymizationConfiguration;
-import de.ume.deidentifhirpipeline.service.GpasService;
-import de.ume.deidentifhirpipeline.service.HashmapService;
-import de.ume.deidentifhirpipeline.service.PseudonymizationServiceInterface;
+import de.ume.deidentifhirpipeline.service.pseudonymization.PseudonymizationServiceInterface;
 import de.ume.deidentifhirpipeline.transfer.Context;
 import de.ume.deidentifhirpipeline.transfer.Utils;
 import de.ume.deidentifhirpipeline.transfer.pseudonymization.deidentiFHIR.CDtoTransportDeidentiFHIR;
