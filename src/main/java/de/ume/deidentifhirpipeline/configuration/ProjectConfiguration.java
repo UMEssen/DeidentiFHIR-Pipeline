@@ -63,7 +63,8 @@ public class ProjectConfiguration {
     this.dataStoring = dataStoring;
 
     if( parallelism <= 0 ) this.parallelism = 1;
-    if( lastUpdated != null && lastUpdated.getHashmap() != null) {
+//    if( lastUpdated != null && lastUpdated.getHashmap() != null) {
+    if( lastUpdated != null ) {
       getLastUpdatedImpl = Optional.of(new HashmapGetLastUpdated(lastUpdated));
       setLastUpdatedImpl = Optional.of(new HashmapSetLastUpdated(lastUpdated));
     }

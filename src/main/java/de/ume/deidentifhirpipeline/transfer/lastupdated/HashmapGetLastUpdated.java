@@ -1,7 +1,5 @@
 package de.ume.deidentifhirpipeline.transfer.lastupdated;
 
-import de.ume.deidentifhirpipeline.api.data.Status;
-import de.ume.deidentifhirpipeline.api.data.TransferStatus;
 import de.ume.deidentifhirpipeline.configuration.ProjectConfiguration;
 import de.ume.deidentifhirpipeline.configuration.lastupdated.LastUpdatedConfiguration;
 import de.ume.deidentifhirpipeline.service.lastupdated.LastUpdatedServiceInterface;
