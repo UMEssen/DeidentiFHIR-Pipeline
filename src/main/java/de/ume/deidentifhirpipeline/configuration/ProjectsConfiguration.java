@@ -9,12 +9,8 @@ import java.util.Map;
 
 @Configuration
 @ConfigurationProperties
+@Getter
+@Setter
 public class ProjectsConfiguration {
-  @Getter
-  @Setter
   private Map<String,ProjectConfiguration> projects;
-
-  @Getter
-  @Setter
-  private TextPseudonymizationConfiguration textPseudonymization;
 }

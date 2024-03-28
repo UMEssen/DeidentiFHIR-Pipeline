@@ -10,26 +10,16 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Getter
+@Setter
 public class DeidentiFHIRPseudonymizationConfiguration {
-  @Getter
-  @Setter
   private String scraperConfigFile;
-  @Getter
-  @Setter
   private String pseudonymizationConfigFile;
-  @Getter
   private boolean generateIDScraperConfig;
-  @Getter
   private long dateShiftingInMillis;
-  @Getter
-  @Setter
   private GpasServiceConfiguration gpas;
-  @Getter
-  @Setter
   private HashmapServiceConfiguration hashmap;
-  @Setter
   private GpasService gpasService;
-  @Setter
   private PseudonymizationServiceInterface pseudonymizationService;
 
   public DeidentiFHIRPseudonymizationConfiguration(String scraperConfigFile,
