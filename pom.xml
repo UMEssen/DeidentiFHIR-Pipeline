@@ -11,7 +11,7 @@
 	<packaging>jar</packaging>
 	<groupId>de.ume</groupId>
 	<artifactId>deidentifhir-pipeline</artifactId>
-	<version>0.1.1</version>
+	<version>0.1.2</version>
 	<name>deidentifhir-pipeline</name>
 	<licenses>
 		<license>
@@ -21,7 +21,7 @@
 	</licenses>
 	<properties>
 		<java.version>21</java.version>
-		<scala.version>3.3.1</scala.version>
+<!--		<scala.version>3.4.0</scala.version>-->
 		<hapi.version>6.10.5</hapi.version>
 	</properties>
 	<dependencies>
@@ -100,7 +100,21 @@
 			<artifactId>commons-math3</artifactId>
 			<version>3.6.1</version>
 		</dependency>
-
+		<dependency>
+			<groupId>org.yaml</groupId>
+			<artifactId>snakeyaml</artifactId>
+			<version>2.2</version> <!-- Replace with the latest version -->
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-yaml</artifactId>
+			<version>2.17.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.17.0</version>
+		</dependency>
 
 		<!-- SOAP WSDL Class Generation -->
 		<dependency>
