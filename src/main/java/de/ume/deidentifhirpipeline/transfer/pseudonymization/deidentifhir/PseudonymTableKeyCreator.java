@@ -1,4 +1,4 @@
-package de.ume.deidentifhirpipeline.transfer.pseudonymization.deidentiFHIR;
+package de.ume.deidentifhirpipeline.transfer.pseudonymization.deidentifhir;
 
 public interface PseudonymTableKeyCreator {
 

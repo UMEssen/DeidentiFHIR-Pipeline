@@ -2,7 +2,6 @@ package de.ume.deidentifhirpipeline.transfer;
 
 import de.ume.deidentifhirpipeline.api.data.Transfer;
 import de.ume.deidentifhirpipeline.configuration.ProjectConfiguration;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
