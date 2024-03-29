@@ -3,12 +3,10 @@ package de.ume.deidentifhirpipeline.configuration.auth;
 import lombok.Getter;
 import lombok.Setter;
 
+@Getter
+@Setter
 public class BasicAuthConfiguration {
-  @Getter
-  @Setter
   private String user;
-  @Getter
-  @Setter
   private String password;
 
   public String toString() {

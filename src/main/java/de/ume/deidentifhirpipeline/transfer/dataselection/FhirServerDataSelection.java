@@ -9,6 +9,10 @@ import de.ume.deidentifhirpipeline.transfer.Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.Bundle;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.OptionalLong;
+
 @Slf4j
 public class FhirServerDataSelection extends DataSelection {
 
@@ -26,10 +30,12 @@ public class FhirServerDataSelection extends DataSelection {
   @Override
   public Context process(Context context) {
     try {
-      String fhirId = getFhirId(context.getPatientId(), context.getProjectConfiguration().getDataSelection().getFhirServer());
-      Bundle bundle = getBundle(fhirId, context.getProjectConfiguration().getDataSelection().getFhirServer());
+      String fhirId = getFhirId(context.getPatientId(),
+          context.getProjectConfiguration().getDataSelection().getFhirServer());
+      context.setNewLastUpdated(OptionalLong.of(ZonedDateTime.now().toInstant().toEpochMilli()));
+      Bundle bundle =
+          getBundle(fhirId, context.getProjectConfiguration().getDataSelection().getFhirServer(), context.getOldLastUpdated());
       context.setBundle(bundle);
-
 
 //      FhirPathR4 fhirPathR4 = new FhirPathR4(Utils.fctx);
 //      List<IBase> list = fhirPathR4.evaluate(bundle, "Bundle.entry.resource.ofType(Patient)", IBase.class);
@@ -41,7 +47,6 @@ public class FhirServerDataSelection extends DataSelection {
 //          default -> System.out.println("Not found");
 //        }
 //      }
-
 
       return context;
     } catch (Exception e) {
@@ -63,7 +68,7 @@ public class FhirServerDataSelection extends DataSelection {
     return fhirId;
   }
 
-  private static Bundle getBundle(String fhirId, FhirServerDataSelectionConfiguration dataSelectionConfiguration) throws Exception {
+  private static Bundle getBundle(String fhirId, FhirServerDataSelectionConfiguration dataSelectionConfiguration, OptionalLong lastUpdated) throws Exception {
     IGenericClient client = Utils.fctx.newRestfulGenericClient(dataSelectionConfiguration.getUrl());
     if( dataSelectionConfiguration.getBasic() != null ){
       client.registerInterceptor(new BasicAuthInterceptor(dataSelectionConfiguration.getBasic().getUser(),dataSelectionConfiguration.getBasic().getPassword()));
@@ -71,6 +76,10 @@ public class FhirServerDataSelection extends DataSelection {
     String query = dataSelectionConfiguration.getBundleQuery();
     String queryPlaceholder = dataSelectionConfiguration.getBundleQueryPlaceholder();
     String queryWithId = query.replace(queryPlaceholder, fhirId);
+    String bundleQueryLastUpdatedPlaceholder = dataSelectionConfiguration.getBundleQueryLastUpdatedPlaceholder();
+    if( lastUpdated.isPresent() ) {
+      queryWithId = queryWithId.replace(bundleQueryLastUpdatedPlaceholder, Utils.zonedDateTimeToFhirSearchString(Utils.longToZonedDateTime(lastUpdated.getAsLong(), ZoneId.of("UTC"))));
+    }
     Bundle bundle = client.search().byUrl(String.format( "%s/%s", dataSelectionConfiguration.getUrl(), queryWithId)).returnBundle(Bundle.class).execute();
     if( bundle == null || bundle.getTotal() == 0 ) throw new Exception("Returned bundle is empty. No medical data for id: " + fhirId);
     log.debug("getBundle(): " + Utils.fhirBundleToString(bundle));

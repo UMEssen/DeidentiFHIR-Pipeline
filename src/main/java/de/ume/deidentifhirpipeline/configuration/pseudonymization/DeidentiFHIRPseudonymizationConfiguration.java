@@ -2,37 +2,24 @@ package de.ume.deidentifhirpipeline.configuration.pseudonymization;
 
 import de.ume.deidentifhirpipeline.configuration.service.GpasServiceConfiguration;
 import de.ume.deidentifhirpipeline.configuration.service.HashmapServiceConfiguration;
-import de.ume.deidentifhirpipeline.service.GpasService;
-import de.ume.deidentifhirpipeline.service.HashmapService;
-import de.ume.deidentifhirpipeline.service.PseudonymizationServiceInterface;
+import de.ume.deidentifhirpipeline.service.pseudonymization.GpasService;
+import de.ume.deidentifhirpipeline.service.pseudonymization.HashmapService;
+import de.ume.deidentifhirpipeline.service.pseudonymization.PseudonymizationServiceInterface;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-
 @Slf4j
+@Getter
+@Setter
 public class DeidentiFHIRPseudonymizationConfiguration {
-  @Getter
-  @Setter
   private String scraperConfigFile;
-  @Getter
-  @Setter
   private String pseudonymizationConfigFile;
-  @Getter
   private boolean generateIDScraperConfig;
-  @Getter
   private long dateShiftingInMillis;
-  @Getter
-  @Setter
   private GpasServiceConfiguration gpas;
-  @Getter
-  @Setter
   private HashmapServiceConfiguration hashmap;
-  @Setter
   private GpasService gpasService;
-  @Setter
   private PseudonymizationServiceInterface pseudonymizationService;
 
   public DeidentiFHIRPseudonymizationConfiguration(String scraperConfigFile,

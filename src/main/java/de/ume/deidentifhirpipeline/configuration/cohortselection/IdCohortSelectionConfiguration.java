@@ -5,8 +5,8 @@ import lombok.Setter;
 
 import java.util.List;
 
+@Getter
+@Setter
 public class IdCohortSelectionConfiguration {
-  @Getter
-  @Setter
   List<String> ids;
 }

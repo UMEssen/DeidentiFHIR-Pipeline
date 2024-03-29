@@ -6,18 +6,11 @@ import lombok.Setter;
 
 import java.util.List;
 
+@Getter
+@Setter
 public class GicsServiceConfiguration {
-  @Getter
-  @Setter
   private String mainWsdlUri;
-  @Getter
-  @Setter
   private BasicAuthConfiguration basic;
-  @Getter
-  @Setter
   String domain;
-  @Getter
-  @Setter
   private List<String> policies;
-
 }

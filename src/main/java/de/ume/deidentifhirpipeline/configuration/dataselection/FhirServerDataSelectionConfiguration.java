@@ -10,6 +10,7 @@ public class FhirServerDataSelectionConfiguration {
   private String url;
   private String fhirIdQuery;
   private String fhirIdQueryPlaceholder;
+  private String bundleQueryLastUpdatedPlaceholder;
   private String bundleQuery;
   private String bundleQueryPlaceholder;
   private BasicAuthConfiguration basic;
