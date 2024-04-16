@@ -81,6 +81,20 @@ projects:
 - `docker`
 - `docker compose`
 
+#### Configure maven for the Github Registry:
+Generate a Github classic token with `read:packages` permissions and add this to your `.m2/settings.xml`: 
+```
+<servers>
+  ...
+  <server>
+    <id>github-ume</id>
+    <username>insert-github-username-here</username>
+    <password>insert-token-here</password>
+  </server>
+  ...
+</servers>
+```
+Docs and details can be found here: https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-apache-maven-registry
 #### Start with: 
 ```bash
 mvn spring-boot:run
