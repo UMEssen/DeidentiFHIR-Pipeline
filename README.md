@@ -106,7 +106,7 @@ Compile project with:
 ```
 Run with:
 ```bash
-java -jar target/deidentifhir-pipeline-0.1.2.jar --spring.config.location=src/main/resources/application.yaml
+java -jar target/deidentifhir-pipeline-0.1.3.jar --spring.config.location=src/main/resources/application.yaml
 ```
 
 Create docker image with: 

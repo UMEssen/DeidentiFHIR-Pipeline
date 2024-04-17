@@ -76,7 +76,7 @@ services:
     image: eclipse-temurin:21.0.2_13-jre
     container_name: dp-deidentifhir-pipeline
     volumes:
-      - ../target/deidentifhir-pipeline-0.1.2.jar:/deidentifhir-pipeline.jar
+      - ../target/deidentifhir-pipeline-0.1.3.jar:/deidentifhir-pipeline.jar
       - ./application-with-gpas.yaml:/conf/application.yaml
       - ../deidentifhir:/deidentifhir
     entrypoint: /bin/bash
