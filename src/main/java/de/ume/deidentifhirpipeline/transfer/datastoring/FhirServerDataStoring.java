@@ -9,26 +9,21 @@ import org.hl7.fhir.r4.model.Bundle;
 
 public class FhirServerDataStoring extends DataStoring {
 
-  FhirServerDataStoringConfiguration configuration;
-
-  public FhirServerDataStoring(FhirServerDataStoringConfiguration configuration) {
-    this.configuration = configuration;
-  }
-
   public void before(ProjectConfiguration projectConfiguration) throws Exception {
     // Nothing to do before processing
   }
 
   public Context process(Context context) {
+    FhirServerDataStoringConfiguration configuration = context.getProjectConfiguration().getDataStoring().getFhirServer();
     try {
-      storeBundle(context.getBundle());
+      storeBundle(configuration, context.getBundle());
       return context;
     } catch (Exception e) {
       return Utils.handleException(context, e);
     }
   }
 
-  private void storeBundle(Bundle bundle) {
+  private static void storeBundle(FhirServerDataStoringConfiguration configuration, Bundle bundle) {
     IGenericClient client = Utils.fctx.newRestfulGenericClient(configuration.getUrl());
     bundle.setType(Bundle.BundleType.TRANSACTION);
     bundle.getEntry().stream()

@@ -13,14 +13,10 @@ import java.util.List;
 @Slf4j
 public class FiremetricsCohortSelection extends CohortSelection {
 
-  private final FiremetricsCohortSelectionConfiguration config;
-
-  public FiremetricsCohortSelection(FiremetricsCohortSelectionConfiguration config) {
-    this.config = config;
-  }
-
   @Override
   public List<String> before(ProjectConfiguration projectConfiguration) throws Exception {
+    FiremetricsCohortSelectionConfiguration config = projectConfiguration.getCohortSelection().getFiremetrics();
+
     // read fhirql statement from variable if provided or from file
     String fhirqlStatement = config.getQuery();
     if( fhirqlStatement == null ) fhirqlStatement = Files.readString(Path.of(config.getQueryFile()));

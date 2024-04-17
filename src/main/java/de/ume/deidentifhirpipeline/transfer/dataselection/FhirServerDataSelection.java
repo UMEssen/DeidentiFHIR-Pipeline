@@ -16,12 +16,6 @@ import java.util.OptionalLong;
 @Slf4j
 public class FhirServerDataSelection extends DataSelection {
 
-  private final FhirServerDataSelectionConfiguration dataSelectionConfiguration;
-
-  public FhirServerDataSelection(FhirServerDataSelectionConfiguration dataSelectionConfiguration) {
-    this.dataSelectionConfiguration = dataSelectionConfiguration;
-  }
-
   @Override
   public void before(ProjectConfiguration projectConfiguration) throws Exception {
     // Nothing to do before processing

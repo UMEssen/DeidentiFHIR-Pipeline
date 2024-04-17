@@ -8,12 +8,6 @@ import java.util.List;
 
 public class GicsCohortSelection extends CohortSelection {
 
-  private final GicsServiceConfiguration cohortSelectionConfiguration;
-
-  public GicsCohortSelection(GicsServiceConfiguration cohortSelectionConfiguration) {
-    this.cohortSelectionConfiguration = cohortSelectionConfiguration;
-  }
-
   @Override
   public List<String> before(ProjectConfiguration projectConfiguration) throws Exception {
     GicsService gicsService = new GicsService(projectConfiguration.getCohortSelection().getGics());

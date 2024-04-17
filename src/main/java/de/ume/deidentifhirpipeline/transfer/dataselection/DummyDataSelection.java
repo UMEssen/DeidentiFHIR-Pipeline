@@ -11,12 +11,6 @@ import org.hl7.fhir.r4.model.Bundle;
 
 public class DummyDataSelection extends DataSelection {
 
-  private final DummyDataSelectionConfiguration dataSelectionConfiguration;
-
-  public DummyDataSelection(DummyDataSelectionConfiguration dataSelectionConfiguration) {
-    this.dataSelectionConfiguration = dataSelectionConfiguration;
-  }
-
   @Override
   public void before(ProjectConfiguration projectConfiguration) throws Exception {
     // Nothing to do before processing

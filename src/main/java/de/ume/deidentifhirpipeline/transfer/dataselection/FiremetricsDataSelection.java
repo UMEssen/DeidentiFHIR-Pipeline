@@ -17,12 +17,6 @@ import java.util.OptionalLong;
 @Slf4j
 public class FiremetricsDataSelection extends DataSelection {
 
-  private final FiremetricsDataSelectionConfiguration config;
-
-  public FiremetricsDataSelection(FiremetricsDataSelectionConfiguration config) {
-    this.config = config;
-  }
-
   @Override
   public void before(ProjectConfiguration projectConfiguration) throws Exception {
     // Nothing to do before processing
@@ -30,6 +24,7 @@ public class FiremetricsDataSelection extends DataSelection {
 
   @Override
   public Context process(Context context) throws Exception {
+    FiremetricsDataSelectionConfiguration config = context.getProjectConfiguration().getDataSelection().getFiremetrics();
 
     // load fhirql statement from variable if existent or from file
     String fhirqlStatementWithReplacementString = config.getQuery();

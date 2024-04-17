@@ -81,7 +81,7 @@ public class Utils {
     int hour = zonedDateTime.getHour();
     int minute = zonedDateTime.getMinute();
     int second = zonedDateTime.getSecond();
-    int millis = zonedDateTime.getNano() / 1000000;
+    int millis = zonedDateTime.getNano() / 1_000_000;
 
     return String.format("%s-%02d-%02d %02d:%02d:%02d.%03d", year, month, day, hour, minute, second, millis);
   }

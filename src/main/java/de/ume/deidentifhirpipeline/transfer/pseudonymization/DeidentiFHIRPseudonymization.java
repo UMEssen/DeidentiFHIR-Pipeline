@@ -18,13 +18,8 @@ import java.util.Map;
 @Slf4j
 public class DeidentiFHIRPseudonymization extends Pseudonymization {
 
-  DeidentiFHIRPseudonymizationConfiguration configuration;
-
-  public DeidentiFHIRPseudonymization(DeidentiFHIRPseudonymizationConfiguration configuration) {
-    this.configuration = configuration;
-  }
-
   public void before(ProjectConfiguration projectConfiguration) throws Exception {
+    DeidentiFHIRPseudonymizationConfiguration configuration = projectConfiguration.getPseudonymization().getDeidentifhir();
     PseudonymizationServiceInterface pseudonymizationService = configuration.getPseudonymizationService();
     pseudonymizationService.createIfDomainIsNotExistent();
     log.info("DateShiftingInMillis: {}", configuration.getDateShiftingInMillis());
@@ -32,6 +27,7 @@ public class DeidentiFHIRPseudonymization extends Pseudonymization {
   }
 
   public Context process(Context context) {
+    DeidentiFHIRPseudonymizationConfiguration configuration = context.getProjectConfiguration().getPseudonymization().getDeidentifhir();
     try {
 
       // Gather IDs

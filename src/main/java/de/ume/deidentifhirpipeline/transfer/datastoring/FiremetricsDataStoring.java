@@ -22,17 +22,12 @@ import java.util.UUID;
 @Slf4j
 public class FiremetricsDataStoring extends DataStoring {
 
-  FiremetricsDataStoringConfiguration config;
-
-  public FiremetricsDataStoring(FiremetricsDataStoringConfiguration config) {
-    this.config = config;
-  }
-
   public void before(ProjectConfiguration projectConfiguration) throws Exception {
     // Nothing to do before processing
   }
 
   public Context process(Context context) {
+    FiremetricsDataStoringConfiguration config = context.getProjectConfiguration().getDataStoring().getFiremetrics();
     try {
       List<String> resourcesAsString = context.getBundle().getEntry().stream().map(e -> Utils.fhirResourceToString(e.getResource())).toList();
 
