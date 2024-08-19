@@ -1,7 +1,7 @@
 services:
 
   dp-cd-fhir-server:
-    image: samply/blaze:0.29.3
+    image: samply/blaze:0.23.2
     container_name: dp-cd-fhir-server
     ports:
       - 8082:8080
@@ -10,7 +10,7 @@ services:
       STORAGE: "in-memory"
 
   dp-rd-fhir-server:
-    image: samply/blaze:0.29.3
+    image: samply/blaze:0.23.2
     container_name: dp-rd-fhir-server
     ports:
       - 8083:8080
