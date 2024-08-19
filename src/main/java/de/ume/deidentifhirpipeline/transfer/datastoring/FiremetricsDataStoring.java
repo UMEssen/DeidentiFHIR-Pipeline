@@ -33,7 +33,7 @@ public class FiremetricsDataStoring extends DataStoring {
 
       // log bundle
       if( config.isWriteBundlesToFiles() ) {
-        String bundleAsString = Utils.fhirBundleToStringPrettyPrint(context.getBundle());
+        String bundleAsString = Utils.fhirResourceToString(context.getBundle());
         Path path = Paths.get("./bundles/", context.getPatientId() + ".json");
         Files.write(path, bundleAsString.getBytes(StandardCharsets.UTF_8));
       }

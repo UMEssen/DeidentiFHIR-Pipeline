@@ -1,4 +1,4 @@
-FROM eclipse-temurin:21.0.2_13-jre AS deidentifhir-pipeline
+FROM eclipse-temurin:21.0.4_7-jre AS deidentifhir-pipeline
 ARG deidentifhir_pipeline_version
 COPY ./target/deidentifhir-pipeline-$deidentifhir_pipeline_version.jar /deidentifhir-pipeline.jar
 COPY ./src/main/resources/application.yaml /conf/application.yaml

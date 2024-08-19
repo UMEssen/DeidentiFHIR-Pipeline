@@ -1,7 +1,7 @@
 services:
 
   dp-cd-fhir-server:
-    image: samply/blaze:0.23.2
+    image: samply/blaze:0.29.3
     container_name: dp-cd-fhir-server
     ports:
       - 8082:8080
@@ -10,7 +10,7 @@ services:
       STORAGE: "in-memory"
 
   dp-rd-fhir-server:
-    image: samply/blaze:0.23.2
+    image: samply/blaze:0.29.3
     container_name: dp-rd-fhir-server
     ports:
       - 8083:8080
@@ -20,7 +20,7 @@ services:
       ENFORCE_REFERENTIAL_INTEGRITY: "false"
 
   dp-deidentifhir-pipeline:
-    image: eclipse-temurin:21.0.2_13-jre
+    image: eclipse-temurin:21.0.4_7-jre
     container_name: dp-deidentifhir-pipeline
     volumes:
       - ../target/deidentifhir-pipeline-0.1.3.jar:/deidentifhir-pipeline.jar
