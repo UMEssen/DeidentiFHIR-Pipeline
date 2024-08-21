@@ -1,10 +1,12 @@
 #!/bin/bash
 
+docker_up_options=(-d --quiet-pull)
+
 failure=0
 
 # pseudonymization with hashmap
 echo "=== Starting integrationtests with hashmap ==="
-docker compose up -d
+docker compose up "${docker_up_options[@]}"
 #hurl --verbose --test test-transfer.hurl
 hurl --test test-transfer.hurl
 if [[ $? -ne 0 ]] ; then
@@ -17,7 +19,7 @@ docker compose down -v
 
 # pseudonymization with gpas
 echo "=== Starting integrationtests with gPAS ==="
-docker compose -f docker-compose-with-gpas.yml up -d
+docker compose -f docker-compose-with-gpas.yml up "${docker_up_options[@]}"
 #hurl --verbose --test test-transfer.hurl
 hurl --test test-transfer.hurl
 if [[ $? -ne 0 ]] ; then
@@ -30,7 +32,7 @@ docker compose -f docker-compose-with-gpas.yml down -v
 
 # no pseudonymization
 echo "=== Starting integrationtests with no pseudonymization ==="
-docker compose -f docker-compose-no-pseudonymization.yml up -d
+docker compose -f docker-compose-no-pseudonymization.yml up "${docker_up_options[@]}"
 #hurl --verbose --test test-transfer-no-pseudonymization.hurl
 hurl --test test-transfer-no-pseudonymization.hurl
 if [[ $? -ne 0 ]] ; then
