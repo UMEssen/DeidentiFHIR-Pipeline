@@ -1,0 +1,40 @@
+services:
+
+  dp-cd-fhir-server:
+    image: samply/blaze:0.23.2
+    container_name: dp-cd-fhir-server
+    ports:
+      - 8082:8080
+    environment:
+      BASE_URL: "http://localhost:8082"
+      STORAGE: "in-memory"
+
+  dp-rd-fhir-server:
+    image: samply/blaze:0.23.2
+    container_name: dp-rd-fhir-server
+    ports:
+      - 8083:8080
+    environment:
+      BASE_URL: "http://localhost:8083"
+      STORAGE: "in-memory"
+      ENFORCE_REFERENTIAL_INTEGRITY: "false"
+
+  dp-deidentifhir-pipeline:
+    image: eclipse-temurin:21.0.4_7-jre
+    container_name: dp-deidentifhir-pipeline
+    volumes:
+      - ../target/deidentifhir-pipeline-0.1.3.jar:/deidentifhir-pipeline.jar
+      - ./application-no-pseudonymization.yaml:/conf/application.yaml
+      - ../deidentifhir:/deidentifhir
+    entrypoint: /bin/bash
+    command: -c "java -jar /deidentifhir-pipeline.jar --spring.config.location=/conf/application.yaml"
+    network_mode: "host"
+#    depends_on:
+#      dp-gpas:
+#        condition: service_healthy
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8042/healthcheck" ]
+      interval: 5s
+      timeout: 5s
+      retries: 100
+      start_period: 5s

@@ -21,6 +21,7 @@ import de.ume.deidentifhirpipeline.transfer.lastupdated.GetLastUpdatedImpl;
 import de.ume.deidentifhirpipeline.transfer.lastupdated.SetLastUpdatedImpl;
 import de.ume.deidentifhirpipeline.transfer.lastupdated.SetLastUpdated;
 import de.ume.deidentifhirpipeline.transfer.pseudonymization.DeidentiFHIRPseudonymization;
+import de.ume.deidentifhirpipeline.transfer.pseudonymization.NoPseudonymization;
 import de.ume.deidentifhirpipeline.transfer.pseudonymization.Pseudonymization;
 import lombok.Getter;
 import lombok.Setter;
@@ -69,15 +70,16 @@ public class ProjectConfiguration {
       getLastUpdatedImpl = Optional.of(new GetLastUpdatedImpl(lastUpdated));
       setLastUpdatedImpl = Optional.of(new SetLastUpdatedImpl(lastUpdated));
     }
-    if( cohortSelection  != null && cohortSelection.getGics() != null )           cohortSelectionImpl  = new GicsCohortSelection();
-    if( cohortSelection  != null && cohortSelection.getViaIds() != null )         cohortSelectionImpl  = new IdCohortSelection();
-    if( cohortSelection  != null && cohortSelection.getFiremetrics() != null )    cohortSelectionImpl  = new FiremetricsCohortSelection();
-    if( dataSelection    != null && dataSelection.getFhirServer() != null )       dataSelectionImpl    = new FhirServerDataSelection();
-    if( dataSelection    != null && dataSelection.getFiremetrics() != null )      dataSelectionImpl    = new FiremetricsDataSelection();
-    if( dataSelection    != null && dataSelection.getDummy() != null )            dataSelectionImpl    = new DummyDataSelection();
-    if( pseudonymization != null && pseudonymization.getDeidentifhir() != null )  pseudonymizationImpl = new DeidentiFHIRPseudonymization();
-    if( dataStoring      != null && dataStoring.getFhirServer() != null )         dataStoringImpl      = new FhirServerDataStoring();
-    if( dataStoring      != null && dataStoring.getFiremetrics() != null )        dataStoringImpl      = new FiremetricsDataStoring();
+    if( cohortSelection  != null && cohortSelection.getGics() != null )                 cohortSelectionImpl  = new GicsCohortSelection();
+    if( cohortSelection  != null && cohortSelection.getViaIds() != null )               cohortSelectionImpl  = new IdCohortSelection();
+    if( cohortSelection  != null && cohortSelection.getFiremetrics() != null )          cohortSelectionImpl  = new FiremetricsCohortSelection();
+    if( dataSelection    != null && dataSelection.getFhirServer() != null )             dataSelectionImpl    = new FhirServerDataSelection();
+    if( dataSelection    != null && dataSelection.getFiremetrics() != null )            dataSelectionImpl    = new FiremetricsDataSelection();
+    if( dataSelection    != null && dataSelection.getDummy() != null )                  dataSelectionImpl    = new DummyDataSelection();
+    if( pseudonymization != null && pseudonymization.getDeidentifhir() != null )        pseudonymizationImpl = new DeidentiFHIRPseudonymization();
+    if( pseudonymization != null && pseudonymization.isUse() == false )                 pseudonymizationImpl = new NoPseudonymization();
+    if( dataStoring      != null && dataStoring.getFhirServer() != null )               dataStoringImpl      = new FhirServerDataStoring();
+    if( dataStoring      != null && dataStoring.getFiremetrics() != null )              dataStoringImpl      = new FiremetricsDataStoring();
 
   }
 

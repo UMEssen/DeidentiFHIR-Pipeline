@@ -6,5 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PseudonymizationConfiguration {
+  private boolean use = true;
   private DeidentiFHIRPseudonymizationConfiguration deidentifhir;
 }
