@@ -1,0 +1,63 @@
+url: "http://localhost:8082/fhir"
+
+resources:
+  - Patient:
+      - queries:
+          - "id=<id>"
+        fhirpaths:
+          - "managingOrganization.reference"
+    Condition:
+      - queries:
+          #      - "subject=Patient/<id>"
+          - "subject=Patient/<id>&code=H83.8"
+        fhirpaths:
+  #        - "subject.reference"
+          - "encounter.reference"
+      - queries:
+          - "subject=Patient/<id>&code=S50.0"
+        fhirpaths:
+  #        - "subject.reference"
+          - "encounter.reference"
+    Encounter:
+      - queries:
+          - "subject=<id>"
+        fhirpaths:
+          - "diagnosis.condition.reference"
+  #  Observation:
+  #    - queries:
+  #        - "subject=<id>"
+  #  MedicationAdministration:
+  #    - queries:
+  #        - "subject=<id>"
+  #      fhirpaths:
+  #        - "medication.reference"
+  - Patient:
+      - queries:
+          - "id=<id>"
+        fhirpaths:
+          - "managingOrganization.reference"
+    Condition:
+      - queries:
+          #      - "subject=Patient/<id>"
+          - "subject=Patient/<id>&code=H83.8"
+        fhirpaths:
+          #        - "subject.reference"
+          - "encounter.reference"
+      - queries:
+          - "subject=Patient/<id>&code=S50.0"
+        fhirpaths:
+          #        - "subject.reference"
+          - "encounter.reference"
+    Encounter:
+      - queries:
+          - "subject=<id>"
+        fhirpaths:
+          - "diagnosis.condition.reference"
+    Observation:
+      - queries:
+          - "subject=<id>"
+    MedicationAdministration:
+      - queries:
+          - "subject=<id>"
+        fhirpaths:
+          - "medication.reference"

@@ -21,7 +21,17 @@ projects:
     cohort-selection:
       via-ids:
         ids: ["1234-identifier", "234-identifier"]
+#        ids: ["1234", "234"]
+#        mvh-se:
+#          gpas:
+#            domain: test-project
+#            gpasServiceWsdlUrl: http://localhost:8081/gpas/gpasService?wsdl
+#            domainServiceWsdlUrl: http://localhost:8081/gpas/DomainService?wsdl
+#          firemetrics:
+#            bla: bla
     data-selection:
+#      fhir-collector:
+#        configurationFile: ./src/main/resources/fhir-collector.yaml
       fhir-server:
         url: http://localhost:8082/fhir
         fhirIdQueryPlaceholder: <id>
@@ -30,6 +40,9 @@ projects:
         bundleQueryPlaceholder: <fhir-id>
         bundleQuery: Patient/<fhir-id>/$everything?_count=100000
 #        bundleQuery: Patient?_id=<fhir-id>&_lastUpdated=ge<lastUpdated>
+#      mvh-se:
+#        firemetrics:
+#          bla: bla
     pseudonymization:
 #      use: false # false => no pseudonymization; true => (default) pseudonymization
       deidentifhir:
