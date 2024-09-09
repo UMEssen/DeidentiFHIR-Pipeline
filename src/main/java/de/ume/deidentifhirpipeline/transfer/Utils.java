@@ -2,6 +2,10 @@ package de.ume.deidentifhirpipeline.transfer;
 
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.parser.IParser;
+import ca.uhn.fhir.rest.client.api.IGenericClient;
+import ca.uhn.fhir.rest.client.interceptor.BasicAuthInterceptor;
+import ca.uhn.fhir.rest.client.interceptor.BearerTokenAuthInterceptor;
+import ca.uhn.fhir.rest.client.interceptor.LoggingInterceptor;
 import de.ume.deidentifhirpipeline.api.data.TransferStatus;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Resource;
@@ -84,5 +88,29 @@ public class Utils {
     int millis = zonedDateTime.getNano() / 1_000_000;
 
     return String.format("%s-%02d-%02d %02d:%02d:%02d.%03d", year, month, day, hour, minute, second, millis);
+  }
+
+  public static IGenericClient hapiClient(String url) {
+    fctx.getRestfulClientFactory().setConnectTimeout(60000);
+    fctx.getRestfulClientFactory().setSocketTimeout(60000);
+    fctx.getRestfulClientFactory().setConnectionRequestTimeout(60000);
+    IGenericClient hapiClient = fctx.newRestfulGenericClient(url);
+    hapiClient.registerInterceptor(new LoggingInterceptor(true));
+
+    return hapiClient;
+  }
+
+  public static IGenericClient hapiClient(String url, String user, String password) {
+    IGenericClient hapiClient = hapiClient(url);
+    hapiClient.registerInterceptor(new BasicAuthInterceptor(user, password));
+
+    return hapiClient;
+  }
+
+  public static IGenericClient hapiClient(String url, String token) {
+    IGenericClient hapiClient = hapiClient(url);
+    hapiClient.registerInterceptor(new BearerTokenAuthInterceptor(token));
+
+    return hapiClient;
   }
 }

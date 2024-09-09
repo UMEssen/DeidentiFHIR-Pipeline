@@ -10,10 +10,10 @@ docker compose up "${docker_up_options[@]}"
 #hurl --verbose --test test-transfer.hurl
 hurl --test test-transfer.hurl
 if [[ $? -ne 0 ]] ; then
-    echo "xxx There are integrationtests with hashmap failures xxx"
+    printf "xxx There are integrationtests with hashmap failures xxx\n\n"
     failure=1
 else
-    echo "=== Finished integrationtests with hashmap successfully without errors ==="
+    printf "✔✔✔ Finished integrationtests with hashmap successfully without errors ✔✔✔\n\n"
 fi
 docker compose down -v
 
@@ -23,10 +23,10 @@ docker compose -f docker-compose-with-gpas.yml up "${docker_up_options[@]}"
 #hurl --verbose --test test-transfer.hurl
 hurl --test test-transfer.hurl
 if [[ $? -ne 0 ]] ; then
-    echo "xxx There are integrationtests with gPAS failures xxx"
+    printf "xxx There are integrationtests with gPAS failures xxx\n\n"
     failure=1
 else
-    echo "=== Finished integrationtests with gPAS successfully without errors ==="
+    printf "✔✔✔ Finished integrationtests with gPAS successfully without errors ✔✔✔\n\n"
 fi
 docker compose -f docker-compose-with-gpas.yml down -v
 
@@ -36,18 +36,18 @@ docker compose -f docker-compose-no-pseudonymization.yml up "${docker_up_options
 #hurl --verbose --test test-transfer-no-pseudonymization.hurl
 hurl --test test-transfer-no-pseudonymization.hurl
 if [[ $? -ne 0 ]] ; then
-    echo "xxx There are integrationtests with no pseudonymization failures xxx"
+    printf "xxx There are integrationtests with no pseudonymization failures xxx\n\n"
     failure=1
 else
-    echo "=== Finished integrationtests with no pseudonymization successfully without errors ==="
+    printf "✔✔✔ Finished integrationtests with no pseudonymization successfully without errors ✔✔✔\n\n"
 fi
 docker compose -f docker-compose-no-pseudonymization.yml down -v
 
 # test if there was any failure
 if [[ failure -ne 0 ]] ; then
-    echo "xxx There are integrationtests failures xxx"
+    printf "xxx There are integrationtests failures xxx\n\n"
     exit 1
 else
-    echo "=== Integrationtests completed successfully without errors ==="
+    printf "✔✔✔ Integrationtests completed successfully without errors ✔✔✔\n\n"
     exit 0
 fi

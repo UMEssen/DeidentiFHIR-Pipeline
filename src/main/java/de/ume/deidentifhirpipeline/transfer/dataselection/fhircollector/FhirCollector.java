@@ -5,6 +5,8 @@ import ca.uhn.fhir.rest.client.api.IGenericClient;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import de.ume.deidentifhirpipeline.transfer.Utils;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.hapi.ctx.HapiWorkerContext;
 import org.hl7.fhir.r4.model.*;
@@ -21,23 +23,37 @@ public class FhirCollector {
 
   ConcurrentHashMap<String, Resource> fhirResources = new ConcurrentHashMap<>();
 
+  @Getter
   FhirCollectorConfig config;
 
   FHIRPathEngine fhirPathEngine;
 
-  private IGenericClient client;
+  @Getter
+  @Setter
+  private IGenericClient hapiClient;
 
   public FhirCollector(String path) throws IOException {
     ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
     config = mapper.readValue(Path.of(path).toFile(), FhirCollectorConfig.class);
     log.debug("Loaded the following FhirCollector configuration: ");
     log.debug(mapper.writeValueAsString(config));
-
-    fhirPathEngine = new FHIRPathEngine(new HapiWorkerContext(Utils.fctx, new DefaultProfileValidationSupport(Utils.fctx)));
+    setup(config);
   }
 
   public FhirCollector(FhirCollectorConfig config) {
+    setup(config);
+  }
+
+  public FhirCollector(){
     fhirPathEngine = new FHIRPathEngine(new HapiWorkerContext(Utils.fctx, new DefaultProfileValidationSupport(Utils.fctx)));
+  }
+
+  private void setup(FhirCollectorConfig config) {
+    this.config = config;
+    fhirPathEngine = new FHIRPathEngine(new HapiWorkerContext(Utils.fctx, new DefaultProfileValidationSupport(Utils.fctx)));
+    this.hapiClient = Utils.fctx.newRestfulGenericClient(config.getUrl());
+    if( config.getUser() != null ) this.hapiClient = Utils.hapiClient(config.getUrl(), config.getUser(), config.getUrl());
+    if( config.getToken() != null ) this.hapiClient = Utils.hapiClient(config.getUrl(), config.getToken());
   }
 
   public void fetchResources(String id) {
@@ -55,13 +71,12 @@ public class FhirCollector {
       List<String> queries = pathDefinition.get("queries");
       List<String> fhirpaths = pathDefinition.get("fhirpaths");
       log.debug(resource);
-      client = Utils.fctx.newRestfulGenericClient(config.getUrl());
       queries.parallelStream().forEach(query -> {
         String enrichedQuery = query.replace("<id>", id);
         String fullSearchQuery = String.format("%s/%s?%s", config.getUrl(), resource, enrichedQuery);
         log.debug(fullSearchQuery);
 
-        Bundle bundle = client.search().byUrl(fullSearchQuery).returnBundle(Bundle.class).execute();
+        Bundle bundle = hapiClient.search().byUrl(fullSearchQuery).returnBundle(Bundle.class).execute();
         bundle.getEntry().parallelStream().forEach(entry ->
           fhirResources.put(
               String.format("%s/%s", resource, entry.getResource().getIdPart()),
@@ -69,7 +84,7 @@ public class FhirCollector {
           )
         );
         bundle.getEntry().parallelStream().forEach(entry ->
-          fetchReferencedResources(client, entry.getResource(), fhirpaths, resourceConfig)
+          fetchReferencedResources(hapiClient, entry.getResource(), fhirpaths, resourceConfig)
         );
       });
     });
@@ -114,14 +129,6 @@ public class FhirCollector {
         }
       }
     }
-  }
-
-  public IGenericClient getHapiClient() {
-    return client;
-  }
-
-  public FhirCollectorConfig getConfig() {
-    return config;
   }
 
   public Bundle getBundle() {

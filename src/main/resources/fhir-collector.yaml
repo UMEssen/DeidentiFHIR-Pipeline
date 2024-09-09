@@ -1,4 +1,9 @@
 url: "http://localhost:8082/fhir"
+## uncomment the following lines for basic auth
+#user: <insert-user-here>
+#password: <insert-password-here>
+## uncomment the following line for bearer token auth
+#token: <insert-token-here>
 
 resources:
   - Patient:
