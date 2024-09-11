@@ -75,8 +75,8 @@ public class FhirServerDataSelection extends DataSelection {
       queryWithId = queryWithId.replace(bundleQueryLastUpdatedPlaceholder, Utils.zonedDateTimeToFhirSearchString(Utils.longToZonedDateTime(lastUpdated.getAsLong(), ZoneId.of("UTC"))));
     }
     Bundle bundle = client.search().byUrl(String.format( "%s/%s", dataSelectionConfiguration.getUrl(), queryWithId)).returnBundle(Bundle.class).execute();
-    if( bundle == null || bundle.getTotal() == 0 ) throw new Exception("Returned bundle is empty. No medical data for id: " + fhirId);
     log.debug("getBundle(): " + Utils.fhirBundleToString(bundle));
+    if( bundle == null || bundle.getEntry().isEmpty()) throw new Exception("Returned bundle is empty. No medical data for id: " + fhirId);
     return bundle;
   }
 
