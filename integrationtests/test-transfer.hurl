@@ -8,6 +8,8 @@ HTTP 200
 # Post test bundle
 POST http://localhost:8082/fhir
 Content-Type: application/json
+[BasicAuth]
+user: password
 [Options]
 retry: 50 # Could take some time till the fhir server started
 file,testbundle1.json;
@@ -91,6 +93,8 @@ HTTP 200
 # Post test bundle2
 POST http://localhost:8082/fhir
 Content-Type: application/json
+[BasicAuth]
+user: password
 [Options]
 retry: 50
 file,testbundle2.json;

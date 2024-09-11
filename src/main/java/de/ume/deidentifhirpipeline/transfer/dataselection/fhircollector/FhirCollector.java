@@ -52,7 +52,7 @@ public class FhirCollector {
     this.config = config;
     fhirPathEngine = new FHIRPathEngine(new HapiWorkerContext(Utils.fctx, new DefaultProfileValidationSupport(Utils.fctx)));
     this.hapiClient = Utils.fctx.newRestfulGenericClient(config.getUrl());
-    if( config.getUser() != null ) this.hapiClient = Utils.hapiClient(config.getUrl(), config.getUser(), config.getUrl());
+    if( config.getUser() != null ) this.hapiClient = Utils.hapiClient(config.getUrl(), config.getUser(), config.getPassword());
     if( config.getToken() != null ) this.hapiClient = Utils.hapiClient(config.getUrl(), config.getToken());
   }
 

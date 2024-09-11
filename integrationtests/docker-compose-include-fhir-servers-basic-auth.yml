@@ -1,0 +1,29 @@
+services:
+
+  dp-cd-fhir-server:
+    image: samply/blaze:0.23.2
+    container_name: dp-cd-fhir-server
+    environment:
+      BASE_URL: "http://localhost:8082"
+      STORAGE: "in-memory"
+
+  proxy:
+    image: nginx:latest
+    container_name: nginx_proxy
+    ports:
+      - "8082:80"
+    volumes:
+      - ./nginx-cd-fhir-server/nginx-basic-auth.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx-cd-fhir-server/.htpasswd:/etc/nginx/.htpasswd
+    depends_on:
+      - dp-cd-fhir-server
+
+  dp-rd-fhir-server:
+    image: samply/blaze:0.23.2
+    container_name: dp-rd-fhir-server
+    ports:
+      - 8083:8080
+    environment:
+      BASE_URL: "http://localhost:8083"
+      STORAGE: "in-memory"
+      ENFORCE_REFERENTIAL_INTEGRITY: "false"

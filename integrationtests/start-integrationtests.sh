@@ -43,7 +43,19 @@ else
 fi
 docker compose -f docker-compose-no-pseudonymization.yml down -v
 
-# test if there was any failure
+# fhir-collector
+echo "=== Starting integrationtests with fhir-collector and basic auth ==="
+docker compose -f docker-compose-fhir-collector.yml up "${docker_up_options[@]}"
+hurl --test test-transfer.hurl
+if [[ $? -ne 0 ]] ; then
+    printf "xxx There are integrationtests with fhir-collector and basic auth failures xxx\n\n"
+    failure=1
+else
+    printf "✔✔✔ Finished integrationtests with fhir-collector and basic auth successfully without errors ✔✔✔\n\n"
+fi
+docker compose -f docker-compose-fhir-collector.yml down -v
+
+# test if there were any failure
 if [[ failure -ne 0 ]] ; then
     printf "xxx There are integrationtests failures xxx\n\n"
     exit 1

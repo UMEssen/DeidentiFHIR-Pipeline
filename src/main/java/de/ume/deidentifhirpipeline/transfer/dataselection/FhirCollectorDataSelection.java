@@ -29,9 +29,11 @@ public class FhirCollectorDataSelection extends DataSelection {
       FhirCollectorDataSelectionConfiguration configuration = context.getProjectConfiguration().getDataSelection().getFhirCollector();
       FhirCollector fhirCollector = new FhirCollector(configuration.getConfigurationFile());
       fhirCollector.fetchResources(context.getPatientId());
-      log.debug(fhirCollector.toString());
+      log.debug("Collected resources: {}", fhirCollector.toString());
       log.debug(Utils.fhirBundleToString(fhirCollector.getBundle()));
-      context.setBundle(fhirCollector.getBundle());
+      Bundle bundle = fhirCollector.getBundle();
+      if( bundle == null || bundle.getEntry().isEmpty()) throw new Exception("Returned bundle is empty. No medical data for id: " + context.getPatientId());
+      context.setBundle(bundle);
 
       return context;
     } catch (Exception e) {
