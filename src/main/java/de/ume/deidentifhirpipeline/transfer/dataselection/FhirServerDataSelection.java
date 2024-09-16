@@ -24,11 +24,20 @@ public class FhirServerDataSelection extends DataSelection {
   @Override
   public Context process(Context context) {
     try {
-      String fhirId = getFhirId(context.getPatientId(),
-          context.getProjectConfiguration().getDataSelection().getFhirServer());
+      FhirServerDataSelectionConfiguration configuration = context.getProjectConfiguration().getDataSelection().getFhirServer();
+
+      // Setup fhir client
+      IGenericClient client = Utils.hapiClient(configuration.getUrl());
+      if( configuration.getBasicAuth() != null ) {
+        client = Utils.hapiClient(configuration.getUrl(), configuration.getBasicAuth());
+      }
+      else if( configuration.getTokenAuth() != null ) {
+        client = Utils.hapiClient(configuration.getUrl(), configuration.getTokenAuth());
+      }
+
+      String fhirId = getFhirId(client, context.getPatientId(), configuration);
       context.setNewLastUpdated(OptionalLong.of(ZonedDateTime.now().toInstant().toEpochMilli()));
-      Bundle bundle =
-          getBundle(fhirId, context.getProjectConfiguration().getDataSelection().getFhirServer(), context.getOldLastUpdated());
+      Bundle bundle = getBundle(client, fhirId, configuration, context.getOldLastUpdated());
       context.setBundle(bundle);
 
 //      FhirPathR4 fhirPathR4 = new FhirPathR4(Utils.fctx);
@@ -48,8 +57,7 @@ public class FhirServerDataSelection extends DataSelection {
     }
   }
 
-  private static String getFhirId(String id, FhirServerDataSelectionConfiguration dataSelectionConfiguration) {
-    IGenericClient client = Utils.fctx.newRestfulGenericClient(dataSelectionConfiguration.getUrl());
+  private static String getFhirId(IGenericClient client, String id, FhirServerDataSelectionConfiguration dataSelectionConfiguration) {
 
     // Replace configured placeholder with actual id and then execute query
     String query = dataSelectionConfiguration.getFhirIdQuery();
@@ -62,11 +70,7 @@ public class FhirServerDataSelection extends DataSelection {
     return fhirId;
   }
 
-  private static Bundle getBundle(String fhirId, FhirServerDataSelectionConfiguration dataSelectionConfiguration, OptionalLong lastUpdated) throws Exception {
-    IGenericClient client = Utils.fctx.newRestfulGenericClient(dataSelectionConfiguration.getUrl());
-    if( dataSelectionConfiguration.getBasic() != null ){
-      client.registerInterceptor(new BasicAuthInterceptor(dataSelectionConfiguration.getBasic().getUser(),dataSelectionConfiguration.getBasic().getPassword()));
-    }
+  private static Bundle getBundle(IGenericClient client, String fhirId, FhirServerDataSelectionConfiguration dataSelectionConfiguration, OptionalLong lastUpdated) throws Exception {
     String query = dataSelectionConfiguration.getBundleQuery();
     String queryPlaceholder = dataSelectionConfiguration.getBundleQueryPlaceholder();
     String queryWithId = query.replace(queryPlaceholder, fhirId);

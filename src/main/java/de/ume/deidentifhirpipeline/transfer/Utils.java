@@ -7,6 +7,8 @@ import ca.uhn.fhir.rest.client.interceptor.BasicAuthInterceptor;
 import ca.uhn.fhir.rest.client.interceptor.BearerTokenAuthInterceptor;
 import ca.uhn.fhir.rest.client.interceptor.LoggingInterceptor;
 import de.ume.deidentifhirpipeline.api.data.TransferStatus;
+import de.ume.deidentifhirpipeline.configuration.auth.BasicAuthConfiguration;
+import de.ume.deidentifhirpipeline.configuration.auth.TokenAuthConfiguration;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Resource;
 
@@ -107,10 +109,20 @@ public class Utils {
     return hapiClient;
   }
 
+  public static IGenericClient hapiClient(String url, BasicAuthConfiguration basic) {
+    return hapiClient(url, basic.getUser(), basic.getPassword());
+  }
+
   public static IGenericClient hapiClient(String url, String token) {
     IGenericClient hapiClient = hapiClient(url);
     hapiClient.registerInterceptor(new BearerTokenAuthInterceptor(token));
 
     return hapiClient;
   }
+
+  public static IGenericClient hapiClient(String url, TokenAuthConfiguration token){
+    return hapiClient(url, token.getToken());
+  }
+
+
 }

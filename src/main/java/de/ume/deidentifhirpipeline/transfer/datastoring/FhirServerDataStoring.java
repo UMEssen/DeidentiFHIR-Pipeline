@@ -24,7 +24,13 @@ public class FhirServerDataStoring extends DataStoring {
   }
 
   private static void storeBundle(FhirServerDataStoringConfiguration configuration, Bundle bundle) {
-    IGenericClient client = Utils.fctx.newRestfulGenericClient(configuration.getUrl());
+    IGenericClient client = Utils.hapiClient(configuration.getUrl());
+    if( configuration.getBasicAuth() != null ) {
+      client = Utils.hapiClient(configuration.getUrl(), configuration.getBasicAuth());
+    }
+    else if( configuration.getTokenAuth() != null ) {
+      client = Utils.hapiClient(configuration.getUrl(), configuration.getTokenAuth());
+    }
     bundle.setType(Bundle.BundleType.TRANSACTION);
     bundle.getEntry().stream()
         .forEach(entry -> entry.getRequest()

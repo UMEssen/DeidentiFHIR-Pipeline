@@ -3,8 +3,8 @@ server:
 logging:
   level:
     root: INFO
-    de.ume: INFO
-#    de.ume: DEBUG
+#    de.ume: INFO
+    de.ume: DEBUG
   file.name: ./logs/application-debug.log
 
 projects:
@@ -34,6 +34,11 @@ projects:
 #        configurationFile: ./src/main/resources/fhir-collector.yaml
       fhir-server:
         url: http://localhost:8082/fhir
+#        basic-auth:
+#          user: <insert-user-here>
+#          password: <insert-password-here>
+#        token-auth:
+#          token: <insert-token-here>
         fhirIdQueryPlaceholder: <id>
         fhirIdQuery: Patient?identifier=<id>
         bundleQueryLastUpdatedPlaceholder: <lastUpdated>
@@ -59,6 +64,11 @@ projects:
     data-storing:
       fhir-server:
         url: http://localhost:8083/fhir
+#        basic-auth:
+#          user: <insert-user-here>
+#          password: <insert-password-here>
+#        token-auth:
+#          token: <insert-token-here>
 
   "test-project2":
     cohort-selection:
@@ -86,3 +96,8 @@ projects:
     data-storing:
       fhir-server:
         url: http://localhost:8083/fhir
+#        basic-auth:
+#          user: <insert-user-here>
+#          password: <insert-password-here>
+#        token-auth:
+#          token: <insert-token-here>
