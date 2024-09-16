@@ -23,7 +23,7 @@ public class HashmapService implements PseudonymizationServiceInterface, LastUpd
   private final String dateShiftingDomain;
   private final String lastUpdatedDomain;
 
-  private static final ConcurrentMap<String, ConcurrentMap<String, String>> domainMap = new ConcurrentHashMap<>();
+  public static final ConcurrentMap<String, ConcurrentMap<String, String>> domainMap = new ConcurrentHashMap<>();
 
   public HashmapService(HashmapServiceConfiguration configuration) {
     this.configuration = configuration;

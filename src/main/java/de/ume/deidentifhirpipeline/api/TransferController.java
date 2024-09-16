@@ -9,6 +9,7 @@ import de.ume.deidentifhirpipeline.api.model.TransferRequestWithConfiguration;
 import de.ume.deidentifhirpipeline.api.model.TransferResponse;
 import de.ume.deidentifhirpipeline.configuration.ProjectConfiguration;
 import de.ume.deidentifhirpipeline.configuration.ProjectsConfiguration;
+import de.ume.deidentifhirpipeline.service.pseudonymization.HashmapService;
 import de.ume.deidentifhirpipeline.transfer.TransferProcess;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
 
 
@@ -104,6 +106,11 @@ public class TransferController {
         .filter(entry -> entry.getValue().getStatus().equals(Status.COMPLETED))
         .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
     return new ResponseEntity<>(bla, HttpStatusCode.valueOf(200));
+  }
+
+  @GetMapping(value = "/hashmap")
+  public ResponseEntity<ConcurrentMap<String, ConcurrentMap<String, String>>> getPseudonymMap() {
+    return new ResponseEntity<>(HashmapService.domainMap, HttpStatusCode.valueOf(200));
   }
 
   @GetMapping(value = "/healthcheck")
