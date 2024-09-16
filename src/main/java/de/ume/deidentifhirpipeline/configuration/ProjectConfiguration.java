@@ -73,7 +73,6 @@ public class ProjectConfiguration {
     if( dataSelection    != null && dataSelection.getFhirServer() != null )             dataSelectionImpl    = new FhirServerDataSelection();
     if( dataSelection    != null && dataSelection.getFhirCollector() != null )          dataSelectionImpl    = new FhirCollectorDataSelection();
     if( dataSelection    != null && dataSelection.getFiremetrics() != null )            dataSelectionImpl    = new FiremetricsDataSelection();
-    if( dataSelection    != null && dataSelection.getDummy() != null )                  dataSelectionImpl    = new DummyDataSelection();
     if( pseudonymization != null && pseudonymization.getDeidentifhir() != null )        pseudonymizationImpl = new DeidentiFHIRPseudonymization();
     if( pseudonymization != null && pseudonymization.isUse() == false )                 pseudonymizationImpl = new NoPseudonymization();
     if( dataStoring      != null && dataStoring.getFhirServer() != null )               dataStoringImpl      = new FhirServerDataStoring();

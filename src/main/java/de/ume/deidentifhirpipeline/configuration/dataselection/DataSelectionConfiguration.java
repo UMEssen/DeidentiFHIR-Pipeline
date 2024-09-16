@@ -9,5 +9,4 @@ public class DataSelectionConfiguration {
   private FhirServerDataSelectionConfiguration fhirServer;
   private FhirCollectorDataSelectionConfiguration fhirCollector;
   private FiremetricsDataSelectionConfiguration firemetrics;
-  private DummyDataSelectionConfiguration dummy;
 }
