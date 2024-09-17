@@ -8,4 +8,5 @@ import lombok.Setter;
 public class DataStoringConfiguration {
   private FhirServerDataStoringConfiguration fhirServer;
   private FiremetricsDataStoringConfiguration firemetrics;
+  private FolderDataStoringConfiguration folder;
 }

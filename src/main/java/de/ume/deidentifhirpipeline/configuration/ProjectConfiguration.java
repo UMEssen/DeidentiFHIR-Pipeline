@@ -13,6 +13,7 @@ import de.ume.deidentifhirpipeline.transfer.dataselection.*;
 import de.ume.deidentifhirpipeline.transfer.datastoring.DataStoring;
 import de.ume.deidentifhirpipeline.transfer.datastoring.FhirServerDataStoring;
 import de.ume.deidentifhirpipeline.transfer.datastoring.FiremetricsDataStoring;
+import de.ume.deidentifhirpipeline.transfer.datastoring.FolderDataStoring;
 import de.ume.deidentifhirpipeline.transfer.lastupdated.GetLastUpdated;
 import de.ume.deidentifhirpipeline.transfer.lastupdated.GetLastUpdatedImpl;
 import de.ume.deidentifhirpipeline.transfer.lastupdated.SetLastUpdatedImpl;
@@ -77,6 +78,7 @@ public class ProjectConfiguration {
     if( pseudonymization != null && pseudonymization.isUse() == false )                 pseudonymizationImpl = new NoPseudonymization();
     if( dataStoring      != null && dataStoring.getFhirServer() != null )               dataStoringImpl      = new FhirServerDataStoring();
     if( dataStoring      != null && dataStoring.getFiremetrics() != null )              dataStoringImpl      = new FiremetricsDataStoring();
+    if( dataStoring      != null && dataStoring.getFolder() != null )                   dataStoringImpl      = new FolderDataStoring();
 
   }
 

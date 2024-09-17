@@ -62,6 +62,8 @@ projects:
 #          gpasServiceWsdlUrl: http://localhost:8081/gpas/gpasService?wsdl
 #          domainServiceWsdlUrl: http://localhost:8081/gpas/DomainService?wsdl
     data-storing:
+#      folder:
+#        path: /bla/
       fhir-server:
         url: http://localhost:8083/fhir
 #        basic-auth:
@@ -96,8 +98,3 @@ projects:
     data-storing:
       fhir-server:
         url: http://localhost:8083/fhir
-#        basic-auth:
-#          user: <insert-user-here>
-#          password: <insert-password-here>
-#        token-auth:
-#          token: <insert-token-here>
