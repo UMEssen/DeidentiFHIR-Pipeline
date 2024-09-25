@@ -8,9 +8,9 @@ import de.ume.deidentifhirpipeline.transfer.Utils;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.hl7.fhir.r4.fhirpath.FHIRPathEngine;
 import org.hl7.fhir.r4.hapi.ctx.HapiWorkerContext;
 import org.hl7.fhir.r4.model.*;
-import org.hl7.fhir.r4.utils.FHIRPathEngine;
 
 import java.io.IOException;
 import java.nio.file.Path;
