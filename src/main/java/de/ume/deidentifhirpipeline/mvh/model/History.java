@@ -1,9 +1,11 @@
 package de.ume.deidentifhirpipeline.mvh.model;
 
+import de.ume.deidentifhirpipeline.mvh.model.base.Coding;
+import de.ume.deidentifhirpipeline.mvh.model.base.Period;
+import de.ume.deidentifhirpipeline.mvh.model.base.Reference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hl7.fhir.r4.model.Coding;
 
 import java.util.List;
 

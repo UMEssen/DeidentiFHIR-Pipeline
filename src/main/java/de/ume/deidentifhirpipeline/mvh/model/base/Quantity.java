@@ -1,4 +1,4 @@
-package de.ume.deidentifhirpipeline.mvh.model;
+package de.ume.deidentifhirpipeline.mvh.model.base;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

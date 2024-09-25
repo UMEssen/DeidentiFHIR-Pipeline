@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Record {
+public class PatientRecord {
   private Patient patient;
   private Consent consent;
   private EpisodeOfCare episodeOfCare;
