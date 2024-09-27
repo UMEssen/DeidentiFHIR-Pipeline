@@ -63,27 +63,27 @@ public class Coding {
   } // class Gender
 
   public static class ACMG {
-    public static Coding pvs1() { return new Coding("PVS1"); }
-    public static Coding ps1() { return new Coding("PS1"); }
-    public static Coding ps2() { return new Coding("PS2"); }
-    public static Coding ps3() { return new Coding("PS3"); }
-    public static Coding ps4() { return new Coding("PS4"); }
-    public static Coding pm1() { return new Coding("PM1"); }
-    public static Coding pm2() { return new Coding("PM2"); }
-    public static Coding pm3() { return new Coding("PM3"); }
-    public static Coding pm4() { return new Coding("PM4"); }
-    public static Coding pm5() { return new Coding("PM5"); }
-    public static Coding pm6() { return new Coding("PM6"); }
-    public static Coding pp1() { return new Coding("PP1"); }
-    public static Coding pp2() { return new Coding("PP2"); }
-    public static Coding pp3() { return new Coding("PP3"); }
-    public static Coding pp4() { return new Coding("PP4"); }
-    public static Coding pp5() { return new Coding("PP5"); }
-    public static Coding ba1() { return new Coding("BA1"); }
-    public static Coding bs1() { return new Coding("BS1"); }
-    public static Coding bs2() { return new Coding("BS2"); }
-    public static Coding bs3() { return new Coding("BS3"); }
-    public static Coding bs4() { return new Coding("BS4"); }
+    public static final Coding PVS1 = new Coding("PVS1");
+    public static final Coding PS1 = new Coding("PS1");
+    public static final Coding PS2 = new Coding("PS2");
+    public static final Coding PS3 = new Coding("PS3");
+    public static final Coding PS4 = new Coding("PS4");
+    public static final Coding PM1 = new Coding("PM1");
+    public static final Coding PM2 = new Coding("PM2");
+    public static final Coding PM3 = new Coding("PM3");
+    public static final Coding PM4 = new Coding("PM4");
+    public static final Coding PM5 = new Coding("PM5");
+    public static final Coding PM6 = new Coding("PM6");
+    public static final Coding PP1 = new Coding("PP1");
+    public static final Coding PP2 = new Coding("PP2");
+    public static final Coding PP3 = new Coding("PP3");
+    public static final Coding PP4 = new Coding("PP4");
+    public static final Coding PP5 = new Coding("PP5");
+    public static final Coding BA1 = new Coding("BA1");
+    public static final Coding BS1 = new Coding("BS1");
+    public static final Coding BS2 = new Coding("BS2");
+    public static final Coding BS3 = new Coding("BS3");
+    public static final Coding BS4 = new Coding("BS4");
 
 
     public static class Modifier {
@@ -109,60 +109,27 @@ public class Coding {
   } // class Diagnosis
 
   public static class GMFCS {
-    public static Coding levelI() {
-      return new Coding("I", "Level I");
-    }
-    public static Coding levelII() {
-      return new Coding("II", "Level II");
-    }
-    public static Coding levelIII() {
-      return new Coding("III", "Level III");
-    }
-    public static Coding levelIV() {
-      return new Coding("IV", "Level IV");
-    }
-    public static Coding levelV() {
-      return new Coding("V", "Level V");
-    }
+    public static final Coding levelI     = new Coding("I", "Level I");
+    public static final Coding levelII    = new Coding("II", "Level II");
+    public static final Coding levelIII   = new Coding("III", "Level III");
+    public static final Coding levelIV    = new Coding("IV", "Level IV");
+    public static final Coding levelV     = new Coding("V", "Level V");
   } // class GMFCS
 
   public static class HPOStatus {
-    public static Coding improved() {
-      return new Coding("improved", "Verbessert");
-    }
-    public static Coding worsened() {
-      return new Coding("worsened", "Verschlechtert");
-    }
-    public static Coding resolved() {
-      return new Coding("resolved", "Weggefallen");
-    }
+    public static final Coding improved = new Coding("improved", "Verbessert");
+    public static final Coding worsened = new Coding("worsened", "Verschlechtert");
+    public static final Coding resolved = new Coding("resolved", "Weggefallen");
   } // class HPOStatus
 
   public static class Variant {
     public static class Zygosity {
-      public static Coding heterozygous() {
-        return new Coding("heterozygous", "Heterozygous");
-      }
-
-      public static Coding homozygous() {
-        return new Coding("homozygous", "Homozygous");
-      }
-
-      public static Coding compHet() {
-        return new Coding("comp-het", "Compound heterozygous");
-      }
-
-      public static Coding hemi() {
-        return new Coding("hemi", "Hemizygous");
-      }
-
-      public static Coding homoplasmic() {
-        return new Coding("homoplasmic", "Homoplasmic");
-      }
-
-      public static Coding heteroplasmic() {
-        return new Coding("heteroplasmic", "Heteroplasmic");
-      }
+      public static final Coding heterozygous   = new Coding("heterozygous", "Heterozygous");
+      public static final Coding homozygous     = new Coding("homozygous", "Homozygous");
+      public static final Coding compHet        = new Coding("comp-het", "Compound heterozygous");
+      public static final Coding hemi           = new Coding("hemi", "Hemizygous");
+      public static final Coding homoplasmic    = new Coding("homoplasmic", "Homoplasmic");
+      public static final Coding heteroplasmic  = new Coding("heteroplasmic", "Heteroplasmic");
     } // class Zygosity
   } // class Variant
 
