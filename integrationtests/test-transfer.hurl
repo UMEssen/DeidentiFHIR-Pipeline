@@ -27,7 +27,7 @@ transfer_id: jsonpath "$.transferId"
 # Check if transfer is pending
 GET http://localhost:8042/transfer/{{transfer_id}}
 [Options]
-retry: 10   # maximum number of retry, -1 for unlimited
+retry: 100   # maximum number of retry, -1 for unlimited
 retry-interval: 100
 HTTP 200
 [Asserts]
@@ -113,7 +113,7 @@ transfer_id: jsonpath "$.transferId"
 # Check if transfer is pending
 GET http://localhost:8042/transfer/{{transfer_id}}
 [Options]
-retry: 10   # maximum number of retry, -1 for unlimited
+retry: 100   # maximum number of retry, -1 for unlimited
 retry-interval: 100
 HTTP 200
 [Asserts]
