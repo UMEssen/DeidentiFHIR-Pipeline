@@ -1,4 +1,4 @@
-[![version](https://img.shields.io/badge/version-0.1.4-green.svg)](https://github.com/UMEssen/DeidentiFHIR-Pipeline/releases)
+[![version](https://img.shields.io/github/v/release/UMEssen/DeidentiFHIR-Pipeline)](https://github.com/UMEssen/DeidentiFHIR-Pipeline/releases)
 [![Build](https://github.com/UMEssen/DeidentiFHIR-Pipeline/actions/workflows/maven-build-and-test.yml/badge.svg)](https://github.com/UMEssen/DeidentiFHIR-Pipeline/actions/workflows/maven-build-and-test.yml)
 ### DeidentiFHIR-Pipeline
 With the DeidentiFHIR-Pipeline, you can transfer FHIR based data from one source (e.g. a FHIR server) to a target 
