@@ -78,8 +78,8 @@ projects:
 ```
 
 #### What is needed for compilation: 
-- `Java 21`
-- `Maven`
+- `java 23`
+- `maven` (tested with `3.9.9`)
 - `docker`
 - `docker compose`
 
