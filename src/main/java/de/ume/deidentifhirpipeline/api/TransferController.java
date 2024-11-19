@@ -62,10 +62,10 @@ public class TransferController {
 
   @PostMapping(value = "/start-with-new-configuration", consumes = "application/json", produces = "application/json")
   public ResponseEntity<TransferResponse> startWithNewConfiguration(@RequestBody TransferRequestWithConfiguration transferRequestWithConfiguration) throws Exception {
-      ProjectConfiguration projectConfiguration = transferRequestWithConfiguration.getProjectConfiguration();
-      projectConfiguration.validate();
-      String response = TransferProcess.start(projectConfiguration);
-      return new ResponseEntity<>(new TransferResponse(response), HttpStatusCode.valueOf(200));
+    ProjectConfiguration projectConfiguration = transferRequestWithConfiguration.getProjectConfiguration();
+    projectConfiguration.validate();
+    String response = TransferProcess.start(projectConfiguration);
+    return new ResponseEntity<>(new TransferResponse(response), HttpStatusCode.valueOf(200));
   }
 
   @GetMapping(value = "/transfer")

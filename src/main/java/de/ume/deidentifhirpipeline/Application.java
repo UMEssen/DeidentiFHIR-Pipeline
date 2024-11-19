@@ -15,12 +15,12 @@ import java.util.List;
 @Slf4j
 public class Application {
 
-	public static void main(String[] args) throws IOException {
-		SpringApplication.run(Application.class, args);
+  public static void main(String[] args) throws IOException {
+    SpringApplication.run(Application.class, args);
 
-		var fhirCollector = new FhirCollector();
-		fhirCollector.loadRuntimeCachingProvider();
+    var fhirCollector = new FhirCollector();
+    fhirCollector.loadRuntimeCachingProvider();
 
-	}
+  }
 
 }
