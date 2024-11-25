@@ -7,6 +7,7 @@ import de.ume.deidentifhirpipeline.transfer.Context;
 
 public abstract class DataSelection {
   public abstract void before(ProjectConfiguration projectConfiguration) throws Exception;
+
   public abstract Context process(Context context) throws Exception;
 
   public static void beforeExecution(ProjectConfiguration projectConfiguration) throws Exception {

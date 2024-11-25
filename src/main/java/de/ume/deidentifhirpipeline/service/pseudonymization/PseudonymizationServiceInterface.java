@@ -5,7 +5,7 @@ import java.util.Map;
 
 public interface PseudonymizationServiceInterface {
 
-  void createIfDomainIsNotExistent()  throws Exception;
+  void createIfDomainIsNotExistent() throws Exception;
 
   void createIfDateShiftingDomainIsNotExistent(long millis) throws Exception;
 

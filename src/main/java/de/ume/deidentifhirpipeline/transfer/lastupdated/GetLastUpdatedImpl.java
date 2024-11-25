@@ -17,13 +17,14 @@ public class GetLastUpdatedImpl extends GetLastUpdated {
 
   public void before(ProjectConfiguration projectConfiguration) throws Exception {
     LastUpdatedServiceInterface lastUpdatedService = configuration.getLastUpdatedService();
-    if( lastUpdatedService != null ) {
+    if (lastUpdatedService != null) {
       configuration.getLastUpdatedService().createIfLastUpdatedDomainIsNotExistent();
     }
   }
+
   public Context process(Context context) throws Exception {
     LastUpdatedServiceInterface lastUpdatedService = configuration.getLastUpdatedService();
-    if( lastUpdatedService != null ) {
+    if (lastUpdatedService != null) {
       long lastUpdated = lastUpdatedService.getLastUpdatedValue(context.getPatientId());
       context.setOldLastUpdated(OptionalLong.of(lastUpdated));
     }

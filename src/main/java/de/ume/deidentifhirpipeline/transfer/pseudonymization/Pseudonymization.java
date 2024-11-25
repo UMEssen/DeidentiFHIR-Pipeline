@@ -7,6 +7,7 @@ import de.ume.deidentifhirpipeline.transfer.Context;
 
 public abstract class Pseudonymization {
   public abstract void before(ProjectConfiguration projectConfiguration) throws Exception;
+
   public abstract Context process(Context context);
 
   public static void beforeExecution(ProjectConfiguration projectConfiguration) throws Exception {

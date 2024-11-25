@@ -7,8 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class NoPseudonymization extends Pseudonymization {
 
-  public void before(ProjectConfiguration projectConfiguration) throws Exception {
-  }
+  public void before(ProjectConfiguration projectConfiguration) throws Exception {}
 
   public Context process(Context context) {
     return context;

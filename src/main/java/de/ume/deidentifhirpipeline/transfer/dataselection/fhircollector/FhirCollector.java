@@ -44,7 +44,7 @@ public class FhirCollector {
     setup(config);
   }
 
-  public FhirCollector(){
+  public FhirCollector() {
     fhirPathEngine = new FHIRPathEngine(new HapiWorkerContext(Utils.fctx, new DefaultProfileValidationSupport(Utils.fctx)));
   }
 
@@ -52,14 +52,16 @@ public class FhirCollector {
     this.config = config;
     fhirPathEngine = new FHIRPathEngine(new HapiWorkerContext(Utils.fctx, new DefaultProfileValidationSupport(Utils.fctx)));
     this.hapiClient = Utils.fctx.newRestfulGenericClient(config.getUrl());
-    if( config.getUser() != null ) this.hapiClient = Utils.hapiClient(config.getUrl(), config.getUser(), config.getPassword());
-    if( config.getToken() != null ) this.hapiClient = Utils.hapiClient(config.getUrl(), config.getToken());
+    if (config.getUser() != null)
+      this.hapiClient = Utils.hapiClient(config.getUrl(), config.getUser(), config.getPassword());
+    if (config.getToken() != null)
+      this.hapiClient = Utils.hapiClient(config.getUrl(), config.getToken());
   }
 
   public void fetchResources(String id) {
     config.getResources().forEach(resourceConfig -> {
       resourceConfig.keySet().parallelStream().forEach(key -> {
-//      config.getResources().keySet().parallelStream().forEach(key -> {
+        // config.getResources().keySet().parallelStream().forEach(key -> {
         List<Map<String, List<String>>> map = resourceConfig.get(key);
         fetchResources(key, map, id, resourceConfig);
       });
@@ -77,15 +79,10 @@ public class FhirCollector {
         log.debug(fullSearchQuery);
 
         Bundle bundle = hapiClient.search().byUrl(fullSearchQuery).returnBundle(Bundle.class).execute();
-        bundle.getEntry().parallelStream().forEach(entry ->
-          fhirResources.put(
-              String.format("%s/%s", resource, entry.getResource().getIdPart()),
-              entry.getResource()
-          )
-        );
-        bundle.getEntry().parallelStream().forEach(entry ->
-          fetchReferencedResources(hapiClient, entry.getResource(), fhirpaths, resourceConfig)
-        );
+        bundle.getEntry().parallelStream().forEach(entry -> fhirResources.put(
+            String.format("%s/%s", resource, entry.getResource().getIdPart()),
+            entry.getResource()));
+        bundle.getEntry().parallelStream().forEach(entry -> fetchReferencedResources(hapiClient, entry.getResource(), fhirpaths, resourceConfig));
       });
     });
   }
@@ -100,23 +97,24 @@ public class FhirCollector {
   }
 
   public void fetchReferencedResources(IGenericClient client, Resource resource, List<String> fhirpaths, Map<String, List<Map<String, List<String>>>> resourceConfig) {
-    if( fhirpaths != null ) {
-      for( String fhirpath : fhirpaths ) {
+    if (fhirpaths != null) {
+      for (String fhirpath : fhirpaths) {
         List<Base> bases = fhirPathEngine.evaluate(resource, fhirpath);
         for (Base base : bases) {
           log.debug(base.toString());
-          if( !fhirResources.containsKey(base.toString()) ) {
-//            String resourceType = resource.fhirType();
-//            IBaseResource readResource = client.read().resource(resourceType).withId(base.toString().split("/")[1]).execute();
-//            fhirResources.put("bla", readResource);
-            Bundle bundle = client.search().byUrl(base.toString().replace("/","?_id=")).returnBundle(Bundle.class).execute();
+          if (!fhirResources.containsKey(base.toString())) {
+            // String resourceType = resource.fhirType();
+            // IBaseResource readResource =
+            // client.read().resource(resourceType).withId(base.toString().split("/")[1]).execute();
+            // fhirResources.put("bla", readResource);
+            Bundle bundle = client.search().byUrl(base.toString().replace("/", "?_id=")).returnBundle(Bundle.class).execute();
             bundle.getEntry().parallelStream().forEach(r -> {
               fhirResources.put(String.format("%s/%s", r.getResource().fhirType(), r.getResource().getIdPart()),
                   r.getResource());
             });
-            for( Bundle.BundleEntryComponent entry : bundle.getEntry() ) {
+            for (Bundle.BundleEntryComponent entry : bundle.getEntry()) {
               List<Map<String, List<String>>> resourceList = resourceConfig.get(entry.getResource().fhirType());
-              if( resourceList != null ) {
+              if (resourceList != null) {
                 resourceList.forEach(map -> {
                   if (map != null) {
                     List<String> newFhirpaths = map.get("fhirpaths");
@@ -133,7 +131,7 @@ public class FhirCollector {
 
   public Bundle getBundle() {
     Bundle bundle = new Bundle();
-    fhirResources.forEach( (id, resource) -> bundle.addEntry().setResource(resource) );
+    fhirResources.forEach((id, resource) -> bundle.addEntry().setResource(resource));
     return bundle;
   }
 

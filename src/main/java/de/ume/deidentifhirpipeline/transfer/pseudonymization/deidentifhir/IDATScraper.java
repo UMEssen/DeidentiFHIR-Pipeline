@@ -25,21 +25,18 @@ public class IDATScraper {
     scrapingStorage = new ScrapingStorage();
 
     Config config = ConfigFactory.parseFile(configFile);
-    if( generateIDScraperConfig ) config = generateIDScraperConfig(config);
+    if (generateIDScraperConfig)
+      config = generateIDScraperConfig(config);
 
     Registry registry = new Registry();
     registry.addHander("gatherIdHandler",
-        JavaCompat.partiallyApply(scrapingStorage, Handlers::idReplacementHandler)
-    );
+        JavaCompat.partiallyApply(scrapingStorage, Handlers::idReplacementHandler));
     registry.addHander("gatherReferenceHandler",
-        JavaCompat.partiallyApply(scrapingStorage, Handlers::referenceReplacementHandler)
-    );
+        JavaCompat.partiallyApply(scrapingStorage, Handlers::referenceReplacementHandler));
     registry.addHander("gatherIdentifierValueHandler",
-        JavaCompat.partiallyApply2(scrapingStorage, true, Handlers::identifierValueReplacementHandler)
-    );
+        JavaCompat.partiallyApply2(scrapingStorage, true, Handlers::identifierValueReplacementHandler));
     registry.addHander("gatherConditionalReferencesHandler",
-        JavaCompat.partiallyApply2(scrapingStorage, scrapingStorage, Handlers::conditionalReferencesReplacementHandler)
-    );
+        JavaCompat.partiallyApply2(scrapingStorage, scrapingStorage, Handlers::conditionalReferencesReplacementHandler));
 
     deidentiFHIR = Deidentifhir.apply(config, registry);
   }
@@ -58,22 +55,21 @@ public class IDATScraper {
   private Config generateIDScraperConfig(Config config) {
     Config newConfig = config;
 
-    for( Map.Entry<String, ConfigValue> e : config.entrySet() ) {
+    for (Map.Entry<String, ConfigValue> e : config.entrySet()) {
       Object value = e.getValue().unwrapped();
 
       // replace handlers
-      if( value.equals("idReplacementHandler") )
+      if (value.equals("idReplacementHandler"))
         newConfig = newConfig.withValue(e.getKey(), ConfigValueFactory.fromAnyRef("gatherIdHandler"));
-      else if( value.equals("referenceReplacementHandler") )
+      else if (value.equals("referenceReplacementHandler"))
         newConfig = newConfig.withValue(e.getKey(), ConfigValueFactory.fromAnyRef("gatherReferenceHandler"));
-        // remove handlers
-      else if( value.equals("shiftDateHandler") ||
+      // remove handlers
+      else if (value.equals("shiftDateHandler") ||
           value.equals("timeShiftHandler") ||
           value.equals("postalCodeHandler") ||
           value.equals("generalizeDateHandler") ||
           value.equals("PSEUDONYMISIERTstringReplacementHandler") ||
-          value.equals("stringRedactedReplacementHandler")
-      ) {
+          value.equals("stringRedactedReplacementHandler")) {
         String path = getParent(e.getKey());
         newConfig = newConfig.withoutPath(path);
       }
@@ -86,7 +82,7 @@ public class IDATScraper {
 
   private String getParent(String path) {
     String[] arrayString = path.split("\\.");
-    arrayString = Arrays.copyOfRange(arrayString, 0, arrayString.length-1);
+    arrayString = Arrays.copyOfRange(arrayString, 0, arrayString.length - 1);
     return String.join(".", arrayString);
   }
 

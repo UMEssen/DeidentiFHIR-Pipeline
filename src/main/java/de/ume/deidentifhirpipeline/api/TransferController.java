@@ -36,7 +36,7 @@ public class TransferController {
     ProjectConfiguration projectConfiguration = projectsConfiguration.getProjects().get(
         transferRequest.getProject());
 
-    if( projectConfiguration == null) {
+    if (projectConfiguration == null) {
       return new ResponseEntity<>(new TransferResponse(String.format("Project '%s' not configured", transferRequest.getProject())), HttpStatus.NOT_FOUND);
     } else {
       String response = TransferProcess.start(projectConfiguration);
@@ -50,7 +50,7 @@ public class TransferController {
     ProjectConfiguration projectConfiguration = projectsConfiguration.getProjects().get(
         transferRequestWithConfiguration.getProject());
 
-    if( projectConfiguration == null) {
+    if (projectConfiguration == null) {
       return new ResponseEntity<>(new TransferResponse(String.format("Project '%s' not configured", transferRequestWithConfiguration.getProject())), HttpStatus.NOT_FOUND);
     } else {
       projectConfiguration = projectConfiguration.apply(transferRequestWithConfiguration.getProjectConfiguration());
@@ -72,10 +72,12 @@ public class TransferController {
   public ResponseEntity<Set<String>> getTransfers() {
     return new ResponseEntity<>(Transfers.getMap().keySet(), HttpStatusCode.valueOf(200));
   }
+
   @GetMapping(value = "/transfer/all")
   public ResponseEntity<Map<String, Transfer>> getTransfersAll() {
     return new ResponseEntity<>(Transfers.getMap(), HttpStatusCode.valueOf(200));
   }
+
   @GetMapping(value = "/transfer/{id}")
   public ResponseEntity<Transfer> getTransfer(@PathVariable("id") String id) {
     return new ResponseEntity<>(Transfers.getMap().get(id), HttpStatusCode.valueOf(200));

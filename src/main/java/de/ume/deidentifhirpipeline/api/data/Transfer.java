@@ -31,11 +31,12 @@ public class Transfer {
   public String toString() {
     return startDateTime + ", " + map.toString();
   }
+
   public void setFinalStatus() {
     endDateTime = LocalDateTime.now();
-    if( map.values().stream().allMatch(transferStatus -> transferStatus.getStatus() == Status.COMPLETED) ) {
+    if (map.values().stream().allMatch(transferStatus -> transferStatus.getStatus() == Status.COMPLETED)) {
       status = Status.COMPLETED;
-    } else if( map.values().stream().allMatch(transferStatus -> transferStatus.getStatus() == Status.FAILED) ) {
+    } else if (map.values().stream().allMatch(transferStatus -> transferStatus.getStatus() == Status.FAILED)) {
       status = Status.FAILED;
     } else {
       status = Status.PARTIALLY_FAILED;

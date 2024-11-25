@@ -25,8 +25,7 @@ public class KeycloakService {
   /**
    * Refresh keycloak token.
    */
-  public static String refreshToken(KeycloakAuthConfiguration keycloakConfiguration, BindingProvider bindingProvider) throws
-      IOException {
+  public static String refreshToken(KeycloakAuthConfiguration keycloakConfiguration, BindingProvider bindingProvider) throws IOException {
     bindingProvider.getRequestContext().remove("Authorization");
     Map<String, List<String>> requestHeaders = new HashMap<>();
     String token = getKeycloakToken(keycloakConfiguration);
@@ -51,7 +50,7 @@ public class KeycloakService {
 
       response = httpclient.execute(httppost, new BasicHttpClientResponseHandler());
     }
-    JSONObject jsonObject  = new JSONObject(response);
+    JSONObject jsonObject = new JSONObject(response);
     return jsonObject.getString("access_token");
   }
 }

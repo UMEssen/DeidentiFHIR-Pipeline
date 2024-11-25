@@ -9,17 +9,19 @@ import java.util.Optional;
 
 public abstract class GetLastUpdated {
   public abstract void before(ProjectConfiguration projectConfiguration) throws Exception;
+
   public abstract Context process(Context context) throws Exception;
 
   public static void beforeExecution(ProjectConfiguration projectConfiguration) throws Exception {
     Optional<GetLastUpdated> getLastUpdated = projectConfiguration.getGetLastUpdatedImpl();
-    if( getLastUpdated.isPresent() ) getLastUpdated.get().before(projectConfiguration);
+    if (getLastUpdated.isPresent())
+      getLastUpdated.get().before(projectConfiguration);
   }
 
   public static Context execute(Context context) {
     try {
       Optional<GetLastUpdated> getLastUpdated = context.getProjectConfiguration().getGetLastUpdatedImpl();
-      if( getLastUpdated.isPresent() ) {
+      if (getLastUpdated.isPresent()) {
         return getLastUpdated.get().process(context);
       }
       return context;

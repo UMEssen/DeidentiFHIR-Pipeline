@@ -34,7 +34,7 @@ public class HashmapService implements PseudonymizationServiceInterface, LastUpd
 
   @Override
   public void createIfDomainIsNotExistent() {
-    if( !domainMap.containsKey(this.domain) ) {
+    if (!domainMap.containsKey(this.domain)) {
       domainMap.put(this.domain, new ConcurrentHashMap<>());
       log.info("Domain created: " + this.domain);
     }
@@ -42,8 +42,8 @@ public class HashmapService implements PseudonymizationServiceInterface, LastUpd
 
   @Override
   public void createIfDateShiftingDomainIsNotExistent(long millis) {
-    if( !domainMap.containsKey(this.dateShiftingDomain) ) {
-      ConcurrentMap<String,String> pseudonymMap = new ConcurrentHashMap<>();
+    if (!domainMap.containsKey(this.dateShiftingDomain)) {
+      ConcurrentMap<String, String> pseudonymMap = new ConcurrentHashMap<>();
       pseudonymMap.put(Utils.DATE_SHIFTING_DOMAIN_VALUE, String.valueOf(millis));
       domainMap.put(this.dateShiftingDomain, pseudonymMap);
       log.info("Domain created: " + this.dateShiftingDomain);
@@ -52,8 +52,8 @@ public class HashmapService implements PseudonymizationServiceInterface, LastUpd
 
   @Override
   public void createIfLastUpdatedDomainIsNotExistent() {
-    if( !domainMap.containsKey(this.lastUpdatedDomain) ) {
-      ConcurrentMap<String,String> pseudonymMap = new ConcurrentHashMap<>();
+    if (!domainMap.containsKey(this.lastUpdatedDomain)) {
+      ConcurrentMap<String, String> pseudonymMap = new ConcurrentHashMap<>();
       domainMap.put(this.lastUpdatedDomain, pseudonymMap);
       log.info("Domain created: " + this.lastUpdatedDomain);
     }
@@ -63,13 +63,13 @@ public class HashmapService implements PseudonymizationServiceInterface, LastUpd
   public Map<String, String> getOrCreatePseudonyms(List<String> ids) {
     ConcurrentMap<String, String> pseudonymMap = domainMap.get(this.domain);
     Map<String, String> mapToBeReturned = new HashMap<>();
-    for( String id : ids ) {
-      if( !pseudonymMap.containsKey(id) ) {
+    for (String id : ids) {
+      if (!pseudonymMap.containsKey(id)) {
         String value = String.valueOf(UUID.randomUUID());
         mapToBeReturned.put(id, value);
         pseudonymMap.put(id, value);
-      }
-      else mapToBeReturned.put(id, pseudonymMap.get(id));
+      } else
+        mapToBeReturned.put(id, pseudonymMap.get(id));
     }
     return mapToBeReturned;
   }
@@ -77,7 +77,8 @@ public class HashmapService implements PseudonymizationServiceInterface, LastUpd
   @Override
   public long getDateShiftingValue(String id) {
     Map<String, String> pseudonymMap = domainMap.get(this.dateShiftingDomain);
-    if( pseudonymMap.containsKey(id) ) return Long.parseLong(pseudonymMap.get(id));
+    if (pseudonymMap.containsKey(id))
+      return Long.parseLong(pseudonymMap.get(id));
     else {
       long millis = Long.parseLong(pseudonymMap.get(Utils.DATE_SHIFTING_DOMAIN_VALUE));
       long range = new RandomDataGenerator().nextLong(0, millis);
@@ -90,7 +91,8 @@ public class HashmapService implements PseudonymizationServiceInterface, LastUpd
   @Override
   public long getLastUpdatedValue(String id) {
     Map<String, String> pseudonymMap = domainMap.get(this.lastUpdatedDomain);
-    if( pseudonymMap.containsKey(id) ) return Long.parseLong(pseudonymMap.get(id));
+    if (pseudonymMap.containsKey(id))
+      return Long.parseLong(pseudonymMap.get(id));
     else {
       ZonedDateTime zdt = ZonedDateTime.of(1970, 1, 1, 0, 0, 0, 0, ZoneId.systemDefault());
       long lastUpdated = zdt.toInstant().toEpochMilli();

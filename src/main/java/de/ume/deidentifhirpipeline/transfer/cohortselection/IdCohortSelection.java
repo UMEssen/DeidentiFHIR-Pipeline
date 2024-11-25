@@ -8,7 +8,7 @@ import java.util.List;
 public class IdCohortSelection extends CohortSelection {
   @Override
   public List<String> before(ProjectConfiguration projectConfiguration) throws Exception {
-//    return cohortSelectionConfiguration.getIds();
+    // return cohortSelectionConfiguration.getIds();
     return projectConfiguration.getCohortSelection().getViaIds().getIds();
   }
 

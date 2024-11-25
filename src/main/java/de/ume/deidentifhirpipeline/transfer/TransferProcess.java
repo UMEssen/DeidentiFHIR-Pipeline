@@ -83,7 +83,7 @@ public class TransferProcess {
   private static List<Context> setUpContexts(Transfer transfer, List<String> ids,
       ProjectConfiguration projectConfiguration) {
     List<Context> contexts = new ArrayList<>();
-    for( String id : ids ) {
+    for (String id : ids) {
       transfer.getMap().put(id, new TransferStatus());
       Context context = new Context(transfer, projectConfiguration, id);
       contexts.add(context);

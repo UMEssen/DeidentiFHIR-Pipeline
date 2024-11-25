@@ -37,7 +37,7 @@ public class FolderDataStoring extends DataStoring {
       String pathAndFilename = configuration.getPath() + filename + ".json";
       Path file = Paths.get(pathAndFilename);
       String bundleAsString = Utils.fhirBundleToStringPrettyPrint(context.getBundle());
-      if(Files.exists(file))
+      if (Files.exists(file))
         Files.writeString(file, bundleAsString, StandardOpenOption.TRUNCATE_EXISTING);
       else
         Files.writeString(file, bundleAsString, StandardOpenOption.CREATE);

@@ -16,9 +16,10 @@ public class SetLastUpdatedImpl extends SetLastUpdated {
   public void before(ProjectConfiguration projectConfiguration) throws Exception {
     // Nothing to do
   }
+
   public Context process(Context context) throws Exception {
     LastUpdatedServiceInterface lastUpdatedService = configuration.getLastUpdatedService();
-    if( context.getNewLastUpdated().isPresent() ) {
+    if (context.getNewLastUpdated().isPresent()) {
       lastUpdatedService.setLastUpdatedValue(context.getPatientId(), context.getNewLastUpdated().getAsLong());
     }
     return context;

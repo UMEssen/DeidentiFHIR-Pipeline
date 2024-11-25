@@ -20,13 +20,13 @@ public class LastUpdatedConfiguration {
   private LastUpdatedServiceInterface lastUpdatedService;
 
   public LastUpdatedServiceInterface getLastUpdatedService() {
-    if( this.lastUpdatedService != null ) {
+    if (this.lastUpdatedService != null) {
       return this.lastUpdatedService;
-    } else if( hashmap != null ) {
+    } else if (hashmap != null) {
       log.debug("Hashmap LastUpdatedService configured.");
       this.lastUpdatedService = new HashmapService(hashmap);
       return this.lastUpdatedService;
-    } else if( gpas != null ) {
+    } else if (gpas != null) {
       log.debug("gPAS LastUpdatedService configured.");
       this.gpasService = new GpasService(gpas);
       return this.gpasService;

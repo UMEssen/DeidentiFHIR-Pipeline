@@ -34,13 +34,13 @@ public class DeidentiFHIRPseudonymizationConfiguration {
   }
 
   public PseudonymizationServiceInterface getPseudonymizationService() {
-    if( this.pseudonymizationService != null ) {
+    if (this.pseudonymizationService != null) {
       return this.pseudonymizationService;
-    } else if( hashmap != null ) {
+    } else if (hashmap != null) {
       log.debug("Hashmap PseudonymizationService configured.");
       this.pseudonymizationService = new HashmapService(hashmap);
       return this.pseudonymizationService;
-    } else if( gpas != null ) {
+    } else if (gpas != null) {
       log.debug("gPAS PseudonymizationService configured.");
       this.gpasService = new GpasService(gpas);
       return this.gpasService;

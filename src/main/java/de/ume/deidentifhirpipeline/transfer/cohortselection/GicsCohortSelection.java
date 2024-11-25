@@ -13,8 +13,7 @@ public class GicsCohortSelection extends CohortSelection {
     GicsService gicsService = new GicsService(projectConfiguration.getCohortSelection().getGics());
     List<String> ids = gicsService.getIdsWithAcceptedPolicies(
         projectConfiguration.getCohortSelection().getGics().getDomain(),
-        projectConfiguration.getCohortSelection().getGics().getPolicies()
-    );
+        projectConfiguration.getCohortSelection().getGics().getPolicies());
     return ids;
   }
 

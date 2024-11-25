@@ -54,21 +54,25 @@ public class GpasService implements PseudonymizationServiceInterface, LastUpdate
   public Map<String, String> getOrCreatePseudonyms(List<String> ids) throws Exception {
     return this.getOrCreatePseudonymForListClient(ids, this.domain);
   }
+
   private Map<String, String> getOrCreatePseudonymForListClient(List<String> values, String domainName) throws Exception {
     return this.getOrCreatePseudonymForListClient(values, domainName, this.numberOfRetries);
   }
+
   private Map<String, String> getOrCreatePseudonymForListClient(List<String> values, String domainName, int numberOfRetries) throws Exception {
-    if( values.isEmpty() ) return Map.of();
-    if( numberOfRetries <= 0 ) throw new Exception("Token refresh failed");
+    if (values.isEmpty())
+      return Map.of();
+    if (numberOfRetries <= 0)
+      throw new Exception("Token refresh failed");
 
     HttpResponse<String> httpResponse = gpasServiceRequest(SoapTemplates.getOrCreatePseudonymForListXmlString(values, domainName));
     log.debug("Received from gPAS: " + httpResponse.body());
 
-    if( httpResponse.statusCode() == 200 ) {
+    if (httpResponse.statusCode() == 200) {
       log.debug("200 from gPAS");
       return getValuesAndPseudonymsFromXml(httpResponse.body());
     } else {
-      if( httpResponse.body().contains("UnknownValueException") ) {
+      if (httpResponse.body().contains("UnknownValueException")) {
         log.debug("Could not get pseudonyms from gPAS.");
         return null;
       } else {
@@ -82,11 +86,12 @@ public class GpasService implements PseudonymizationServiceInterface, LastUpdate
     long rangeInMillis = Long.parseLong(this.getPseudonymClient(Utils.DATE_SHIFTING_DOMAIN_VALUE, this.dateShiftingDomain));
     return this.getDateShiftingValue(id, rangeInMillis);
   }
+
   private long getDateShiftingValue(String id, long rangeInMillis) throws Exception {
 
     String value = getPseudonymClient(id, this.dateShiftingDomain);
 
-    if( value == null ) {
+    if (value == null) {
       long pseudonym = this.getRandomLong(0, rangeInMillis);
       this.insertDateShiftingValue(id, pseudonym, 0L);
       return calculateDateShiftingValue(pseudonym, rangeInMillis);
@@ -100,19 +105,19 @@ public class GpasService implements PseudonymizationServiceInterface, LastUpdate
 
   @Override
   public synchronized void createIfDomainIsNotExistent() throws Exception {
-    if( !this.isDomainExistingViaHttpClient(this.domain) )
+    if (!this.isDomainExistingViaHttpClient(this.domain))
       this.addDomainViaHttpClient(this.domain);
   }
 
   @Override
   public synchronized void createIfLastUpdatedDomainIsNotExistent() throws Exception {
-    if( !this.isDomainExistingViaHttpClient(this.lastUpdatedDomain) )
+    if (!this.isDomainExistingViaHttpClient(this.lastUpdatedDomain))
       this.addLastUpdatedDomainViaHttpClient(this.lastUpdatedDomain);
   }
 
   @Override
   public synchronized void createIfDateShiftingDomainIsNotExistent(long millis) throws Exception {
-    if( !this.isDomainExistingViaHttpClient(this.dateShiftingDomain) ) {
+    if (!this.isDomainExistingViaHttpClient(this.dateShiftingDomain)) {
       this.addDateShiftingDomainViaHttpClient(this.dateShiftingDomain);
       try {
         String millisWithCorrectLength = this.buildDomainDateShiftingPseudonym(millis);
@@ -131,9 +136,10 @@ public class GpasService implements PseudonymizationServiceInterface, LastUpdate
   private void insertValuePseudonymPairViaHttpClient(String id, String pseudonymString, String domainName)
       throws Exception {
     HttpResponse<String> httpResponse = gpasServiceRequest(SoapTemplates.getInsertValuePseudonymPairXmlString(id, pseudonymString, domainName));
-    if( httpResponse.statusCode() != 200 && httpResponse.body().contains("InsertPairException") )
+    if (httpResponse.statusCode() != 200 && httpResponse.body().contains("InsertPairException"))
       throw new InsertValuePseudonymPairException(httpResponse.body());
-    if( httpResponse.statusCode() != 200) throw new Exception("Could not insert pseudonym.\n"+httpResponse.body());
+    if (httpResponse.statusCode() != 200)
+      throw new Exception("Could not insert pseudonym.\n" + httpResponse.body());
   }
 
   private void insertDateShiftingValue(String id, long value, long x)
@@ -180,8 +186,10 @@ public class GpasService implements PseudonymizationServiceInterface, LastUpdate
 
   private boolean isDomainExistingViaHttpClient(String domain) throws Exception {
     HttpResponse<String> httpResponse = this.gpasDomainRequest(SoapTemplates.getDomainXmlString(domain));
-    if( httpResponse.statusCode() == 200) return true;
-    else if( httpResponse.statusCode() == 500 && httpResponse.body().contains("UnknownDomainException")) return false;
+    if (httpResponse.statusCode() == 200)
+      return true;
+    else if (httpResponse.statusCode() == 500 && httpResponse.body().contains("UnknownDomainException"))
+      return false;
     else {
       throw new GetDomainException(httpResponse.body());
     }
@@ -200,10 +208,10 @@ public class GpasService implements PseudonymizationServiceInterface, LastUpdate
         "12",
         "true",
         "0",
-        "auto generated TMP domain"
-    );
+        "auto generated TMP domain");
     HttpResponse<String> httpResponse = this.gpasDomainRequest(soapString);
-    if(httpResponse.statusCode() != 200) throw new AddDomainException(httpResponse.body());
+    if (httpResponse.statusCode() != 200)
+      throw new AddDomainException(httpResponse.body());
   }
 
   private void addDateShiftingDomainViaHttpClient(String domain) throws Exception {
@@ -219,9 +227,9 @@ public class GpasService implements PseudonymizationServiceInterface, LastUpdate
         String.valueOf(Utils.DATE_SHIFTING_DOMAIN_PSN_LENGTH),
         "true",
         "0",
-        "auto generated date shifting domain"
-    ));
-    if(httpResponse.statusCode() != 200) throw new AddDomainException(httpResponse.body());
+        "auto generated date shifting domain"));
+    if (httpResponse.statusCode() != 200)
+      throw new AddDomainException(httpResponse.body());
   }
 
   private void addLastUpdatedDomainViaHttpClient(String domain) throws Exception {
@@ -237,9 +245,9 @@ public class GpasService implements PseudonymizationServiceInterface, LastUpdate
         String.valueOf(Utils.LAST_UPDATED_DOMAIN_PSN_LENGTH),
         "true",
         "0",
-        "auto generated lastUpdated domain"
-    ));
-    if(httpResponse.statusCode() != 200) throw new AddDomainException(httpResponse.body());
+        "auto generated lastUpdated domain"));
+    if (httpResponse.statusCode() != 200)
+      throw new AddDomainException(httpResponse.body());
   }
 
   @Override
@@ -255,7 +263,7 @@ public class GpasService implements PseudonymizationServiceInterface, LastUpdate
   public long getLastUpdated(String id, String domain) throws Exception {
     log.debug("getLastUpdated called.");
     String response = getPseudonymClient(id, domain);
-    if( response == null ) {
+    if (response == null) {
       // create first lastUpdated value
       ZonedDateTime zdt = ZonedDateTime.of(1970, 1, 1, 0, 0, 0, 0, ZoneId.systemDefault());
       long inMillis = zdt.toInstant().toEpochMilli();
@@ -264,6 +272,7 @@ public class GpasService implements PseudonymizationServiceInterface, LastUpdate
       return gpasStringtoLong(response);
     }
   }
+
   private long gpasStringtoLong(String response) {
     return Long.parseLong(response.split(Utils.DATE_SHIFTING_DELIMITER)[1]);
   }
@@ -272,6 +281,7 @@ public class GpasService implements PseudonymizationServiceInterface, LastUpdate
     this.deleteEntry(id, this.lastUpdatedDomain);
     setLastUpdate(id, lastUpdated, 0);
   }
+
   private void setLastUpdate(String id, long lastUpdated, int x) throws Exception {
     this.deleteEntry(id, domain);
     String generatedPseudonym = longToGpasString(lastUpdated, x);
@@ -300,15 +310,16 @@ public class GpasService implements PseudonymizationServiceInterface, LastUpdate
   }
 
   private String getPseudonymClient(String value, String domainName, int numberOfRetries) throws Exception {
-    if( numberOfRetries <= 0 ) throw new Exception("Token refresh failed");
+    if (numberOfRetries <= 0)
+      throw new Exception("Token refresh failed");
 
     HttpResponse<String> httpResponse = gpasServiceRequest(SoapTemplates.getPseudonymForXmlString(value, domainName));
 
-    if( httpResponse.statusCode() == 200 ) {
+    if (httpResponse.statusCode() == 200) {
       log.debug("200 date shift value already in gPAS");
       return getFullNameFromXml(httpResponse.body(), "psn");
     } else {
-      if( httpResponse.body().contains("UnknownValueException") ) {
+      if (httpResponse.body().contains("UnknownValueException")) {
         log.debug("No dateShift value found.");
         return null;
       } else {
@@ -318,9 +329,8 @@ public class GpasService implements PseudonymizationServiceInterface, LastUpdate
 
   }
 
-  private static Document loadXMLString(String response) throws Exception
-  {
-    DocumentBuilderFactory dbf =DocumentBuilderFactory.newInstance();
+  private static Document loadXMLString(String response) throws Exception {
+    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
     DocumentBuilder db = dbf.newDocumentBuilder();
     InputSource is = new InputSource(new StringReader(response));
 
@@ -330,7 +340,7 @@ public class GpasService implements PseudonymizationServiceInterface, LastUpdate
   private static String getFullNameFromXml(String response, String tagName) throws Exception {
     Document xmlDoc = loadXMLString(response);
     NodeList nodeList = xmlDoc.getElementsByTagName(tagName);
-    if( nodeList.getLength() != 0) {
+    if (nodeList.getLength() != 0) {
       Node x = nodeList.item(0);
       log.debug("Raw date shift value: " + x.getFirstChild().getNodeValue());
       return x.getFirstChild().getNodeValue();
@@ -342,14 +352,14 @@ public class GpasService implements PseudonymizationServiceInterface, LastUpdate
     Map<String, String> mapToBeReturned = new HashMap<>();
     Document xmlDoc = loadXMLString(response);
     NodeList nodeList = xmlDoc.getElementsByTagName("entry");
-    if( nodeList.getLength() != 0) {
-      for( int i=0; i < nodeList.getLength(); i++) {
+    if (nodeList.getLength() != 0) {
+      for (int i = 0; i < nodeList.getLength(); i++) {
         Node node = nodeList.item(i);
         String key = "";
         String value = "";
-        for( int j=0; j < node.getChildNodes().getLength(); j++) {
+        for (int j = 0; j < node.getChildNodes().getLength(); j++) {
           Node keyOrValue = node.getChildNodes().item(j);
-          if( keyOrValue.getNodeName().equals("key"))
+          if (keyOrValue.getNodeName().equals("key"))
             key = keyOrValue.getTextContent();
           else
             value = keyOrValue.getTextContent();
@@ -369,15 +379,18 @@ public class GpasService implements PseudonymizationServiceInterface, LastUpdate
   private HttpResponse<String> gpasServiceRequest(String body) throws IOException, InterruptedException, TokenException {
     return gpasServiceRequest(configuration.getGpasServiceWsdlUrl(), body, this.numberOfRetries);
   }
+
   private HttpResponse<String> gpasDomainRequest(String body) throws IOException, InterruptedException, TokenException {
     return gpasServiceRequest(configuration.getDomainServiceWsdlUrl(), body, this.numberOfRetries);
   }
+
   private HttpResponse<String> gpasServiceRequest(String url, String body, int numberOfRetries)
       throws IOException, InterruptedException, TokenException {
-    if( numberOfRetries <= 0) throw new TokenException();
+    if (numberOfRetries <= 0)
+      throw new TokenException();
 
     HttpClient.Builder httpClientBuilder = HttpClient.newBuilder();
-    if( configuration.getBasic() != null ) {
+    if (configuration.getBasic() != null) {
       httpClientBuilder.authenticator(new Authenticator() {
         @Override
         protected PasswordAuthentication getPasswordAuthentication() {
@@ -392,8 +405,9 @@ public class GpasService implements PseudonymizationServiceInterface, LastUpdate
           HttpRequest.newBuilder().uri(URI.create(url))
               .header("Content-Type", "application/soap+xml")
               .POST(HttpRequest.BodyPublishers.ofString(body));
-      
-      if( keycloakConfiguration != null ) httpRequestBuilder.header("Authorization", "Bearer " + this.token);
+
+      if (keycloakConfiguration != null)
+        httpRequestBuilder.header("Authorization", "Bearer " + this.token);
 
       HttpRequest httpRequest = httpRequestBuilder.build();
 
@@ -402,8 +416,9 @@ public class GpasService implements PseudonymizationServiceInterface, LastUpdate
 
       // check for OAuth error
       if (httpResponse.statusCode() == 500 && httpResponse.body().contains("OAuth")) {
-//        token = this.refreshToken();
-        if( keycloakConfiguration != null ) this.token = KeycloakService.getKeycloakToken(keycloakConfiguration);
+        // token = this.refreshToken();
+        if (keycloakConfiguration != null)
+          this.token = KeycloakService.getKeycloakToken(keycloakConfiguration);
         return gpasServiceRequest(url, body, numberOfRetries - 1);
       }
 
@@ -411,12 +426,12 @@ public class GpasService implements PseudonymizationServiceInterface, LastUpdate
     }
   }
 
-  //  private String refreshToken() throws IOException {
-  //    if( keycloakConfiguration != null ) {
-  //      KeycloakService.refreshToken(keycloakConfiguration, (BindingProvider) psnManager);
-  //      return KeycloakService.refreshToken(keycloakConfiguration, (BindingProvider) domainManager);
-  //    }
-  //    return null;
-  //  }
+  // private String refreshToken() throws IOException {
+  // if( keycloakConfiguration != null ) {
+  // KeycloakService.refreshToken(keycloakConfiguration, (BindingProvider) psnManager);
+  // return KeycloakService.refreshToken(keycloakConfiguration, (BindingProvider) domainManager);
+  // }
+  // return null;
+  // }
 
 }

@@ -43,8 +43,10 @@ public class TransferStatus {
   @Override
   public String toString() {
     String stringToBeReturned = status.toString();
-    if( endDate != null ) stringToBeReturned += ", " + endDate.toString();
-    if( exception != null ) stringToBeReturned += ", " + exception.toString();
+    if (endDate != null)
+      stringToBeReturned += ", " + endDate.toString();
+    if (exception != null)
+      stringToBeReturned += ", " + exception.toString();
     return stringToBeReturned;
   }
 }

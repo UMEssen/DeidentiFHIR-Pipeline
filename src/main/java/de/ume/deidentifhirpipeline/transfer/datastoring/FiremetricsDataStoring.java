@@ -32,7 +32,7 @@ public class FiremetricsDataStoring extends DataStoring {
       List<String> resourcesAsString = context.getBundle().getEntry().stream().map(e -> Utils.fhirResourceToString(e.getResource())).toList();
 
       // log bundle
-      if( config.isWriteBundlesToFiles() ) {
+      if (config.isWriteBundlesToFiles()) {
         String bundleAsString = Utils.fhirResourceToString(context.getBundle());
         Path path = Paths.get("./bundles/", context.getPatientId() + ".json");
         Files.write(path, bundleAsString.getBytes(StandardCharsets.UTF_8));
@@ -43,18 +43,16 @@ public class FiremetricsDataStoring extends DataStoring {
 
       String jdbcConnectionUrl = String.format(
           "jdbc:postgresql://%s:%s/%s",
-          config.getHost(), config.getPort(), config.getDatabase()
-      );
+          config.getHost(), config.getPort(), config.getDatabase());
 
       try (Connection connection = DriverManager.getConnection(
           jdbcConnectionUrl,
           config.getUser(),
-          config.getPassword())
-      ) {
+          config.getPassword())) {
 
         log.debug("Connected to FHIRQL database!");
 
-        for( String resourceAsString : resourcesAsString ) {
+        for (String resourceAsString : resourcesAsString) {
           String fhirqlStatement = String.format("select public.fql_insert('%s'::jsonb);", resourceAsString);
           try {
             Statement statement = connection.createStatement();

@@ -19,7 +19,8 @@ public class FiremetricsCohortSelection extends CohortSelection {
 
     // read fhirql statement from variable if provided or from file
     String fhirqlStatement = config.getQuery();
-    if( fhirqlStatement == null ) fhirqlStatement = Files.readString(Path.of(config.getQueryFile()));
+    if (fhirqlStatement == null)
+      fhirqlStatement = Files.readString(Path.of(config.getQueryFile()));
 
 
     // execute fhirql query
@@ -27,8 +28,7 @@ public class FiremetricsCohortSelection extends CohortSelection {
 
     String jdbcConnectionUrl = String.format(
         "jdbc:postgresql://%s:%s/%s",
-        config.getHost(), config.getPort(), config.getDatabase()
-    );
+        config.getHost(), config.getPort(), config.getDatabase());
 
     List<String> patientList = null;
     try (Connection connection = DriverManager.getConnection(

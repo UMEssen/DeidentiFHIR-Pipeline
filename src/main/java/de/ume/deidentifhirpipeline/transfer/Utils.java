@@ -42,7 +42,8 @@ public class Utils {
   }
 
   public static String fhirBundleToString(Bundle bundle) {
-    if( bundle == null ) return "Bundle is empty";
+    if (bundle == null)
+      return "Bundle is empty";
     return fctx.newJsonParser().encodeResourceToString(bundle);
   }
 
@@ -120,7 +121,7 @@ public class Utils {
     return hapiClient;
   }
 
-  public static IGenericClient hapiClient(String url, TokenAuthConfiguration token){
+  public static IGenericClient hapiClient(String url, TokenAuthConfiguration token) {
     return hapiClient(url, token.getToken());
   }
 

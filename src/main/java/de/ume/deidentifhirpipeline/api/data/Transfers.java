@@ -18,11 +18,11 @@ public class Transfers {
   public static void setFinalTransferStatus(UUID uuid) {
     Transfer transfer = Transfers.map.get(uuid.toString());
     transfer.setStatusDateTime(LocalDateTime.now());
-    if( transfer.getMap().values().stream().allMatch(t -> t.getStatus() == Status.COMPLETED) )
+    if (transfer.getMap().values().stream().allMatch(t -> t.getStatus() == Status.COMPLETED))
       transfer.setStatus(Status.COMPLETED);
-    else if( transfer.getMap().values().stream().allMatch(t -> t.getStatus() == Status.FAILED) )
+    else if (transfer.getMap().values().stream().allMatch(t -> t.getStatus() == Status.FAILED))
       transfer.setStatus(Status.FAILED);
-    else if( transfer.getMap().values().stream().anyMatch(t -> t.getStatus() == Status.PENDING) )
+    else if (transfer.getMap().values().stream().anyMatch(t -> t.getStatus() == Status.PENDING))
       transfer.setStatus(Status.PENDING);
     else
       transfer.setStatus(Status.PARTIALLY_FAILED);

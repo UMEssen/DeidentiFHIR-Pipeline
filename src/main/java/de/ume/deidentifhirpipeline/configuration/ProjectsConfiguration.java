@@ -12,5 +12,5 @@ import java.util.Map;
 @Getter
 @Setter
 public class ProjectsConfiguration {
-  private Map<String,ProjectConfiguration> projects;
+  private Map<String, ProjectConfiguration> projects;
 }

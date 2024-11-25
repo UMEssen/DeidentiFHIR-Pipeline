@@ -31,16 +31,18 @@ public class FiremetricsDataSelection extends DataSelection {
     String queryIdPlaceholderString = config.getQueryIdPlaceholderString();
     String queryLastUpdatedPlaceholderString = config.getQueryLastUpdatedPlaceholderString();
 
-//    if( fhirqlStatementWithReplacementString == null && config.getQueryFile() != null)
-//      fhirqlStatementWithReplacementString = Files.readString(Path.of(config.getQueryFile()));
-//    if( fhirqlStatementWithReplacementString == null ) fhirqlStatementWithReplacementString = config.getQuery();
-//    if( queryIdPlaceholderString == null ) queryIdPlaceholderString = config.getQueryIdPlaceholderString();
+    // if( fhirqlStatementWithReplacementString == null && config.getQueryFile() != null)
+    // fhirqlStatementWithReplacementString = Files.readString(Path.of(config.getQueryFile()));
+    // if( fhirqlStatementWithReplacementString == null ) fhirqlStatementWithReplacementString =
+    // config.getQuery();
+    // if( queryIdPlaceholderString == null ) queryIdPlaceholderString =
+    // config.getQueryIdPlaceholderString();
 
     // replace id placeholder with the actual id
     String fhirqlStatement = fhirqlStatementWithReplacementString.replace(queryIdPlaceholderString, context.getPatientId());
 
     // replace lastUpdated placeholder with the actual date if present
-    if( context.getOldLastUpdated().isPresent() ) {
+    if (context.getOldLastUpdated().isPresent()) {
       String dateString = Utils.longToFiremetricsDateString(context.getOldLastUpdated().getAsLong(), ZoneId.of("UTC"));
       fhirqlStatement = fhirqlStatement.replace(queryLastUpdatedPlaceholderString, dateString);
     }
@@ -53,15 +55,14 @@ public class FiremetricsDataSelection extends DataSelection {
 
     String jdbcConnectionUrl = String.format(
         "jdbc:postgresql://%s:%s/%s",
-        config.getHost(), config.getPort(), config.getDatabase()
-    );
+        config.getHost(), config.getPort(), config.getDatabase());
 
     Bundle returnBundle = new Bundle();
     try (Connection connection = DriverManager.getConnection(
         jdbcConnectionUrl,
         config.getUser(),
         config.getPassword())) {
-      if( context.getOldLastUpdated().isPresent() ) {
+      if (context.getOldLastUpdated().isPresent()) {
         context.setNewLastUpdated(OptionalLong.of(ZonedDateTime.now().toInstant().toEpochMilli()));
       }
       log.debug("Connected to FHIRQL database!");

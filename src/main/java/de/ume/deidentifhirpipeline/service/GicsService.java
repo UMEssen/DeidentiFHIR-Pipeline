@@ -32,8 +32,8 @@ public class GicsService {
   public List<String> getIdsWithAcceptedPolicies(String domain, List<String> policies) throws Exception {
     List<SignerIdDTO> ids = this.getAllConsentsForDomain(domain);
     List<String> patientIds = new ArrayList<>();
-    for( SignerIdDTO id : ids ) {
-      if( this.policiesAccepted(domain, id, policies) ){
+    for (SignerIdDTO id : ids) {
+      if (this.policiesAccepted(domain, id, policies)) {
         patientIds.add(id.getId());
       }
     }
@@ -50,11 +50,11 @@ public class GicsService {
   }
 
   private boolean policiesAccepted(String domain, SignerIdDTO id, List<String> policies) throws Exception {
-    for( String policy : policies ) {
+    for (String policy : policies) {
       List<SignedPolicyDTO> allPolicies =
           gicsService.getPolicyStatesForPolicyNameAndSignerIds(domain, policy, List.of(id), false)
               .getSignedPolicies();
-      if( !this.getNewestPolicy(allPolicies).getStatus().equals(ConsentStatus.ACCEPTED) ) {
+      if (!this.getNewestPolicy(allPolicies).getStatus().equals(ConsentStatus.ACCEPTED)) {
         return false;
       }
     }
@@ -63,9 +63,10 @@ public class GicsService {
 
   private SignedPolicyDTO getNewestPolicy(List<SignedPolicyDTO> policies) {
     SignedPolicyDTO returnPolicy = policies.getFirst();
-    for( SignedPolicyDTO policy : policies ) {
-      if( returnPolicy == null ) returnPolicy = policy;
-      if( policy.getConsentKey().getConsentDate().compare(returnPolicy.getConsentKey().getConsentDate()) > 0 ) {
+    for (SignedPolicyDTO policy : policies) {
+      if (returnPolicy == null)
+        returnPolicy = policy;
+      if (policy.getConsentKey().getConsentDate().compare(returnPolicy.getConsentKey().getConsentDate()) > 0) {
         returnPolicy = policy;
       }
     }
@@ -74,7 +75,7 @@ public class GicsService {
 
   private static List<SignerIdDTO> removeDuplicates(List<SignerIdDTO> ids) {
     Map<String, SignerIdDTO> filterDuplicates = new HashMap<>();
-    for( SignerIdDTO id : ids) {
+    for (SignerIdDTO id : ids) {
       filterDuplicates.put(id.getId(), id);
     }
     return filterDuplicates.values().stream().toList();

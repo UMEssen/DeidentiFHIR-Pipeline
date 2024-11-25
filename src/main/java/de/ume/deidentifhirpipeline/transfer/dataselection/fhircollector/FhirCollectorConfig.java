@@ -13,11 +13,11 @@ public class FhirCollectorConfig {
   public String user;
   public String password;
   public String token;
-//  private Map<String, List<Map<String,List<String>>>> resources;
-  private List<Map<String, List<Map<String,List<String>>>>> resources;
-//  public Map<String, PathDefinition> resources;
+  // private Map<String, List<Map<String,List<String>>>> resources;
+  private List<Map<String, List<Map<String, List<String>>>>> resources;
+  // public Map<String, PathDefinition> resources;
 
-//  public String toString() {
-//    return resources.toString();
-//  }
+  // public String toString() {
+  // return resources.toString();
+  // }
 }

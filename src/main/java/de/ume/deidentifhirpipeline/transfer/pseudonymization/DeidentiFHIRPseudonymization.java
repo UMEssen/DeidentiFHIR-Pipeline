@@ -34,8 +34,7 @@ public class DeidentiFHIRPseudonymization extends Pseudonymization {
       File scraperConfigFile = new File(configuration.getScraperConfigFile());
       IDATScraper idScraper = new IDATScraper(scraperConfigFile, configuration.isGenerateIDScraperConfig());
       List<String> gatheredIDs = idScraper.gatherIDs(
-          new CDtoTransportKeyCreator(context.getPatientId()), context.getBundle()
-      ).stream().toList();
+          new CDtoTransportKeyCreator(context.getPatientId()), context.getBundle()).stream().toList();
 
       // Get pseudonyms from gPAS
       PseudonymizationServiceInterface pseudonymizationService = configuration.getPseudonymizationService();
@@ -43,7 +42,7 @@ public class DeidentiFHIRPseudonymization extends Pseudonymization {
 
       // Get date shifting values from gPAS
       Map<String, Long> dateShiftValueMap;
-      if( configuration.getDateShiftingInMillis() != 0 ) {
+      if (configuration.getDateShiftingInMillis() != 0) {
         long dateShiftValue = pseudonymizationService.getDateShiftingValue(context.getPatientId());
         dateShiftValueMap = Map.of(context.getPatientId(), dateShiftValue);
       } else {

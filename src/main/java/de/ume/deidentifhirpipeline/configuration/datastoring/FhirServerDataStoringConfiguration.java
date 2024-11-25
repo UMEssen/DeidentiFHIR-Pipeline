@@ -13,6 +13,6 @@ public class FhirServerDataStoringConfiguration {
   private TokenAuthConfiguration tokenAuth;
 
   public String toString() {
-    return String.format("DataStoringConfiguration(url=%s)",url);
+    return String.format("DataStoringConfiguration(url=%s)", url);
   }
 }
