@@ -44,12 +44,14 @@ public class TransferController {
   }
 
   @PostMapping(value = "/start-with-changed-configuration", consumes = "application/json", produces = "application/json")
-  public ResponseEntity<TransferResponse> startWithChangedConfiguration(@RequestBody TransferRequestWithConfiguration transferRequestWithConfiguration) throws Exception {
+  public ResponseEntity<TransferResponse> startWithChangedConfiguration(@RequestBody TransferRequestWithConfiguration transferRequestWithConfiguration)
+      throws Exception {
 
     ProjectConfiguration projectConfiguration = projectsConfiguration.getProjects().get(transferRequestWithConfiguration.getProject());
 
     if (projectConfiguration == null) {
-      return new ResponseEntity<>(new TransferResponse(String.format("Project '%s' not configured", transferRequestWithConfiguration.getProject())), HttpStatus.NOT_FOUND);
+      return new ResponseEntity<>(new TransferResponse(String.format("Project '%s' not configured", transferRequestWithConfiguration.getProject())),
+          HttpStatus.NOT_FOUND);
     } else {
       projectConfiguration = projectConfiguration.apply(transferRequestWithConfiguration.getProjectConfiguration());
       projectConfiguration.validate();
@@ -59,7 +61,8 @@ public class TransferController {
   }
 
   @PostMapping(value = "/start-with-new-configuration", consumes = "application/json", produces = "application/json")
-  public ResponseEntity<TransferResponse> startWithNewConfiguration(@RequestBody TransferRequestWithConfiguration transferRequestWithConfiguration) throws Exception {
+  public ResponseEntity<TransferResponse> startWithNewConfiguration(@RequestBody TransferRequestWithConfiguration transferRequestWithConfiguration)
+      throws Exception {
     ProjectConfiguration projectConfiguration = transferRequestWithConfiguration.getProjectConfiguration();
     projectConfiguration.validate();
     String response = TransferProcess.start(projectConfiguration);

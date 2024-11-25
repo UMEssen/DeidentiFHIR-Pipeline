@@ -71,7 +71,8 @@ public class FhirServerDataSelection extends DataSelection {
     return fhirId;
   }
 
-  private static Bundle getBundle(IGenericClient client, String fhirId, FhirServerDataSelectionConfiguration dataSelectionConfiguration, OptionalLong lastUpdated)
+  private static Bundle getBundle(IGenericClient client, String fhirId, FhirServerDataSelectionConfiguration dataSelectionConfiguration,
+      OptionalLong lastUpdated)
       throws Exception {
     String query = dataSelectionConfiguration.getBundleQuery();
     String queryPlaceholder = dataSelectionConfiguration.getBundleQueryPlaceholder();
@@ -79,7 +80,8 @@ public class FhirServerDataSelection extends DataSelection {
     String bundleQueryLastUpdatedPlaceholder = dataSelectionConfiguration.getBundleQueryLastUpdatedPlaceholder();
     if (lastUpdated.isPresent()) {
       queryWithId =
-          queryWithId.replace(bundleQueryLastUpdatedPlaceholder, Utils.zonedDateTimeToFhirSearchString(Utils.longToZonedDateTime(lastUpdated.getAsLong(), ZoneId.of("UTC"))));
+          queryWithId.replace(bundleQueryLastUpdatedPlaceholder,
+              Utils.zonedDateTimeToFhirSearchString(Utils.longToZonedDateTime(lastUpdated.getAsLong(), ZoneId.of("UTC"))));
     }
     Bundle bundle = client.search().byUrl(String.format("%s/%s", dataSelectionConfiguration.getUrl(), queryWithId)).returnBundle(Bundle.class).execute();
     log.debug("getBundle(): " + Utils.fhirBundleToString(bundle));

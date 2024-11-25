@@ -5,7 +5,7 @@
 <profiles version="13">
   <profile kind="CodeFormatterProfile" name="GoogleStyle" version="13">
 <!-- Changes: -->
-    <setting id="org.eclipse.jdt.core.formatter.lineSplit" value="180"/>
+    <setting id="org.eclipse.jdt.core.formatter.lineSplit" value="160"/>
     <setting id="org.eclipse.jdt.core.formatter.indentation.size" value="2"/>
     <setting id="org.eclipse.jdt.core.formatter.join_wrapped_lines" value="false"/>
 <!-- Defaults: -->

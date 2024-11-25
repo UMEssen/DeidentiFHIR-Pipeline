@@ -68,7 +68,8 @@ public class FhirCollector {
     });
   }
 
-  public void fetchResources(String resource, List<Map<String, List<String>>> pathDefinitions, String id, Map<String, List<Map<String, List<String>>>> resourceConfig) {
+  public void fetchResources(String resource, List<Map<String, List<String>>> pathDefinitions, String id,
+      Map<String, List<Map<String, List<String>>>> resourceConfig) {
     pathDefinitions.parallelStream().forEach(pathDefinition -> {
       List<String> queries = pathDefinition.get("queries");
       List<String> fhirpaths = pathDefinition.get("fhirpaths");
@@ -96,7 +97,8 @@ public class FhirCollector {
     fhirPathEngine.evaluate(new Bundle(), "entry");
   }
 
-  public void fetchReferencedResources(IGenericClient client, Resource resource, List<String> fhirpaths, Map<String, List<Map<String, List<String>>>> resourceConfig) {
+  public void fetchReferencedResources(IGenericClient client, Resource resource, List<String> fhirpaths,
+      Map<String, List<Map<String, List<String>>>> resourceConfig) {
     if (fhirpaths != null) {
       for (String fhirpath : fhirpaths) {
         List<Base> bases = fhirPathEngine.evaluate(resource, fhirpath);
