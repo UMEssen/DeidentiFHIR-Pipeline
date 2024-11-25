@@ -1,7 +1,7 @@
 package de.ume.deidentifhirpipeline.transfer;
 
 import de.ume.deidentifhirpipeline.api.data.Transfer;
-import de.ume.deidentifhirpipeline.configuration.ProjectConfiguration;
+import de.ume.deidentifhirpipeline.config.ProjectConfig;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,7 +13,7 @@ import java.util.OptionalLong;
 @NoArgsConstructor
 public class Context {
   Transfer transfer;
-  ProjectConfiguration projectConfiguration;
+  ProjectConfig projectConfig;
   String patientId;
   @Setter
   OptionalLong oldLastUpdated = OptionalLong.empty();
@@ -26,9 +26,9 @@ public class Context {
   @Setter
   Exception exception;
 
-  public Context(Transfer transfer, ProjectConfiguration projectConfiguration, String patientId) {
+  public Context(Transfer transfer, ProjectConfig projectConfig, String patientId) {
     this.transfer = transfer;
-    this.projectConfiguration = projectConfiguration;
+    this.projectConfig = projectConfig;
     this.patientId = patientId;
   }
 

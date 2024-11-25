@@ -1,6 +1,6 @@
 package de.ume.deidentifhirpipeline.service;
 
-import de.ume.deidentifhirpipeline.configuration.service.GicsServiceConfiguration;
+import de.ume.deidentifhirpipeline.config.service.GicsServiceConfig;
 import de.ume.deidentifhirpipeline.service.wsdl.gics.*;
 import jakarta.xml.ws.BindingProvider;
 
@@ -13,15 +13,15 @@ import java.util.*;
 
 public class GicsService {
 
-  private final GicsServiceConfiguration configuration;
+  private final GicsServiceConfig config;
 
   private GICSService gicsService;
 
-  public GicsService(GicsServiceConfiguration configuration)
+  public GicsService(GicsServiceConfig config)
       throws MalformedURLException, URISyntaxException {
-    this.configuration = configuration;
+    this.config = config;
 
-    URL gicsServiceWsdlUrl = new URI(this.configuration.getMainWsdlUri()).toURL();
+    URL gicsServiceWsdlUrl = new URI(this.config.getMainWsdlUri()).toURL();
     GICSServiceImplService gicsServiceImplService = new GICSServiceImplService(gicsServiceWsdlUrl);
     gicsService = gicsServiceImplService.getGicsServicePort();
     BindingProvider gicsServiceBindingProvider = (BindingProvider) gicsService;

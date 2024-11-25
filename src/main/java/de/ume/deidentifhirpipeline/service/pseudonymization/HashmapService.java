@@ -1,6 +1,6 @@
 package de.ume.deidentifhirpipeline.service.pseudonymization;
 
-import de.ume.deidentifhirpipeline.configuration.service.HashmapServiceConfiguration;
+import de.ume.deidentifhirpipeline.config.service.HashmapServiceConfig;
 import de.ume.deidentifhirpipeline.service.lastupdated.LastUpdatedServiceInterface;
 import de.ume.deidentifhirpipeline.transfer.Utils;
 import lombok.extern.slf4j.Slf4j;
@@ -18,16 +18,16 @@ import java.util.concurrent.ConcurrentMap;
 @Slf4j
 public class HashmapService implements PseudonymizationServiceInterface, LastUpdatedServiceInterface {
 
-  private final HashmapServiceConfiguration configuration;
+  private final HashmapServiceConfig config;
   private final String domain;
   private final String dateShiftingDomain;
   private final String lastUpdatedDomain;
 
   public static final ConcurrentMap<String, ConcurrentMap<String, String>> domainMap = new ConcurrentHashMap<>();
 
-  public HashmapService(HashmapServiceConfiguration configuration) {
-    this.configuration = configuration;
-    this.domain = configuration.getDomain();
+  public HashmapService(HashmapServiceConfig config) {
+    this.config = config;
+    this.domain = config.getDomain();
     this.dateShiftingDomain = Utils.getDateShiftingDomainName(this.domain);
     this.lastUpdatedDomain = Utils.getLastUpdatedDomainName(this.domain);
   }

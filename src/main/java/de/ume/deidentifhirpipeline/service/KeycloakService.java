@@ -1,6 +1,6 @@
 package de.ume.deidentifhirpipeline.service;
 
-import de.ume.deidentifhirpipeline.configuration.auth.KeycloakAuthConfiguration;
+import de.ume.deidentifhirpipeline.config.auth.KeycloakAuthConfig;
 import jakarta.xml.ws.BindingProvider;
 import jakarta.xml.ws.handler.MessageContext;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
@@ -25,25 +25,25 @@ public class KeycloakService {
   /**
    * Refresh keycloak token.
    */
-  public static String refreshToken(KeycloakAuthConfiguration keycloakConfiguration, BindingProvider bindingProvider) throws IOException {
+  public static String refreshToken(KeycloakAuthConfig keycloakConfig, BindingProvider bindingProvider) throws IOException {
     bindingProvider.getRequestContext().remove("Authorization");
     Map<String, List<String>> requestHeaders = new HashMap<>();
-    String token = getKeycloakToken(keycloakConfiguration);
+    String token = getKeycloakToken(keycloakConfig);
     requestHeaders.put("Authorization", List.of("Bearer " + token));
     bindingProvider.getRequestContext().put(MessageContext.HTTP_REQUEST_HEADERS, requestHeaders);
     return token;
   }
 
-  public static String getKeycloakToken(KeycloakAuthConfiguration keycloakConfiguration) throws IOException {
+  public static String getKeycloakToken(KeycloakAuthConfig keycloakConfig) throws IOException {
     String response;
     try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
-      HttpPost httppost = new HttpPost(keycloakConfiguration.getTokenUrl());
+      HttpPost httppost = new HttpPost(keycloakConfig.getTokenUrl());
 
       List<NameValuePair> params = new ArrayList<>();
-      params.add(new BasicNameValuePair("client_id", keycloakConfiguration.getClientId()));
-      params.add(new BasicNameValuePair("client_secret", keycloakConfiguration.getClientSecret()));
-      params.add(new BasicNameValuePair("username", keycloakConfiguration.getUsername()));
-      params.add(new BasicNameValuePair("password", keycloakConfiguration.getPassword()));
+      params.add(new BasicNameValuePair("client_id", keycloakConfig.getClientId()));
+      params.add(new BasicNameValuePair("client_secret", keycloakConfig.getClientSecret()));
+      params.add(new BasicNameValuePair("username", keycloakConfig.getUsername()));
+      params.add(new BasicNameValuePair("password", keycloakConfig.getPassword()));
       params.add(new BasicNameValuePair("grant_type", "password"));
 
       httppost.setEntity(new UrlEncodedFormEntity(params, StandardCharsets.UTF_8));

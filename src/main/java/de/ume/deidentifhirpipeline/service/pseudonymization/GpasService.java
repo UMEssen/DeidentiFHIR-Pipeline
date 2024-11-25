@@ -1,7 +1,7 @@
 package de.ume.deidentifhirpipeline.service.pseudonymization;
 
-import de.ume.deidentifhirpipeline.configuration.auth.KeycloakAuthConfiguration;
-import de.ume.deidentifhirpipeline.configuration.service.GpasServiceConfiguration;
+import de.ume.deidentifhirpipeline.config.auth.KeycloakAuthConfig;
+import de.ume.deidentifhirpipeline.config.service.GpasServiceConfig;
 import de.ume.deidentifhirpipeline.service.KeycloakService;
 import de.ume.deidentifhirpipeline.service.exception.AddDomainException;
 import de.ume.deidentifhirpipeline.service.exception.GetDomainException;
@@ -34,20 +34,20 @@ import java.util.Map;
 @Slf4j
 public class GpasService implements PseudonymizationServiceInterface, LastUpdatedServiceInterface {
 
-  private final GpasServiceConfiguration configuration;
-  private final KeycloakAuthConfiguration keycloakConfiguration;
+  private final GpasServiceConfig config;
+  private final KeycloakAuthConfig keycloakConfig;
   private final String domain;
   private final String dateShiftingDomain;
   private final String lastUpdatedDomain;
   private static String token;
   private final int numberOfRetries = 2;
 
-  public GpasService(GpasServiceConfiguration configuration) {
-    this.configuration = configuration;
-    this.domain = configuration.getDomain();
+  public GpasService(GpasServiceConfig config) {
+    this.config = config;
+    this.domain = config.getDomain();
     this.dateShiftingDomain = Utils.getDateShiftingDomainName(this.domain);
     this.lastUpdatedDomain = Utils.getLastUpdatedDomainName(this.domain);
-    this.keycloakConfiguration = configuration.getKeycloak();
+    this.keycloakConfig = config.getKeycloak();
   }
 
   @Override
@@ -377,11 +377,11 @@ public class GpasService implements PseudonymizationServiceInterface, LastUpdate
   }
 
   private HttpResponse<String> gpasServiceRequest(String body) throws IOException, InterruptedException, TokenException {
-    return gpasServiceRequest(configuration.getGpasServiceWsdlUrl(), body, this.numberOfRetries);
+    return gpasServiceRequest(config.getGpasServiceWsdlUrl(), body, this.numberOfRetries);
   }
 
   private HttpResponse<String> gpasDomainRequest(String body) throws IOException, InterruptedException, TokenException {
-    return gpasServiceRequest(configuration.getDomainServiceWsdlUrl(), body, this.numberOfRetries);
+    return gpasServiceRequest(config.getDomainServiceWsdlUrl(), body, this.numberOfRetries);
   }
 
   private HttpResponse<String> gpasServiceRequest(String url, String body, int numberOfRetries)
@@ -390,11 +390,11 @@ public class GpasService implements PseudonymizationServiceInterface, LastUpdate
       throw new TokenException();
 
     HttpClient.Builder httpClientBuilder = HttpClient.newBuilder();
-    if (configuration.getBasic() != null) {
+    if (config.getBasic() != null) {
       httpClientBuilder.authenticator(new Authenticator() {
         @Override
         protected PasswordAuthentication getPasswordAuthentication() {
-          return new PasswordAuthentication(configuration.getBasic().getUser(), configuration.getBasic().getPassword().toCharArray());
+          return new PasswordAuthentication(config.getBasic().getUser(), config.getBasic().getPassword().toCharArray());
         }
       });
     }
@@ -406,7 +406,7 @@ public class GpasService implements PseudonymizationServiceInterface, LastUpdate
               .header("Content-Type", "application/soap+xml")
               .POST(HttpRequest.BodyPublishers.ofString(body));
 
-      if (keycloakConfiguration != null)
+      if (keycloakConfig != null)
         httpRequestBuilder.header("Authorization", "Bearer " + this.token);
 
       HttpRequest httpRequest = httpRequestBuilder.build();
@@ -417,8 +417,8 @@ public class GpasService implements PseudonymizationServiceInterface, LastUpdate
       // check for OAuth error
       if (httpResponse.statusCode() == 500 && httpResponse.body().contains("OAuth")) {
         // token = this.refreshToken();
-        if (keycloakConfiguration != null)
-          this.token = KeycloakService.getKeycloakToken(keycloakConfiguration);
+        if (keycloakConfig != null)
+          this.token = KeycloakService.getKeycloakToken(keycloakConfig);
         return gpasServiceRequest(url, body, numberOfRetries - 1);
       }
 

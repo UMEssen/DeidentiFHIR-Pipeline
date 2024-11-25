@@ -1,7 +1,7 @@
 package de.ume.deidentifhirpipeline.transfer.pseudonymization;
 
-import de.ume.deidentifhirpipeline.configuration.ProjectConfiguration;
-import de.ume.deidentifhirpipeline.configuration.pseudonymization.DeidentiFHIRPseudonymizationConfiguration;
+import de.ume.deidentifhirpipeline.config.ProjectConfig;
+import de.ume.deidentifhirpipeline.config.pseudonymization.DeidentiFHIRPseudonymizationConfig;
 import de.ume.deidentifhirpipeline.service.pseudonymization.PseudonymizationServiceInterface;
 import de.ume.deidentifhirpipeline.transfer.Context;
 import de.ume.deidentifhirpipeline.transfer.Utils;
@@ -18,31 +18,31 @@ import java.util.Map;
 @Slf4j
 public class DeidentiFHIRPseudonymization extends Pseudonymization {
 
-  public void before(ProjectConfiguration projectConfiguration) throws Exception {
-    DeidentiFHIRPseudonymizationConfiguration configuration = projectConfiguration.getPseudonymization().getDeidentifhir();
-    PseudonymizationServiceInterface pseudonymizationService = configuration.getPseudonymizationService();
+  public void before(ProjectConfig projectConfig) throws Exception {
+    DeidentiFHIRPseudonymizationConfig config = projectConfig.getPseudonymization().getDeidentifhir();
+    PseudonymizationServiceInterface pseudonymizationService = config.getPseudonymizationService();
     pseudonymizationService.createIfDomainIsNotExistent();
-    log.info("DateShiftingInMillis: {}", configuration.getDateShiftingInMillis());
-    pseudonymizationService.createIfDateShiftingDomainIsNotExistent(configuration.getDateShiftingInMillis());
+    log.info("DateShiftingInMillis: {}", config.getDateShiftingInMillis());
+    pseudonymizationService.createIfDateShiftingDomainIsNotExistent(config.getDateShiftingInMillis());
   }
 
   public Context process(Context context) {
-    DeidentiFHIRPseudonymizationConfiguration configuration = context.getProjectConfiguration().getPseudonymization().getDeidentifhir();
+    DeidentiFHIRPseudonymizationConfig config = context.getProjectConfig().getPseudonymization().getDeidentifhir();
     try {
 
       // Gather IDs
-      File scraperConfigFile = new File(configuration.getScraperConfigFile());
-      IDATScraper idScraper = new IDATScraper(scraperConfigFile, configuration.isGenerateIDScraperConfig());
+      File scraperConfigFile = new File(config.getScraperConfigFile());
+      IDATScraper idScraper = new IDATScraper(scraperConfigFile, config.isGenerateIDScraperConfig());
       List<String> gatheredIDs = idScraper.gatherIDs(
           new CDtoTransportKeyCreator(context.getPatientId()), context.getBundle()).stream().toList();
 
       // Get pseudonyms from gPAS
-      PseudonymizationServiceInterface pseudonymizationService = configuration.getPseudonymizationService();
+      PseudonymizationServiceInterface pseudonymizationService = config.getPseudonymizationService();
       Map<String, String> pseudonymMap = pseudonymizationService.getOrCreatePseudonyms(gatheredIDs);
 
       // Get date shifting values from gPAS
       Map<String, Long> dateShiftValueMap;
-      if (configuration.getDateShiftingInMillis() != 0) {
+      if (config.getDateShiftingInMillis() != 0) {
         long dateShiftValue = pseudonymizationService.getDateShiftingValue(context.getPatientId());
         dateShiftValueMap = Map.of(context.getPatientId(), dateShiftValue);
       } else {
@@ -50,7 +50,7 @@ public class DeidentiFHIRPseudonymization extends Pseudonymization {
       }
 
       // Replace IDs and get bundle
-      File pseudonymizationConfigFile = new File(configuration.getPseudonymizationConfigFile());
+      File pseudonymizationConfigFile = new File(config.getPseudonymizationConfigFile());
       CDtoTransportDeidentiFHIR deidentiFHIR =
           new CDtoTransportDeidentiFHIR(pseudonymizationConfigFile);
       Bundle bundle = (Bundle) deidentiFHIR.deidentify(context.getPatientId(), context.getPatientId(), context.getBundle(), pseudonymMap, dateShiftValueMap);

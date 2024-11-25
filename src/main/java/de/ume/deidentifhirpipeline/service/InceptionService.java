@@ -1,12 +1,12 @@
 package de.ume.deidentifhirpipeline.service;
 
-import de.ume.deidentifhirpipeline.configuration.service.InceptionServiceConfiguration;
+import de.ume.deidentifhirpipeline.config.service.InceptionServiceConfig;
 
 public class InceptionService {
-  private InceptionServiceConfiguration configuration;
+  private InceptionServiceConfig config;
 
-  public InceptionService(InceptionServiceConfiguration configuration) {
-    this.configuration = configuration;
+  public InceptionService(InceptionServiceConfig config) {
+    this.config = config;
   }
 
 

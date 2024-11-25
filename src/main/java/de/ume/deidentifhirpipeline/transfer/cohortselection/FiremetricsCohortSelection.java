@@ -1,7 +1,7 @@
 package de.ume.deidentifhirpipeline.transfer.cohortselection;
 
-import de.ume.deidentifhirpipeline.configuration.ProjectConfiguration;
-import de.ume.deidentifhirpipeline.configuration.cohortselection.FiremetricsCohortSelectionConfiguration;
+import de.ume.deidentifhirpipeline.config.ProjectConfig;
+import de.ume.deidentifhirpipeline.config.cohortselection.FiremetricsCohortSelectionConfig;
 import lombok.extern.slf4j.Slf4j;
 
 import java.nio.file.Files;
@@ -14,8 +14,8 @@ import java.util.List;
 public class FiremetricsCohortSelection extends CohortSelection {
 
   @Override
-  public List<String> before(ProjectConfiguration projectConfiguration) throws Exception {
-    FiremetricsCohortSelectionConfiguration config = projectConfiguration.getCohortSelection().getFiremetrics();
+  public List<String> before(ProjectConfig projectConfig) throws Exception {
+    FiremetricsCohortSelectionConfig config = projectConfig.getCohortSelection().getFiremetrics();
 
     // read fhirql statement from variable if provided or from file
     String fhirqlStatement = config.getQuery();

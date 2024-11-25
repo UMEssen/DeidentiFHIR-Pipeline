@@ -1,7 +1,7 @@
 package de.ume.deidentifhirpipeline.transfer.dataselection;
 
-import de.ume.deidentifhirpipeline.configuration.ProjectConfiguration;
-import de.ume.deidentifhirpipeline.configuration.dataselection.FiremetricsDataSelectionConfiguration;
+import de.ume.deidentifhirpipeline.config.ProjectConfig;
+import de.ume.deidentifhirpipeline.config.dataselection.FiremetricsDataSelectionConfig;
 import de.ume.deidentifhirpipeline.transfer.Context;
 import de.ume.deidentifhirpipeline.transfer.Utils;
 import lombok.extern.slf4j.Slf4j;
@@ -18,13 +18,13 @@ import java.util.OptionalLong;
 public class FiremetricsDataSelection extends DataSelection {
 
   @Override
-  public void before(ProjectConfiguration projectConfiguration) throws Exception {
+  public void before(ProjectConfig projectConfig) throws Exception {
     // Nothing to do before processing
   }
 
   @Override
   public Context process(Context context) throws Exception {
-    FiremetricsDataSelectionConfiguration config = context.getProjectConfiguration().getDataSelection().getFiremetrics();
+    FiremetricsDataSelectionConfig config = context.getProjectConfig().getDataSelection().getFiremetrics();
 
     // load fhirql statement from variable if existent or from file
     String fhirqlStatementWithReplacementString = config.getQuery();

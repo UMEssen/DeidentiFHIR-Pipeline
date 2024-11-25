@@ -1,15 +1,10 @@
 package de.ume.deidentifhirpipeline.transfer.datastoring;
 
-import ca.uhn.fhir.parser.IParser;
-import ca.uhn.fhir.rest.client.api.IGenericClient;
-import de.ume.deidentifhirpipeline.configuration.ProjectConfiguration;
-import de.ume.deidentifhirpipeline.configuration.datastoring.FhirServerDataStoringConfiguration;
-import de.ume.deidentifhirpipeline.configuration.datastoring.FiremetricsDataStoringConfiguration;
+import de.ume.deidentifhirpipeline.config.ProjectConfig;
+import de.ume.deidentifhirpipeline.config.datastoring.FiremetricsDataStoringConfig;
 import de.ume.deidentifhirpipeline.transfer.Context;
 import de.ume.deidentifhirpipeline.transfer.Utils;
 import lombok.extern.slf4j.Slf4j;
-import org.hl7.fhir.r4.model.Bundle;
-import org.hl7.fhir.r4.model.Resource;
 
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -17,17 +12,16 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.*;
 import java.util.List;
-import java.util.UUID;
 
 @Slf4j
 public class FiremetricsDataStoring extends DataStoring {
 
-  public void before(ProjectConfiguration projectConfiguration) throws Exception {
+  public void before(ProjectConfig projectConfig) throws Exception {
     // Nothing to do before processing
   }
 
   public Context process(Context context) {
-    FiremetricsDataStoringConfiguration config = context.getProjectConfiguration().getDataStoring().getFiremetrics();
+    FiremetricsDataStoringConfig config = context.getProjectConfig().getDataStoring().getFiremetrics();
     try {
       List<String> resourcesAsString = context.getBundle().getEntry().stream().map(e -> Utils.fhirResourceToString(e.getResource())).toList();
 
