@@ -33,8 +33,7 @@ public class TransferController {
   @PostMapping(value = "/start", consumes = "application/json", produces = "application/json")
   public ResponseEntity<TransferResponse> start(@RequestBody TransferRequest transferRequest) throws Exception {
 
-    ProjectConfiguration projectConfiguration = projectsConfiguration.getProjects().get(
-        transferRequest.getProject());
+    ProjectConfiguration projectConfiguration = projectsConfiguration.getProjects().get(transferRequest.getProject());
 
     if (projectConfiguration == null) {
       return new ResponseEntity<>(new TransferResponse(String.format("Project '%s' not configured", transferRequest.getProject())), HttpStatus.NOT_FOUND);
@@ -47,8 +46,7 @@ public class TransferController {
   @PostMapping(value = "/start-with-changed-configuration", consumes = "application/json", produces = "application/json")
   public ResponseEntity<TransferResponse> startWithChangedConfiguration(@RequestBody TransferRequestWithConfiguration transferRequestWithConfiguration) throws Exception {
 
-    ProjectConfiguration projectConfiguration = projectsConfiguration.getProjects().get(
-        transferRequestWithConfiguration.getProject());
+    ProjectConfiguration projectConfiguration = projectsConfiguration.getProjects().get(transferRequestWithConfiguration.getProject());
 
     if (projectConfiguration == null) {
       return new ResponseEntity<>(new TransferResponse(String.format("Project '%s' not configured", transferRequestWithConfiguration.getProject())), HttpStatus.NOT_FOUND);
