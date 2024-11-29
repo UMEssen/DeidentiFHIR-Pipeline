@@ -24,8 +24,7 @@ public class TransferProcess {
     throw new IllegalStateException("Utility class");
   }
 
-  public static String start(List<String> ids,
-      ProjectConfig projectConfig) throws Exception {
+  public static String start(List<String> ids, ProjectConfig projectConfig) throws Exception {
     UUID uuid = UUID.randomUUID();
 
     beforeExecution(projectConfig);
@@ -80,8 +79,7 @@ public class TransferProcess {
     return uuid.toString();
   }
 
-  private static List<Context> setUpContexts(Transfer transfer, List<String> ids,
-      ProjectConfig projectConfig) {
+  private static List<Context> setUpContexts(Transfer transfer, List<String> ids, ProjectConfig projectConfig) {
     List<Context> contexts = new ArrayList<>();
     for (String id : ids) {
       transfer.getMap().put(id, new TransferStatus());

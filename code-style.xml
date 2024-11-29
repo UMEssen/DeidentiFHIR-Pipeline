@@ -2,12 +2,13 @@
 <!-- Google Code Style -->
 <!-- From: https://github.com/google/styleguide/blob/9504dac66c40ab5e2eeb5635b804cbe8ae66807d/eclipse-java-google-style.xml -->
 <!-- With some changes. -->
-<profiles version="13">
-  <profile kind="CodeFormatterProfile" name="GoogleStyle" version="13">
+<profiles version="23">
+  <profile kind="CodeFormatterProfile" name="GoogleStyle" version="23">
 <!-- Changes: -->
     <setting id="org.eclipse.jdt.core.formatter.lineSplit" value="160"/>
     <setting id="org.eclipse.jdt.core.formatter.indentation.size" value="2"/>
     <setting id="org.eclipse.jdt.core.formatter.join_wrapped_lines" value="false"/>
+    <setting id="org.eclipse.jdt.core.formatter.align_arrows_in_switch_on_columns" value="true"/>
 <!-- Defaults: -->
     <setting id="org.eclipse.jdt.core.formatter.lineSplit.always_preserve_existing_line_breaks" value="true"/>
     <setting id="org.eclipse.jdt.core.formatter.comment.insert_new_line_before_root_tags" value="insert"/>
