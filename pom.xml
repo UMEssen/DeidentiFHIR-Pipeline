@@ -201,6 +201,9 @@
 							<version>4.33</version> <!-- necessary for newest version and newest configuration options -->
 							<file>${project.basedir}/code-style.xml</file>
 						</eclipse>
+						<excludes>
+							<exclude>src/main/java/de/ume/deidentifhirpipeline/service/wsdl/</exclude>
+						</excludes>
 					</java>
 				</configuration>
 				<executions>
