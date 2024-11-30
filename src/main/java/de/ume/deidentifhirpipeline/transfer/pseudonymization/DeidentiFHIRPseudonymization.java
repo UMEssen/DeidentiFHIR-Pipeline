@@ -53,7 +53,8 @@ public class DeidentiFHIRPseudonymization extends Pseudonymization {
       File pseudonymizationConfigFile = new File(config.getPseudonymizationConfigFile());
       CDtoTransportDeidentiFHIR deidentiFHIR =
           new CDtoTransportDeidentiFHIR(pseudonymizationConfigFile);
-      Bundle bundle = (Bundle) deidentiFHIR.deidentify(context.getPatientId(), context.getPatientId(), context.getBundle(), pseudonymMap, dateShiftValueMap);
+      Bundle bundle =
+          (Bundle) deidentiFHIR.deidentify(context.getPatientId(), context.getPatientId(), context.getBundle(), pseudonymMap, dateShiftValueMap);
 
       context.setBundle(bundle);
       return context;

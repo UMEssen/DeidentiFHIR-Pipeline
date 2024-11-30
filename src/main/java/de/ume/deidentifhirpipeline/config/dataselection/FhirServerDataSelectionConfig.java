@@ -8,12 +8,12 @@ import lombok.Setter;
 @Getter
 @Setter
 public class FhirServerDataSelectionConfig {
-  private String url;
-  private String fhirIdQuery;
-  private String fhirIdQueryPlaceholder;
-  private String bundleQueryLastUpdatedPlaceholder;
-  private String bundleQuery;
-  private String bundleQueryPlaceholder;
+  private String          url;
+  private String          fhirIdQuery;
+  private String          fhirIdQueryPlaceholder;
+  private String          bundleQueryLastUpdatedPlaceholder;
+  private String          bundleQuery;
+  private String          bundleQueryPlaceholder;
   private BasicAuthConfig basicAuth;
   private TokenAuthConfig tokenAuth;
 }

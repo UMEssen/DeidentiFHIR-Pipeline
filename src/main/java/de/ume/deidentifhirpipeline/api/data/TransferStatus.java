@@ -8,10 +8,9 @@ import java.time.LocalDateTime;
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TransferStatus {
-  private Status status;
+  private Status        status;
   private LocalDateTime endDate;
-
-  private Exception exception;
+  private Exception     exception;
 
   public TransferStatus() {
     status = Status.PENDING;
@@ -22,13 +21,13 @@ public class TransferStatus {
   }
 
   public TransferStatus(Status status, LocalDateTime endDate) {
-    this.status = status;
+    this.status  = status;
     this.endDate = endDate;
   }
 
   public TransferStatus(Status status, LocalDateTime endDate, Exception exception) {
-    this.status = status;
-    this.endDate = endDate;
+    this.status    = status;
+    this.endDate   = endDate;
     this.exception = exception;
   }
 

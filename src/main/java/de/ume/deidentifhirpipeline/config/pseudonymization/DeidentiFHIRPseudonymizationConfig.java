@@ -13,24 +13,23 @@ import lombok.extern.slf4j.Slf4j;
 @Getter
 @Setter
 public class DeidentiFHIRPseudonymizationConfig {
-  private String scraperConfigFile;
-  private String pseudonymizationConfigFile;
-  private boolean generateIDScraperConfig;
-  private long dateShiftingInMillis;
-  private GpasServiceConfig gpas;
-  private HashmapServiceConfig hashmap;
-  private GpasService gpasService;
+  private String                           scraperConfigFile;
+  private String                           pseudonymizationConfigFile;
+  private boolean                          generateIDScraperConfig;
+  private long                             dateShiftingInMillis;
+  private GpasServiceConfig                gpas;
+  private HashmapServiceConfig             hashmap;
+  private GpasService                      gpasService;
   private PseudonymizationServiceInterface pseudonymizationService;
 
-  public DeidentiFHIRPseudonymizationConfig(String scraperConfigFile,
-      String pseudonymizationConfigFile, boolean generateIDScraperConfig, long dateShiftingInMillis,
-      GpasServiceConfig gpas, HashmapServiceConfig hashmap) {
-    this.scraperConfigFile = scraperConfigFile;
+  public DeidentiFHIRPseudonymizationConfig(String scraperConfigFile, String pseudonymizationConfigFile, boolean generateIDScraperConfig,
+      long dateShiftingInMillis, GpasServiceConfig gpas, HashmapServiceConfig hashmap) {
+    this.scraperConfigFile          = scraperConfigFile;
     this.pseudonymizationConfigFile = pseudonymizationConfigFile;
-    this.generateIDScraperConfig = generateIDScraperConfig;
-    this.dateShiftingInMillis = dateShiftingInMillis;
-    this.gpas = gpas;
-    this.hashmap = hashmap;
+    this.generateIDScraperConfig    = generateIDScraperConfig;
+    this.dateShiftingInMillis       = dateShiftingInMillis;
+    this.gpas                       = gpas;
+    this.hashmap                    = hashmap;
   }
 
   public PseudonymizationServiceInterface getPseudonymizationService() {

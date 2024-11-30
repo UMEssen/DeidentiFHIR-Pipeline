@@ -4,6 +4,5 @@ import de.ume.deidentifhirpipeline.config.ProjectConfig;
 import lombok.Getter;
 
 public class TransferRequestWithConfig extends TransferRequest {
-  @Getter
-  ProjectConfig projectConfig;
+  @Getter ProjectConfig projectConfig;
 }

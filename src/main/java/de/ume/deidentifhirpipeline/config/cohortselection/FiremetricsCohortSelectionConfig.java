@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 public class FiremetricsCohortSelectionConfig {
   private String host;
-  private int port;
+  private int    port;
   private String database;
   private String user;
   private String password;

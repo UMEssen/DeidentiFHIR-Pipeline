@@ -6,6 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class HashmapServiceConfig {
-  private String domain;
+  private String  domain;
   private boolean exportHashmapAfterTransfer;
 }

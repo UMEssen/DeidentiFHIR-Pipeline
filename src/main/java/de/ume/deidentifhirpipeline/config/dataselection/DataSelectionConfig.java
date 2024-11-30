@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class DataSelectionConfig {
-  private FhirServerDataSelectionConfig fhirServer;
+  private FhirServerDataSelectionConfig    fhirServer;
   private FhirCollectorDataSelectionConfig fhirCollector;
-  private FiremetricsDataSelectionConfig firemetrics;
+  private FiremetricsDataSelectionConfig   firemetrics;
 }

@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class DataStoringConfig {
-  private FhirServerDataStoringConfig fhirServer;
+  private FhirServerDataStoringConfig  fhirServer;
   private FiremetricsDataStoringConfig firemetrics;
-  private FolderDataStoringConfig folder;
+  private FolderDataStoringConfig      folder;
 }

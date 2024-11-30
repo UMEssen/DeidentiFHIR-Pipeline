@@ -9,6 +9,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class TransferResponse {
   @Getter
-  @Setter
-  String transferId;
+  @Setter String transferId;
 }

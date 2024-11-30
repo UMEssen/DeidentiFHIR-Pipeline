@@ -13,10 +13,10 @@ import lombok.extern.slf4j.Slf4j;
 @Getter
 @Setter
 public class LastUpdatedConfig {
-  private String zoneId;
-  private GpasServiceConfig gpas;
-  private HashmapServiceConfig hashmap;
-  private GpasService gpasService;
+  private String                      zoneId;
+  private GpasServiceConfig           gpas;
+  private HashmapServiceConfig        hashmap;
+  private GpasService                 gpasService;
   private LastUpdatedServiceInterface lastUpdatedService;
 
   public LastUpdatedServiceInterface getLastUpdatedService() {

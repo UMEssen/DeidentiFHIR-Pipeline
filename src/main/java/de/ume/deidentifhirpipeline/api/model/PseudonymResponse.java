@@ -11,6 +11,5 @@ import java.util.Map;
 @NoArgsConstructor
 public class PseudonymResponse {
   @Getter
-  @Setter
-  Map<String, String> idPseudonymMap;
+  @Setter Map<String, String> idPseudonymMap;
 }

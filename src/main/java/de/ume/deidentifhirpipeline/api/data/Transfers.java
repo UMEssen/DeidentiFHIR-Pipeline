@@ -8,8 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 public class Transfers {
-  @Getter
-  private static final ConcurrentMap<String, Transfer> map = new ConcurrentHashMap<>();
+  @Getter private static final ConcurrentMap<String, Transfer> map = new ConcurrentHashMap<>();
 
   private Transfers() {
     throw new IllegalStateException("Utility class");

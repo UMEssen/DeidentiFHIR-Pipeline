@@ -5,7 +5,6 @@ import lombok.Setter;
 
 public class InceptionServiceConfig {
   @Getter
-  @Setter
-  private String url;
+  @Setter private String url;
 
 }

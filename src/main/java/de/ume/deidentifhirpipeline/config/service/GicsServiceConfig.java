@@ -9,8 +9,8 @@ import java.util.List;
 @Getter
 @Setter
 public class GicsServiceConfig {
-  private String mainWsdlUri;
+  private String          mainWsdlUri;
   private BasicAuthConfig basic;
-  String domain;
-  private List<String> policies;
+  private String          domain;
+  private List<String>    policies;
 }

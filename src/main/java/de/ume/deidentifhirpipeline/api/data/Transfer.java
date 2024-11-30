@@ -14,13 +14,10 @@ import java.util.concurrent.ConcurrentMap;
 public class Transfer {
   private final ConcurrentMap<String, TransferStatus> map = new ConcurrentHashMap<>();
 
-  private final LocalDateTime startDateTime;
-  @Setter
-  private LocalDateTime endDateTime;
-  @Setter
-  private LocalDateTime statusDateTime;
-  @Setter
-  private Status status;
+  private final LocalDateTime   startDateTime;
+  @Setter private LocalDateTime endDateTime;
+  @Setter private LocalDateTime statusDateTime;
+  @Setter private Status        status;
 
   public Transfer(UUID uuid) {
     startDateTime = LocalDateTime.now();

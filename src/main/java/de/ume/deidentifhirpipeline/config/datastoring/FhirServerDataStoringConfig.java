@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class FhirServerDataStoringConfig {
-  private String url;
+  private String          url;
   private BasicAuthConfig basicAuth;
   private TokenAuthConfig tokenAuth;
 

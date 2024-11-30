@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CohortSelectionConfig {
-  private GicsServiceConfig gics;
+  private GicsServiceConfig                gics;
   private FiremetricsCohortSelectionConfig firemetrics;
-  private IdCohortSelectionConfig viaIds;
+  private IdCohortSelectionConfig          viaIds;
 }

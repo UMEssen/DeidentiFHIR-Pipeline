@@ -27,8 +27,7 @@ import java.util.stream.Collectors;
 @RestController
 public class TransferController {
 
-  @Autowired
-  ProjectsConfig projectsConfig;
+  @Autowired ProjectsConfig projectsConfig;
 
   @PostMapping(value = "/start", consumes = "application/json", produces = "application/json")
   public ResponseEntity<TransferResponse> start(@RequestBody TransferRequest transferRequest) throws Exception {

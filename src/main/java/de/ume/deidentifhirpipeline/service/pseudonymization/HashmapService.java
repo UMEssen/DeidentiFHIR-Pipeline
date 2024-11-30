@@ -19,17 +19,17 @@ import java.util.concurrent.ConcurrentMap;
 public class HashmapService implements PseudonymizationServiceInterface, LastUpdatedServiceInterface {
 
   private final HashmapServiceConfig config;
-  private final String domain;
-  private final String dateShiftingDomain;
-  private final String lastUpdatedDomain;
+  private final String               domain;
+  private final String               dateShiftingDomain;
+  private final String               lastUpdatedDomain;
 
   public static final ConcurrentMap<String, ConcurrentMap<String, String>> domainMap = new ConcurrentHashMap<>();
 
   public HashmapService(HashmapServiceConfig config) {
-    this.config = config;
-    this.domain = config.getDomain();
+    this.config             = config;
+    this.domain             = config.getDomain();
     this.dateShiftingDomain = Utils.getDateShiftingDomainName(this.domain);
-    this.lastUpdatedDomain = Utils.getLastUpdatedDomainName(this.domain);
+    this.lastUpdatedDomain  = Utils.getLastUpdatedDomainName(this.domain);
   }
 
   @Override

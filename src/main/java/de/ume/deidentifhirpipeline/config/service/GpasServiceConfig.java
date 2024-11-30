@@ -8,9 +8,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class GpasServiceConfig {
-  private String domain;
-  private String gpasServiceWsdlUrl;
-  private String domainServiceWsdlUrl;
-  private BasicAuthConfig basic;
+  private String             domain;
+  private String             gpasServiceWsdlUrl;
+  private String             domainServiceWsdlUrl;
+  private BasicAuthConfig    basic;
   private KeycloakAuthConfig keycloak;
 }

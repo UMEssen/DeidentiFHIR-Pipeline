@@ -12,24 +12,19 @@ import java.util.OptionalLong;
 @Getter
 @NoArgsConstructor
 public class Context {
-  Transfer transfer;
-  ProjectConfig projectConfig;
-  String patientId;
-  @Setter
-  OptionalLong oldLastUpdated = OptionalLong.empty();
-  @Setter
-  OptionalLong newLastUpdated = OptionalLong.empty();
-  @Setter
-  Bundle bundle;
-  @Setter
-  boolean failed = false;
-  @Setter
-  Exception exception;
+  Transfer             transfer;
+  ProjectConfig        projectConfig;
+  String               patientId;
+  @Setter OptionalLong oldLastUpdated = OptionalLong.empty();
+  @Setter OptionalLong newLastUpdated = OptionalLong.empty();
+  @Setter Bundle       bundle;
+  @Setter boolean      failed         = false;
+  @Setter Exception    exception;
 
   public Context(Transfer transfer, ProjectConfig projectConfig, String patientId) {
-    this.transfer = transfer;
+    this.transfer      = transfer;
     this.projectConfig = projectConfig;
-    this.patientId = patientId;
+    this.patientId     = patientId;
   }
 
 }

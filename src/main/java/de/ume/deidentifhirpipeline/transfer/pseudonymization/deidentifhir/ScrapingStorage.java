@@ -7,9 +7,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class ScrapingStorage implements IDReplacementProvider, IdentifierValueReplacementProvider {
+  private PseudonymTableKeyCreator keyCreator;
 
   public HashSet<String> gatheredIDATs = new HashSet<>();
-  private PseudonymTableKeyCreator keyCreator;
 
   public ScrapingStorage() {}
 

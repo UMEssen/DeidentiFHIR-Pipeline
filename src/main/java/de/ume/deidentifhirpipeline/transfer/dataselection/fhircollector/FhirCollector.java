@@ -21,16 +21,11 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 public class FhirCollector {
 
-  ConcurrentHashMap<String, Resource> fhirResources = new ConcurrentHashMap<>();
-
+  ConcurrentHashMap<String, Resource>    fhirResources = new ConcurrentHashMap<>();
+  @Getter FhirCollectorConfig            config;
+  FHIRPathEngine                         fhirPathEngine;
   @Getter
-  FhirCollectorConfig config;
-
-  FHIRPathEngine fhirPathEngine;
-
-  @Getter
-  @Setter
-  private IGenericClient hapiClient;
+  @Setter private IGenericClient         hapiClient;
 
   public FhirCollector(String path) throws IOException {
     ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
@@ -49,9 +44,9 @@ public class FhirCollector {
   }
 
   private void setup(FhirCollectorConfig config) {
-    this.config = config;
-    fhirPathEngine = new FHIRPathEngine(new HapiWorkerContext(Utils.fctx, new DefaultProfileValidationSupport(Utils.fctx)));
-    this.hapiClient = Utils.fctx.newRestfulGenericClient(config.getUrl());
+    this.config         = config;
+    this.fhirPathEngine = new FHIRPathEngine(new HapiWorkerContext(Utils.fctx, new DefaultProfileValidationSupport(Utils.fctx)));
+    this.hapiClient     = Utils.fctx.newRestfulGenericClient(config.getUrl());
     if (config.getUser() != null)
       this.hapiClient = Utils.hapiClient(config.getUrl(), config.getUser(), config.getPassword());
     if (config.getToken() != null)

@@ -34,20 +34,20 @@ import java.util.Map;
 @Slf4j
 public class GpasService implements PseudonymizationServiceInterface, LastUpdatedServiceInterface {
 
-  private final GpasServiceConfig config;
+  private final GpasServiceConfig  config;
   private final KeycloakAuthConfig keycloakConfig;
-  private final String domain;
-  private final String dateShiftingDomain;
-  private final String lastUpdatedDomain;
-  private static String token;
-  private final int numberOfRetries = 2;
+  private final String             domain;
+  private final String             dateShiftingDomain;
+  private final String             lastUpdatedDomain;
+  private static String            token;
+  private final int                numberOfRetries = 2;
 
   public GpasService(GpasServiceConfig config) {
-    this.config = config;
-    this.domain = config.getDomain();
+    this.config             = config;
+    this.domain             = config.getDomain();
     this.dateShiftingDomain = Utils.getDateShiftingDomainName(this.domain);
-    this.lastUpdatedDomain = Utils.getLastUpdatedDomainName(this.domain);
-    this.keycloakConfig = config.getKeycloak();
+    this.lastUpdatedDomain  = Utils.getLastUpdatedDomainName(this.domain);
+    this.keycloakConfig     = config.getKeycloak();
   }
 
   @Override

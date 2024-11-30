@@ -17,8 +17,8 @@ import java.io.File;
 
 public class CDtoTransportDeidentiFHIR {
 
-  private Deidentifhir deidentiFHIR;
-  private PseudonymProvider ths = new PseudonymProvider();
+  private Deidentifhir         deidentiFHIR;
+  private PseudonymProvider    ths = new PseudonymProvider();
   private DateShiftingProvider dsp = new DateShiftingProvider();
 
   public CDtoTransportDeidentiFHIR(File configFile) {

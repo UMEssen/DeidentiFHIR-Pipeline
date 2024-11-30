@@ -19,15 +19,14 @@ import java.time.ZonedDateTime;
 public class Utils {
   public static final FhirContext fctx = FhirContext.forR4();
 
-  public static final String VALUE_NOT_FOUND = "*** VALUE NOT FOUND ***";
-  public static final String DATE_SHIFTING_DOMAIN_SUFFIX = "-DATE_SHIFTING";
-  public static final String DATE_SHIFTING_DOMAIN_VALUE = "___DATE-SHIFTING-IN-MILLIS___";
-  public static final int DATE_SHIFTING_DOMAIN_PSN_LENGTH = 18;
-  public static final String DATE_SHIFTING_DELIMITER = "X";
-
-  public static final String LAST_UPDATED_DOMAIN_SUFFIX = "-LAST_UPDATED";
-  public static final int LAST_UPDATED_DOMAIN_PSN_LENGTH = 32;
-  public static final String LAST_UPDATED_DELIMITER = "X";
+  public static final String VALUE_NOT_FOUND                 = "*** VALUE NOT FOUND ***";
+  public static final String DATE_SHIFTING_DOMAIN_SUFFIX     = "-DATE_SHIFTING";
+  public static final String DATE_SHIFTING_DOMAIN_VALUE      = "___DATE-SHIFTING-IN-MILLIS___";
+  public static final int    DATE_SHIFTING_DOMAIN_PSN_LENGTH = 18;
+  public static final String DATE_SHIFTING_DELIMITER         = "X";
+  public static final String LAST_UPDATED_DOMAIN_SUFFIX      = "-LAST_UPDATED";
+  public static final int    LAST_UPDATED_DOMAIN_PSN_LENGTH  = 32;
+  public static final String LAST_UPDATED_DELIMITER          = "X";
 
   private Utils() {
     throw new IllegalStateException("Utility class");

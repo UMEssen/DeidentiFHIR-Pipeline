@@ -18,7 +18,7 @@ import java.util.Set;
 
 @Slf4j
 public class IDATScraper {
-  private Deidentifhir deidentiFHIR;
+  private Deidentifhir    deidentiFHIR;
   private ScrapingStorage scrapingStorage;
 
   public IDATScraper(File configFile, boolean generateIDScraperConfig) {
