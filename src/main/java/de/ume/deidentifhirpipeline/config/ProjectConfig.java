@@ -45,7 +45,8 @@ public class ProjectConfig {
   private Pseudonymization         pseudonymizationImpl;
   private DataStoring              dataStoringImpl;
 
-  public ProjectConfig(int parallelism,
+  public ProjectConfig(
+      int parallelism,
       LastUpdatedConfig lastUpdated,
       CohortSelectionConfig cohortSelection,
       DataSelectionConfig dataSelection,

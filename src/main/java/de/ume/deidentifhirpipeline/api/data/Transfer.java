@@ -20,9 +20,9 @@ public class Transfer {
   @Setter private Status        status;
 
   public Transfer(UUID uuid) {
-    startDateTime = LocalDateTime.now();
+    this.startDateTime = LocalDateTime.now();
+    this.status        = Status.PENDING;
     Transfers.getMap().put(uuid.toString(), this);
-    status = Status.PENDING;
   }
 
   public String toString() {
