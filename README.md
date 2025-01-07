@@ -104,7 +104,7 @@ mvn spring-boot:run
 
 Compile project with:
 ```bash 
-./build-jar.sh
+./jar-build.sh
 ```
 Run with:
 ```bash
@@ -113,7 +113,7 @@ java -jar target/deidentifhir-pipeline-0.1.4.jar --spring.config.location=src/ma
 
 Create docker image with: 
 ```bash
-./build-docker-image.sh
+./docker-build-image.sh
 ```
 #### Endpoints
 
