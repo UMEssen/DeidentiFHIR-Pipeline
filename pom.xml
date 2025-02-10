@@ -16,7 +16,7 @@
 	<properties>
 		<maven.compiler.proc>full</maven.compiler.proc>
 		<java.version>23</java.version>
-		<hapi.version>7.6.0</hapi.version>
+		<hapi.version>7.6.1</hapi.version>
 		<lombok.version>1.18.36</lombok.version>
 		<jackson.version>2.18.2</jackson.version>
 	</properties>
