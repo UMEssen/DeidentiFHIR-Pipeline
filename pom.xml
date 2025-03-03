@@ -18,7 +18,7 @@
 		<java.version>23</java.version>
 		<hapi.version>8.0.0</hapi.version>
 		<lombok.version>1.18.36</lombok.version>
-		<jackson.version>2.18.2</jackson.version>
+		<jackson.version>2.18.3</jackson.version>
 	</properties>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
