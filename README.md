@@ -78,7 +78,7 @@ projects:
 ```
 
 #### What is needed for compilation: 
-- `java 23`
+- `java 24`
 - `maven` (tested with `3.9.9`)
 - `docker`
 - `docker compose`
@@ -130,7 +130,7 @@ GET:
 - http://localhost:8042/transfer/{insert-uuid-here}/pending
 
 Endpoint documentation is also available as swagger-ui under 
-[localhost:8042/swagger-ui/index.html](localhost:8042/swagger-ui/index.html).
+[http://localhost:8042/swagger-ui/index.html](http://localhost:8042/swagger-ui/index.html).
 
 #### Development setup
 See `integrationtests/docker-compose.yml`
