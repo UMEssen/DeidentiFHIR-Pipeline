@@ -21,14 +21,25 @@ projects:
     cohort-selection:
       via-ids:
         ids: ["1234-identifier", "234-identifier"]
-#        ids: ["1234", "234"]
-#        mvh-se:
-#          gpas:
-#            domain: test-project
-#            gpasServiceWsdlUrl: http://localhost:8081/gpas/gpasService?wsdl
-#            domainServiceWsdlUrl: http://localhost:8081/gpas/DomainService?wsdl
-#          firemetrics:
-#            bla: bla
+
+#      via-file:
+#        path: ./path/to/file    # one number / id per line
+
+#      firemetrics:
+#        host: &firemetrics-host <insert-host-here>
+#        port: &firemetrics-port <insert-port-here>
+#        database: &firemetrics-database <insert-database-here>
+#        user: &firemetrics-user <insert-user-here>
+#        password: &firemetrics-password <insert-password-here>
+#        # config file with sql statements
+#        # configFile: ./path/to/file
+#        # or sql query
+#        query: |
+#          select b0.id
+#          from biologicallyderivedproduct b0
+#          order by b0.id asc
+#          limit 1000 offset 0
+
     data-selection:
 #      fhir-collector:
 #        configurationFile: ./src/main/resources/fhir-collector.yaml
@@ -45,9 +56,7 @@ projects:
         bundleQueryPlaceholder: <fhir-id>
         bundleQuery: Patient/<fhir-id>/$everything?_count=100000
 #        bundleQuery: Patient?_id=<fhir-id>&_lastUpdated=ge<lastUpdated>
-#      mvh-se:
-#        firemetrics:
-#          bla: bla
+
     pseudonymization:
 #      use: false # false => no pseudonymization; true => (default) pseudonymization
       deidentifhir:

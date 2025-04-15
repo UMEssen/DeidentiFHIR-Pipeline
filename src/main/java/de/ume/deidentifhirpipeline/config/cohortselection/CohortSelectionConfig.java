@@ -10,4 +10,5 @@ public class CohortSelectionConfig {
   private GicsServiceConfig                gics;
   private FiremetricsCohortSelectionConfig firemetrics;
   private IdCohortSelectionConfig          viaIds;
+  private FileCohortSelectionConfig        viaFile;
 }

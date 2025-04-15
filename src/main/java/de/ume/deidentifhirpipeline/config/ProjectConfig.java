@@ -5,10 +5,7 @@ import de.ume.deidentifhirpipeline.config.dataselection.DataSelectionConfig;
 import de.ume.deidentifhirpipeline.config.datastoring.DataStoringConfig;
 import de.ume.deidentifhirpipeline.config.lastupdated.LastUpdatedConfig;
 import de.ume.deidentifhirpipeline.config.pseudonymization.PseudonymizationConfig;
-import de.ume.deidentifhirpipeline.transfer.cohortselection.CohortSelection;
-import de.ume.deidentifhirpipeline.transfer.cohortselection.FiremetricsCohortSelection;
-import de.ume.deidentifhirpipeline.transfer.cohortselection.GicsCohortSelection;
-import de.ume.deidentifhirpipeline.transfer.cohortselection.IdCohortSelection;
+import de.ume.deidentifhirpipeline.transfer.cohortselection.*;
 import de.ume.deidentifhirpipeline.transfer.dataselection.*;
 import de.ume.deidentifhirpipeline.transfer.datastoring.DataStoring;
 import de.ume.deidentifhirpipeline.transfer.datastoring.FhirServerDataStoring;
@@ -67,14 +64,19 @@ public class ProjectConfig {
       setLastUpdatedImpl = Optional.of(new SetLastUpdatedImpl(lastUpdated));
     }
     // @formatter:off
+    // Cohort Selection
     if (cohortSelection != null && cohortSelection.getGics() != null)           cohortSelectionImpl   = new GicsCohortSelection();
     if (cohortSelection != null && cohortSelection.getViaIds() != null)         cohortSelectionImpl   = new IdCohortSelection();
+    if (cohortSelection != null && cohortSelection.getViaFile() != null)        cohortSelectionImpl   = new FileCohortSelection();
     if (cohortSelection != null && cohortSelection.getFiremetrics() != null)    cohortSelectionImpl   = new FiremetricsCohortSelection();
+    // Data Selection
     if (dataSelection != null && dataSelection.getFhirServer() != null)         dataSelectionImpl     = new FhirServerDataSelection();
     if (dataSelection != null && dataSelection.getFhirCollector() != null)      dataSelectionImpl     = new FhirCollectorDataSelection();
     if (dataSelection != null && dataSelection.getFiremetrics() != null)        dataSelectionImpl     = new FiremetricsDataSelection();
+    // Pseudonymization
     if (pseudonymization != null && pseudonymization.getDeidentifhir() != null) pseudonymizationImpl  = new DeidentiFHIRPseudonymization();
     if (pseudonymization != null && pseudonymization.isUse() == false)          pseudonymizationImpl  = new NoPseudonymization();
+    // Data Storing
     if (dataStoring != null && dataStoring.getFhirServer() != null)             dataStoringImpl       = new FhirServerDataStoring();
     if (dataStoring != null && dataStoring.getFiremetrics() != null)            dataStoringImpl       = new FiremetricsDataStoring();
     if (dataStoring != null && dataStoring.getFolder() != null)                 dataStoringImpl       = new FolderDataStoring();
