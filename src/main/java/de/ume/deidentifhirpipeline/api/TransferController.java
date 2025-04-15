@@ -73,11 +73,13 @@ public class TransferController {
 
   @GetMapping(value = "/transfer/all")
   public ResponseEntity<Map<String, Transfer>> getTransfersAll() {
+    Transfers.getMap().values().forEach(transfer -> transfer.updateStatus());
     return new ResponseEntity<>(Transfers.getMap(), HttpStatusCode.valueOf(200));
   }
 
   @GetMapping(value = "/transfer/{id}")
   public ResponseEntity<Transfer> getTransfer(@PathVariable("id") String id) {
+    Transfers.getMap().get(id).updateStatus();
     return new ResponseEntity<>(Transfers.getMap().get(id), HttpStatusCode.valueOf(200));
   }
 
