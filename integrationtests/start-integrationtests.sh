@@ -60,15 +60,15 @@ docker compose -f docker-compose-fhir-collector.yml down -v
 
 # test if there were any failure
 if [[ failure -ne 0 ]] ; then
-    printf "${RED}\nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx${NC}"
-    printf "${RED}\nxxx There are integrationtests failures xxx${NC}"
-    printf "${RED}\nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx${NC}"
+    printf "\n${RED}xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx${NC}"
+    printf "\n${RED}xxx There are integrationtests failures xxx${NC}"
+    printf "\n${RED}xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx${NC}"
     printf "\n\n"
     exit 1
 else
-    printf "${GREEN}\n✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔${NC}"
-    printf "${GREEN}\n✔✔✔ Integrationtests completed successfully without errors ✔✔✔${NC}"
-    printf "${GREEN}\n✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔${NC}"
+    printf "\n${GREEN}✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔${NC}"
+    printf "\n${GREEN}✔✔✔ Integrationtests completed successfully without errors ✔✔✔${NC}"
+    printf "\n${GREEN}✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔${NC}"
     printf "\n\n"
     exit 0
 fi
