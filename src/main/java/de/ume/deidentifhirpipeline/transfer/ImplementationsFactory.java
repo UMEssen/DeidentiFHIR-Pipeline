@@ -9,6 +9,8 @@ import de.ume.deidentifhirpipeline.transfer.lastupdated.SetLastUpdated;
 import de.ume.deidentifhirpipeline.transfer.pseudonymization.Pseudonymization;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.context.properties.bind.Binder;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -17,6 +19,8 @@ import java.util.Map;
 @Getter
 @Component
 public class ImplementationsFactory {
+
+  Environment env;
 
   private final Map<String, CohortSelection>  cohortSelectionImplementations;
   private final Map<String, GetLastUpdated>   getLastUpdatedImplementations;
@@ -27,6 +31,7 @@ public class ImplementationsFactory {
 
 
   public ImplementationsFactory(
+      Environment env,
       Map<String, CohortSelection> cohortSelectionImplementations,
       Map<String, GetLastUpdated> getLastUpdatedImplementations,
       Map<String, DataSelection> dataSelectionImplementations,
@@ -47,6 +52,9 @@ public class ImplementationsFactory {
     pseudonymizationImplementations.keySet().forEach(s -> log.info("Pseudonymization: " + s));
     dataStoringImplementations.keySet().forEach(s -> log.info("Data Storing: " + s));
     setLastUpdatedImplementations.keySet().forEach(s -> log.info("Set Last Updated: " + s));
+
+    this.env = env;
+
   }
 
 
@@ -70,58 +78,55 @@ public class ImplementationsFactory {
     return setLastUpdated;
   }
 
-  public CohortSelection getCohortSelection(ProjectConfig projectConfig) {
-    CohortSelection cohortselection;
-    if (projectConfig.getCohortSelection().getViaIds() != null) {
-      cohortselection = cohortSelectionImplementations.get("cohort-selection.via-ids");
-    } else if (projectConfig.getCohortSelection().getViaFile() != null) {
-      cohortselection = cohortSelectionImplementations.get("cohort-selection.via-file");
-    } else if (projectConfig.getCohortSelection().getGics() != null) {
-      cohortselection = cohortSelectionImplementations.get("cohort-selection.gics");
-    } else if (projectConfig.getCohortSelection().getFiremetrics() != null) {
-      cohortselection = cohortSelectionImplementations.get("cohort-selection.firemetrics");
-    } else {
-      cohortselection = null;
-    }
-    return cohortselection;
+  public CohortSelection getCohortSelection(ProjectConfig projectConfig) throws Exception {
+    Binder binder = Binder.get(env);
+    Map<String, Object> cohortSelectionConfig = binder.bind("projects." + projectConfig.getName() + ".cohort-selection", Map.class).orElse(Map.of());
+
+    cohortSelectionConfig.keySet().forEach(s -> log.info("cohort-selection config: " + s));
+    if (cohortSelectionConfig.size() > 1)
+      throw new Exception("There are multiple cohort-selection configurations. Please check configuration!");
+    String cohortString =
+        cohortSelectionConfig.keySet().stream().findFirst().orElseThrow(() -> new Exception("Could not find a cohort-selection configuration"));
+
+    return cohortSelectionImplementations.get("cohort-selection." + cohortString);
   }
 
-  public DataSelection getDataSelection(ProjectConfig projectConfig) {
-    DataSelection dataSelection;
-    if (projectConfig.getDataSelection().getFhirServer() != null) {
-      dataSelection = dataSelectionImplementations.get("data-selection.fhir-server");
-    } else if (projectConfig.getDataSelection().getFhirCollector() != null) {
-      dataSelection = dataSelectionImplementations.get("data-selection.fhir-collector");
-    } else if (projectConfig.getDataSelection().getFiremetrics() != null) {
-      dataSelection = dataSelectionImplementations.get("data-selection.firemetrics");
-    } else {
-      dataSelection = null;
-    }
-    return dataSelection;
+  public DataSelection getDataSelection(ProjectConfig projectConfig) throws Exception {
+    Binder binder = Binder.get(env);
+    Map<String, Object> dataSelectionConfig = binder.bind("projects." + projectConfig.getName() + ".data-selection", Map.class).orElse(Map.of());
+
+    dataSelectionConfig.keySet().forEach(s -> log.info("data-selection config: " + s));
+    if (dataSelectionConfig.size() > 1)
+      throw new Exception("There are multiple cohort-selection configurations. Please check configuration!");
+    String dataSelectionString =
+        dataSelectionConfig.keySet().stream().findFirst().orElseThrow(() -> new Exception("Could not find a cohort-selection configuration"));
+
+    return dataSelectionImplementations.get("data-selection." + dataSelectionString);
   }
 
-  public DataStoring getDataStoring(ProjectConfig projectConfig) {
-    DataStoring dataStoring;
-    if (projectConfig.getDataStoring().getFhirServer() != null) {
-      dataStoring = dataStoringImplementations.get("data-storing.fhir-server");
-    } else if (projectConfig.getDataStoring().getFolder() != null) {
-      dataStoring = dataStoringImplementations.get("data-storing.folder");
-    } else if (projectConfig.getDataStoring().getFiremetrics() != null) {
-      dataStoring = dataStoringImplementations.get("data-storing.firemetrics");
+  public DataStoring getDataStoring(ProjectConfig projectConfig) throws Exception {
+    Binder binder = Binder.get(env);
+    Map<String, Object> dataStoringConfig = binder.bind("projects." + projectConfig.getName() + ".data-storing", Map.class).orElse(Map.of());
 
-    } else {
-      dataStoring = null;
-    }
-    return dataStoring;
+    dataStoringConfig.keySet().forEach(s -> log.info("data-selection config: " + s));
+    if (dataStoringConfig.size() > 1)
+      throw new Exception("There are multiple cohort-selection configurations. Please check configuration!");
+    String dataStoringString =
+        dataStoringConfig.keySet().stream().findFirst().orElseThrow(() -> new Exception("Could not find a cohort-selection configuration"));
+
+    return dataStoringImplementations.get("data-storing." + dataStoringString);
   }
 
-  public Pseudonymization getPseudonymization(ProjectConfig projectConfig) {
-    Pseudonymization pseudonymization;
-    if (projectConfig.getPseudonymization().getDeidentifhir() != null) {
-      pseudonymization = pseudonymizationImplementations.get("pseudonymization.deidentifhir");
-    } else {
-      pseudonymization = pseudonymizationImplementations.get("pseudonymization.none");
-    }
-    return pseudonymization;
+  public Pseudonymization getPseudonymization(ProjectConfig projectConfig) throws Exception {
+    Binder binder = Binder.get(env);
+    Map<String, Object> pseudonymizationConfig = binder.bind("projects." + projectConfig.getName() + ".pseudonymization", Map.class).orElse(Map.of());
+
+    pseudonymizationConfig.keySet().forEach(s -> log.info("pseudonymization config: " + s));
+    if (pseudonymizationConfig.size() > 1)
+      throw new Exception("There are multiple cohort-selection configurations. Please check configuration!");
+    String pseudonymizationString =
+        pseudonymizationConfig.keySet().stream().findFirst().orElseThrow(() -> new Exception("Could not find a cohort-selection configuration"));
+
+    return pseudonymizationImplementations.get("pseudonymization." + pseudonymizationString);
   }
 }

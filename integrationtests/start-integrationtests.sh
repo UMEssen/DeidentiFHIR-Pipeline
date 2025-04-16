@@ -26,7 +26,7 @@ docker compose -f docker-compose-with-gpas.yml up "${docker_up_options[@]}"
 #hurl --verbose --test test-transfer.hurl
 hurl --test test-transfer.hurl
 if [[ $? -ne 0 ]] ; then
-    printf "xxx There are integrationtests with gPAS failures xxx\n\n"
+    printf "${RED}xxx There are integrationtests with gPAS failures xxx${NC}\n\n"
     failure=1
 else
     printf "${GREEN}✔✔✔ Finished integrationtests with gPAS successfully without errors ✔✔✔${NC}\n\n"
@@ -39,7 +39,7 @@ docker compose -f docker-compose-no-pseudonymization.yml up "${docker_up_options
 #hurl --verbose --test test-transfer-no-pseudonymization.hurl
 hurl --test test-transfer-no-pseudonymization.hurl
 if [[ $? -ne 0 ]] ; then
-    printf "xxx There are integrationtests with no pseudonymization failures xxx\n\n"
+    printf "${RED}xxx There are integrationtests with no pseudonymization failures xxx${NC}\n\n"
     failure=1
 else
     printf "${GREEN}✔✔✔ Finished integrationtests with no pseudonymization successfully without errors ✔✔✔${NC}\n\n"
@@ -51,7 +51,7 @@ echo "=== Starting integrationtests with fhir-collector and basic auth ==="
 docker compose -f docker-compose-fhir-collector.yml up "${docker_up_options[@]}"
 hurl --test test-transfer.hurl
 if [[ $? -ne 0 ]] ; then
-    printf "xxx There are integrationtests with fhir-collector and basic auth failures xxx\n\n"
+    printf "${RED}xxx There are integrationtests with fhir-collector and basic auth failures xxx${NC}\n\n"
     failure=1
 else
     printf "${GREEN}✔✔✔ Finished integrationtests with fhir-collector and basic auth successfully without errors ✔✔✔${NC}\n\n"

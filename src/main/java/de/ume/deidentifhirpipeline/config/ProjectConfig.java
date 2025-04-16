@@ -25,7 +25,8 @@ import java.util.Optional;
 @Slf4j
 @Getter
 public class ProjectConfig {
-  private int parallelism = 1;
+  private int    parallelism = 1;
+  private String name;
 
   @Setter private LastUpdatedConfig      lastUpdated;
   @Setter private CohortSelectionConfig  cohortSelection;
@@ -57,31 +58,10 @@ public class ProjectConfig {
 
     if (parallelism <= 0)
       this.parallelism = 1;
-    // if (lastUpdated != null && (lastUpdated.getHashmap() != null || lastUpdated.getGpas() != null)) {
-    // getLastUpdatedImpl = Optional.of(new GetLastUpdatedImpl(lastUpdated));
-    // setLastUpdatedImpl = Optional.of(new SetLastUpdatedImpl(lastUpdated));
-    // }
-    // @formatter:off
-    // Cohort Selection
-//    if (cohortSelection != null && cohortSelection.getGics() != null)           cohortSelectionImpl   = new GicsCohortSelection();
-//    if (cohortSelection != null && cohortSelection.getViaIds() != null)         cohortSelectionImpl   = new IdCohortSelection();
-//    if (cohortSelection != null && cohortSelection.getViaFile() != null)        cohortSelectionImpl   = new FileCohortSelection();
-//    if (cohortSelection != null && cohortSelection.getFiremetrics() != null)    cohortSelectionImpl   = new FiremetricsCohortSelection();
-//    // Data Selection
-//    if (dataSelection != null && dataSelection.getFhirServer() != null)         dataSelectionImpl     = new FhirServerDataSelection();
-//    if (dataSelection != null && dataSelection.getFhirCollector() != null)      dataSelectionImpl     = new FhirCollectorDataSelection();
-//    if (dataSelection != null && dataSelection.getFiremetrics() != null)        dataSelectionImpl     = new FiremetricsDataSelection();
-//    // Pseudonymization
-//    if (pseudonymization != null && pseudonymization.getDeidentifhir() != null) pseudonymizationImpl  = new DeidentiFHIRPseudonymization();
-//    if (pseudonymization != null && pseudonymization.isUse() == false)          pseudonymizationImpl  = new NoPseudonymization();
-//    // Data Storing
-//    if (dataStoring != null && dataStoring.getFhirServer() != null)             dataStoringImpl       = new FhirServerDataStoring();
-//    if (dataStoring != null && dataStoring.getFiremetrics() != null)            dataStoringImpl       = new FiremetricsDataStoring();
-//    if (dataStoring != null && dataStoring.getFolder() != null)                 dataStoringImpl       = new FolderDataStoring();
-    // @formatter:on
   }
 
-  public void setup(ImplementationsFactory implementationsFactory) throws Exception {
+  public void setup(String name, ImplementationsFactory implementationsFactory) throws Exception {
+    this.name = name;
     this.setCohortSelectionImpl(implementationsFactory.getCohortSelection(this));
     this.setGetLastUpdatedImpl(Optional.ofNullable(implementationsFactory.getLastUpdated(this)));
     this.setDataSelectionImpl(implementationsFactory.getDataSelection(this));

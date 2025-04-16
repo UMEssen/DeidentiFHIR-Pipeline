@@ -19,8 +19,8 @@ public class ProjectsConfig {
   @Autowired private ImplementationsFactory implementationsFactory;
 
   public void setup() throws Exception {
-    for (ProjectConfig projectConfig : projects.values()) {
-      projectConfig.setup(implementationsFactory);
+    for (Map.Entry<String, ProjectConfig> projectConfig : projects.entrySet()) {
+      projectConfig.getValue().setup(projectConfig.getKey(), implementationsFactory);
     }
   }
 }
