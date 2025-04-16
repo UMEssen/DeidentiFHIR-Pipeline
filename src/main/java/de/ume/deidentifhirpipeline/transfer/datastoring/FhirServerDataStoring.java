@@ -6,8 +6,10 @@ import de.ume.deidentifhirpipeline.config.datastoring.FhirServerDataStoringConfi
 import de.ume.deidentifhirpipeline.transfer.Utils;
 import de.ume.deidentifhirpipeline.transfer.Context;
 import org.hl7.fhir.r4.model.Bundle;
+import org.springframework.stereotype.Component;
 
-public class FhirServerDataStoring extends DataStoring {
+@Component("data-storing.fhir-server")
+public class FhirServerDataStoring implements DataStoringInterface {
 
   public void before(ProjectConfig projectConfig) throws Exception {
     // Nothing to do before processing

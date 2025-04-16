@@ -4,6 +4,7 @@ import de.ume.deidentifhirpipeline.config.ProjectConfig;
 import de.ume.deidentifhirpipeline.config.datastoring.FolderDataStoringConfig;
 import de.ume.deidentifhirpipeline.transfer.Context;
 import de.ume.deidentifhirpipeline.transfer.Utils;
+import org.springframework.stereotype.Component;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -11,7 +12,8 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.UUID;
 
-public class FolderDataStoring extends DataStoring {
+@Component("data-storing.folder")
+public class FolderDataStoring implements DataStoringInterface {
 
   public void before(ProjectConfig projectConfig) throws Exception {
     // Nothing to do before processing

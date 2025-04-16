@@ -1,22 +1,22 @@
-package de.ume.deidentifhirpipeline.transfer.datastoring;
+package de.ume.deidentifhirpipeline.transfer.dataselection;
 
 import de.ume.deidentifhirpipeline.api.data.Status;
 import de.ume.deidentifhirpipeline.api.data.TransferStatus;
 import de.ume.deidentifhirpipeline.config.ProjectConfig;
 import de.ume.deidentifhirpipeline.transfer.Context;
 
-public abstract class DataStoring {
-  public abstract void before(ProjectConfig projectConfig) throws Exception;
+public interface DataSelectionInterface {
+  void before(ProjectConfig projectConfig) throws Exception;
 
-  public abstract Context process(Context context);
+  Context process(Context context) throws Exception;
 
-  public static void beforeExecution(ProjectConfig projectConfig) throws Exception {
-    projectConfig.getDataStoringImpl().before(projectConfig);
+  default void beforeExecution(ProjectConfig projectConfig) throws Exception {
+    this.before(projectConfig);
   }
 
-  public static Context execute(Context context) {
+  default Context execute(Context context) {
     try {
-      return context.getProjectConfig().getDataStoringImpl().process(context);
+      return this.process(context);
     } catch (Exception e) {
       e.printStackTrace();
       context.setFailed(true);

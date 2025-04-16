@@ -5,6 +5,7 @@ import de.ume.deidentifhirpipeline.config.datastoring.FiremetricsDataStoringConf
 import de.ume.deidentifhirpipeline.transfer.Context;
 import de.ume.deidentifhirpipeline.transfer.Utils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -14,7 +15,8 @@ import java.sql.*;
 import java.util.List;
 
 @Slf4j
-public class FiremetricsDataStoring extends DataStoring {
+@Component("data-storing.firemetrics")
+public class FiremetricsDataStoring implements DataStoringInterface {
 
   public void before(ProjectConfig projectConfig) throws Exception {
     // Nothing to do before processing

@@ -7,13 +7,15 @@ import de.ume.deidentifhirpipeline.transfer.Context;
 import de.ume.deidentifhirpipeline.transfer.Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.Bundle;
+import org.springframework.stereotype.Component;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.OptionalLong;
 
 @Slf4j
-public class FhirServerDataSelection extends DataSelection {
+@Component("data-selection.fhir-server")
+public class FhirServerDataSelection implements DataSelectionInterface {
 
   @Override
   public void before(ProjectConfig projectConfig) throws Exception {

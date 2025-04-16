@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.instance.model.api.IBaseResource;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Resource;
+import org.springframework.stereotype.Component;
 
 import java.sql.*;
 import java.time.ZoneId;
@@ -15,7 +16,8 @@ import java.time.ZonedDateTime;
 import java.util.OptionalLong;
 
 @Slf4j
-public class FiremetricsDataSelection extends DataSelection {
+@Component("data-selection.firemetrics")
+public class FiremetricsDataSelection implements DataSelectionInterface {
 
   @Override
   public void before(ProjectConfig projectConfig) throws Exception {

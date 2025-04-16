@@ -7,10 +7,6 @@ import de.ume.deidentifhirpipeline.config.lastupdated.LastUpdatedConfig;
 import de.ume.deidentifhirpipeline.config.pseudonymization.PseudonymizationConfig;
 import de.ume.deidentifhirpipeline.transfer.cohortselection.*;
 import de.ume.deidentifhirpipeline.transfer.dataselection.*;
-import de.ume.deidentifhirpipeline.transfer.datastoring.DataStoring;
-import de.ume.deidentifhirpipeline.transfer.datastoring.FhirServerDataStoring;
-import de.ume.deidentifhirpipeline.transfer.datastoring.FiremetricsDataStoring;
-import de.ume.deidentifhirpipeline.transfer.datastoring.FolderDataStoring;
 import de.ume.deidentifhirpipeline.transfer.lastupdated.GetLastUpdated;
 import de.ume.deidentifhirpipeline.transfer.lastupdated.GetLastUpdatedImpl;
 import de.ume.deidentifhirpipeline.transfer.lastupdated.SetLastUpdatedImpl;
@@ -35,12 +31,12 @@ public class ProjectConfig {
   @Setter private PseudonymizationConfig pseudonymization;
   @Setter private DataStoringConfig      dataStoring;
 
-  private Optional<GetLastUpdated> getLastUpdatedImpl = Optional.empty();
-  private Optional<SetLastUpdated> setLastUpdatedImpl = Optional.empty();
-  private CohortSelection          cohortSelectionImpl;
-  private DataSelection            dataSelectionImpl;
-  private Pseudonymization         pseudonymizationImpl;
-  private DataStoring              dataStoringImpl;
+  // private Optional<GetLastUpdated> getLastUpdatedImpl = Optional.empty();
+  // private Optional<SetLastUpdated> setLastUpdatedImpl = Optional.empty();
+  // private CohortSelection cohortSelectionImpl;
+  // private DataSelection dataSelectionImpl;
+  // private Pseudonymization pseudonymizationImpl;
+  // private DataStoring dataStoringImpl;
 
   public ProjectConfig(
       int parallelism,
@@ -59,40 +55,40 @@ public class ProjectConfig {
 
     if (parallelism <= 0)
       this.parallelism = 1;
-    if (lastUpdated != null && (lastUpdated.getHashmap() != null || lastUpdated.getGpas() != null)) {
-      getLastUpdatedImpl = Optional.of(new GetLastUpdatedImpl(lastUpdated));
-      setLastUpdatedImpl = Optional.of(new SetLastUpdatedImpl(lastUpdated));
-    }
+    // if (lastUpdated != null && (lastUpdated.getHashmap() != null || lastUpdated.getGpas() != null)) {
+    // getLastUpdatedImpl = Optional.of(new GetLastUpdatedImpl(lastUpdated));
+    // setLastUpdatedImpl = Optional.of(new SetLastUpdatedImpl(lastUpdated));
+    // }
     // @formatter:off
     // Cohort Selection
-    if (cohortSelection != null && cohortSelection.getGics() != null)           cohortSelectionImpl   = new GicsCohortSelection();
-    if (cohortSelection != null && cohortSelection.getViaIds() != null)         cohortSelectionImpl   = new IdCohortSelection();
-    if (cohortSelection != null && cohortSelection.getViaFile() != null)        cohortSelectionImpl   = new FileCohortSelection();
-    if (cohortSelection != null && cohortSelection.getFiremetrics() != null)    cohortSelectionImpl   = new FiremetricsCohortSelection();
-    // Data Selection
-    if (dataSelection != null && dataSelection.getFhirServer() != null)         dataSelectionImpl     = new FhirServerDataSelection();
-    if (dataSelection != null && dataSelection.getFhirCollector() != null)      dataSelectionImpl     = new FhirCollectorDataSelection();
-    if (dataSelection != null && dataSelection.getFiremetrics() != null)        dataSelectionImpl     = new FiremetricsDataSelection();
-    // Pseudonymization
-    if (pseudonymization != null && pseudonymization.getDeidentifhir() != null) pseudonymizationImpl  = new DeidentiFHIRPseudonymization();
-    if (pseudonymization != null && pseudonymization.isUse() == false)          pseudonymizationImpl  = new NoPseudonymization();
-    // Data Storing
-    if (dataStoring != null && dataStoring.getFhirServer() != null)             dataStoringImpl       = new FhirServerDataStoring();
-    if (dataStoring != null && dataStoring.getFiremetrics() != null)            dataStoringImpl       = new FiremetricsDataStoring();
-    if (dataStoring != null && dataStoring.getFolder() != null)                 dataStoringImpl       = new FolderDataStoring();
+//    if (cohortSelection != null && cohortSelection.getGics() != null)           cohortSelectionImpl   = new GicsCohortSelection();
+//    if (cohortSelection != null && cohortSelection.getViaIds() != null)         cohortSelectionImpl   = new IdCohortSelection();
+//    if (cohortSelection != null && cohortSelection.getViaFile() != null)        cohortSelectionImpl   = new FileCohortSelection();
+//    if (cohortSelection != null && cohortSelection.getFiremetrics() != null)    cohortSelectionImpl   = new FiremetricsCohortSelection();
+//    // Data Selection
+//    if (dataSelection != null && dataSelection.getFhirServer() != null)         dataSelectionImpl     = new FhirServerDataSelection();
+//    if (dataSelection != null && dataSelection.getFhirCollector() != null)      dataSelectionImpl     = new FhirCollectorDataSelection();
+//    if (dataSelection != null && dataSelection.getFiremetrics() != null)        dataSelectionImpl     = new FiremetricsDataSelection();
+//    // Pseudonymization
+//    if (pseudonymization != null && pseudonymization.getDeidentifhir() != null) pseudonymizationImpl  = new DeidentiFHIRPseudonymization();
+//    if (pseudonymization != null && pseudonymization.isUse() == false)          pseudonymizationImpl  = new NoPseudonymization();
+//    // Data Storing
+//    if (dataStoring != null && dataStoring.getFhirServer() != null)             dataStoringImpl       = new FhirServerDataStoring();
+//    if (dataStoring != null && dataStoring.getFiremetrics() != null)            dataStoringImpl       = new FiremetricsDataStoring();
+//    if (dataStoring != null && dataStoring.getFolder() != null)                 dataStoringImpl       = new FolderDataStoring();
     // @formatter:on
   }
 
-  public void validate() throws Exception {
-    if (getLastUpdatedImpl.isEmpty() || setLastUpdatedImpl.isEmpty())
-      log.info("LastUpdated implementation not configured.");
-    // @formatter:off
-    if (cohortSelectionImpl   == null) throw new Exception("No CohortSelection implementation found. Check configuration.");
-    if (dataSelectionImpl     == null) throw new Exception("No DataSelection implementation found. Check configuration.");
-    if (pseudonymizationImpl  == null) throw new Exception("No Pseudonymization implementation found. Check configuration.");
-    if (dataStoringImpl       == null) throw new Exception("No DataSelection implementation found. Check configuration.");
-    // @formatter:on
-  }
+  // public void validate() throws Exception {
+  // if (getLastUpdatedImpl.isEmpty() || setLastUpdatedImpl.isEmpty())
+  // log.info("LastUpdated implementation not configured.");
+//    // @formatter:off
+//    if (cohortSelectionImpl   == null) throw new Exception("No CohortSelection implementation found. Check configuration.");
+//    if (dataSelectionImpl     == null) throw new Exception("No DataSelection implementation found. Check configuration.");
+//    if (pseudonymizationImpl  == null) throw new Exception("No Pseudonymization implementation found. Check configuration.");
+//    if (dataStoringImpl       == null) throw new Exception("No DataSelection implementation found. Check configuration.");
+//    // @formatter:on
+  // }
 
   public ProjectConfig apply(ProjectConfig projectConfig) throws Exception {
     if (projectConfig == null) {

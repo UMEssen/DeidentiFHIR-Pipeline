@@ -7,9 +7,11 @@ import de.ume.deidentifhirpipeline.transfer.Utils;
 import de.ume.deidentifhirpipeline.transfer.dataselection.fhircollector.FhirCollector;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.Bundle;
+import org.springframework.stereotype.Component;
 
 @Slf4j
-public class FhirCollectorDataSelection extends DataSelection {
+@Component("data-selection.fhir-collector")
+public class FhirCollectorDataSelection implements DataSelectionInterface {
 
   @Override
   public void before(ProjectConfig projectConfig) throws Exception {

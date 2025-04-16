@@ -8,6 +8,7 @@ import de.ume.deidentifhirpipeline.service.pseudonymization.HashmapService;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Bean;
 
 @Slf4j
 @Getter
@@ -19,6 +20,7 @@ public class LastUpdatedConfig {
   private GpasService                 gpasService;
   private LastUpdatedServiceInterface lastUpdatedService;
 
+  @Bean
   public LastUpdatedServiceInterface getLastUpdatedService() {
     if (this.lastUpdatedService != null) {
       return this.lastUpdatedService;

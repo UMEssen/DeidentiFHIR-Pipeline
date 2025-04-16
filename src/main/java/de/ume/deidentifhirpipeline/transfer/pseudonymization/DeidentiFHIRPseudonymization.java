@@ -10,13 +10,15 @@ import de.ume.deidentifhirpipeline.transfer.pseudonymization.deidentifhir.CDtoTr
 import de.ume.deidentifhirpipeline.transfer.pseudonymization.deidentifhir.IDATScraper;
 import lombok.extern.slf4j.Slf4j;
 import org.hl7.fhir.r4.model.Bundle;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.util.List;
 import java.util.Map;
 
 @Slf4j
-public class DeidentiFHIRPseudonymization extends Pseudonymization {
+@Component("pseudonymization.deidentifhir")
+public class DeidentiFHIRPseudonymization implements Pseudonymization {
 
   public void before(ProjectConfig projectConfig) throws Exception {
     DeidentiFHIRPseudonymizationConfig config = projectConfig.getPseudonymization().getDeidentifhir();
