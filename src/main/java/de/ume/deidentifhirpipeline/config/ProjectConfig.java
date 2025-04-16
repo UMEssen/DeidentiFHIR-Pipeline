@@ -5,8 +5,10 @@ import de.ume.deidentifhirpipeline.config.dataselection.DataSelectionConfig;
 import de.ume.deidentifhirpipeline.config.datastoring.DataStoringConfig;
 import de.ume.deidentifhirpipeline.config.lastupdated.LastUpdatedConfig;
 import de.ume.deidentifhirpipeline.config.pseudonymization.PseudonymizationConfig;
+import de.ume.deidentifhirpipeline.transfer.ImplementationsFactory;
 import de.ume.deidentifhirpipeline.transfer.cohortselection.*;
 import de.ume.deidentifhirpipeline.transfer.dataselection.*;
+import de.ume.deidentifhirpipeline.transfer.datastoring.DataStoring;
 import de.ume.deidentifhirpipeline.transfer.lastupdated.GetLastUpdated;
 import de.ume.deidentifhirpipeline.transfer.lastupdated.GetLastUpdatedImpl;
 import de.ume.deidentifhirpipeline.transfer.lastupdated.SetLastUpdatedImpl;
@@ -31,12 +33,12 @@ public class ProjectConfig {
   @Setter private PseudonymizationConfig pseudonymization;
   @Setter private DataStoringConfig      dataStoring;
 
-  // private Optional<GetLastUpdated> getLastUpdatedImpl = Optional.empty();
-  // private Optional<SetLastUpdated> setLastUpdatedImpl = Optional.empty();
-  // private CohortSelection cohortSelectionImpl;
-  // private DataSelection dataSelectionImpl;
-  // private Pseudonymization pseudonymizationImpl;
-  // private DataStoring dataStoringImpl;
+  @Setter private Optional<GetLastUpdated> getLastUpdatedImpl = Optional.empty();
+  @Setter private Optional<SetLastUpdated> setLastUpdatedImpl = Optional.empty();
+  @Setter private CohortSelection          cohortSelectionImpl;
+  @Setter private DataSelection            dataSelectionImpl;
+  @Setter private Pseudonymization         pseudonymizationImpl;
+  @Setter private DataStoring              dataStoringImpl;
 
   public ProjectConfig(
       int parallelism,
@@ -79,16 +81,24 @@ public class ProjectConfig {
     // @formatter:on
   }
 
-  // public void validate() throws Exception {
-  // if (getLastUpdatedImpl.isEmpty() || setLastUpdatedImpl.isEmpty())
-  // log.info("LastUpdated implementation not configured.");
-//    // @formatter:off
-//    if (cohortSelectionImpl   == null) throw new Exception("No CohortSelection implementation found. Check configuration.");
-//    if (dataSelectionImpl     == null) throw new Exception("No DataSelection implementation found. Check configuration.");
-//    if (pseudonymizationImpl  == null) throw new Exception("No Pseudonymization implementation found. Check configuration.");
-//    if (dataStoringImpl       == null) throw new Exception("No DataSelection implementation found. Check configuration.");
-//    // @formatter:on
-  // }
+  public void setup(ImplementationsFactory implementationsFactory) throws Exception {
+    this.setCohortSelectionImpl(implementationsFactory.getCohortSelection(this));
+    this.setDataSelectionImpl(implementationsFactory.getDataSelection(this));
+    this.setPseudonymizationImpl(implementationsFactory.getPseudonymization(this));
+    this.setDataStoringImpl(implementationsFactory.getDataStoring(this));
+    this.validate();
+  }
+
+  public void validate() throws Exception {
+    if (getLastUpdatedImpl.isEmpty() || setLastUpdatedImpl.isEmpty())
+      log.info("LastUpdated implementation not configured.");
+    // @formatter:off
+    if (cohortSelectionImpl   == null) throw new Exception("No CohortSelection implementation found. Check configuration.");
+    if (dataSelectionImpl     == null) throw new Exception("No DataSelection implementation found. Check configuration.");
+    if (pseudonymizationImpl  == null) throw new Exception("No Pseudonymization implementation found. Check configuration.");
+    if (dataStoringImpl       == null) throw new Exception("No DataSelection implementation found. Check configuration.");
+    // @formatter:on
+  }
 
   public ProjectConfig apply(ProjectConfig projectConfig) throws Exception {
     if (projectConfig == null) {

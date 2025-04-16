@@ -13,7 +13,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.UUID;
 
 @Component("data-storing.folder")
-public class FolderDataStoring implements DataStoringInterface {
+public class FolderDataStoring implements DataStoring {
 
   public void before(ProjectConfig projectConfig) throws Exception {
     // Nothing to do before processing

@@ -13,7 +13,7 @@ import java.util.List;
 
 @Slf4j
 @Component("cohort-selection.firemetrics")
-public class FiremetricsCohortSelection implements CohortSelectionInterface {
+public class FiremetricsCohortSelection implements CohortSelection {
 
   @Override
   public List<String> before(ProjectConfig projectConfig) throws Exception {

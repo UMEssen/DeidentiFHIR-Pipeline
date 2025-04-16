@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component("data-selection.fhir-collector")
-public class FhirCollectorDataSelection implements DataSelectionInterface {
+public class FhirCollectorDataSelection implements DataSelection {
 
   @Override
   public void before(ProjectConfig projectConfig) throws Exception {

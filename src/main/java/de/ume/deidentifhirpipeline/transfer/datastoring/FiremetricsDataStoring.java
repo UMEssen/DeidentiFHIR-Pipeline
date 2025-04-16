@@ -16,7 +16,7 @@ import java.util.List;
 
 @Slf4j
 @Component("data-storing.firemetrics")
-public class FiremetricsDataStoring implements DataStoringInterface {
+public class FiremetricsDataStoring implements DataStoring {
 
   public void before(ProjectConfig projectConfig) throws Exception {
     // Nothing to do before processing

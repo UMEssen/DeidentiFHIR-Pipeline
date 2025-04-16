@@ -15,7 +15,7 @@ import java.util.OptionalLong;
 
 @Slf4j
 @Component("data-selection.fhir-server")
-public class FhirServerDataSelection implements DataSelectionInterface {
+public class FhirServerDataSelection implements DataSelection {
 
   @Override
   public void before(ProjectConfig projectConfig) throws Exception {

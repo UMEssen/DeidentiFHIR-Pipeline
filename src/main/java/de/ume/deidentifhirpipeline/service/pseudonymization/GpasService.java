@@ -12,7 +12,6 @@ import de.ume.deidentifhirpipeline.service.lastupdated.LastUpdatedServiceInterfa
 import de.ume.deidentifhirpipeline.transfer.Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.math3.random.RandomDataGenerator;
-import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;

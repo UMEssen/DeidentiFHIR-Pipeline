@@ -5,7 +5,7 @@ import de.ume.deidentifhirpipeline.api.data.TransferStatus;
 import de.ume.deidentifhirpipeline.config.ProjectConfig;
 import de.ume.deidentifhirpipeline.transfer.Context;
 
-public interface DataSelectionInterface {
+public interface DataSelection {
   void before(ProjectConfig projectConfig) throws Exception;
 
   Context process(Context context) throws Exception;

@@ -5,7 +5,6 @@ import de.ume.deidentifhirpipeline.service.lastupdated.LastUpdatedServiceInterfa
 import de.ume.deidentifhirpipeline.transfer.Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.math3.random.RandomDataGenerator;
-import org.springframework.stereotype.Service;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;

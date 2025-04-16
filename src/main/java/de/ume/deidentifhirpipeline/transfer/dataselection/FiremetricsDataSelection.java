@@ -17,7 +17,7 @@ import java.util.OptionalLong;
 
 @Slf4j
 @Component("data-selection.firemetrics")
-public class FiremetricsDataSelection implements DataSelectionInterface {
+public class FiremetricsDataSelection implements DataSelection {
 
   @Override
   public void before(ProjectConfig projectConfig) throws Exception {

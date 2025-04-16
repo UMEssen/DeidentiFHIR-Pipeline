@@ -9,7 +9,7 @@ import java.nio.file.Paths;
 import java.util.List;
 
 @Component("cohort-selection.via-file")
-public class FileCohortSelection implements CohortSelectionInterface {
+public class FileCohortSelection implements CohortSelection {
   @Override
   public List<String> before(ProjectConfig projectConfig) throws Exception {
     String path = projectConfig.getCohortSelection().getViaFile().getPath();

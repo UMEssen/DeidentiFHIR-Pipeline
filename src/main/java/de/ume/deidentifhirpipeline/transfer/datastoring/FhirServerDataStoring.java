@@ -9,7 +9,7 @@ import org.hl7.fhir.r4.model.Bundle;
 import org.springframework.stereotype.Component;
 
 @Component("data-storing.fhir-server")
-public class FhirServerDataStoring implements DataStoringInterface {
+public class FhirServerDataStoring implements DataStoring {
 
   public void before(ProjectConfig projectConfig) throws Exception {
     // Nothing to do before processing

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component("cohort-selection.gics")
-public class GicsCohortSelection implements CohortSelectionInterface {
+public class GicsCohortSelection implements CohortSelection {
 
   @Override
   public List<String> before(ProjectConfig projectConfig) throws Exception {
