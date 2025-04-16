@@ -83,9 +83,11 @@ public class ProjectConfig {
 
   public void setup(ImplementationsFactory implementationsFactory) throws Exception {
     this.setCohortSelectionImpl(implementationsFactory.getCohortSelection(this));
+    this.setGetLastUpdatedImpl(Optional.ofNullable(implementationsFactory.getLastUpdated(this)));
     this.setDataSelectionImpl(implementationsFactory.getDataSelection(this));
     this.setPseudonymizationImpl(implementationsFactory.getPseudonymization(this));
     this.setDataStoringImpl(implementationsFactory.getDataStoring(this));
+    this.setSetLastUpdatedImpl(Optional.ofNullable(implementationsFactory.getSetLastUpdated(this)));
     this.validate();
   }
 

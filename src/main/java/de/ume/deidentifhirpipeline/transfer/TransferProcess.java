@@ -12,10 +12,7 @@ import de.ume.deidentifhirpipeline.transfer.pseudonymization.Pseudonymization;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ForkJoinPool;
 
@@ -63,16 +60,14 @@ public class TransferProcess {
   // }
 
   private void beforeExecution(ProjectConfig projectConfig) throws Exception {
-    GetLastUpdated getLastUpdated = implementationsFactory.getLastUpdated(projectConfig);
-    DataSelection dataSelection = implementationsFactory.getDataSelection(projectConfig);
-    Pseudonymization pseudonymization = implementationsFactory.getPseudonymization(projectConfig);
-    DataStoring dataStoring = implementationsFactory.getDataStoring(projectConfig);
 
-    if (getLastUpdated != null)
-      getLastUpdated.beforeExecution(projectConfig);
-    dataSelection.beforeExecution(projectConfig);
-    pseudonymization.beforeExecution(projectConfig);
-    dataStoring.beforeExecution(projectConfig);
+    if (projectConfig.getGetLastUpdatedImpl().isPresent())
+      projectConfig.getGetLastUpdatedImpl().get().beforeExecution(projectConfig);
+    projectConfig.getDataSelectionImpl().beforeExecution(projectConfig);
+    projectConfig.getPseudonymizationImpl().beforeExecution(projectConfig);
+    projectConfig.getDataStoringImpl().beforeExecution(projectConfig);
+    if (projectConfig.getSetLastUpdatedImpl().isPresent())
+      projectConfig.getSetLastUpdatedImpl().get().beforeExecution(projectConfig);
   }
 
   private String processNew(UUID uuid, List<String> ids, ProjectConfig projectConfig) {
@@ -83,30 +78,20 @@ public class TransferProcess {
 
     log.info("Number of bundles: {}", contexts.size());
 
-    GetLastUpdated getLastUpdated = implementationsFactory.getLastUpdated(projectConfig);
-    DataSelection dataSelection = implementationsFactory.getDataSelection(projectConfig);
-    Pseudonymization pseudonymization = implementationsFactory.getPseudonymization(projectConfig);
-    DataStoring dataStoring = implementationsFactory.getDataStoring(projectConfig);
-    SetLastUpdated setLastUpdated = implementationsFactory.getSetLastUpdated(projectConfig);
+    Optional<GetLastUpdated> getLastUpdated = projectConfig.getGetLastUpdatedImpl();
+    DataSelection dataSelection = projectConfig.getDataSelectionImpl();
+    Pseudonymization pseudonymization = projectConfig.getPseudonymizationImpl();
+    DataStoring dataStoring = projectConfig.getDataStoringImpl();
+    Optional<SetLastUpdated> setLastUpdated = projectConfig.getSetLastUpdatedImpl();
 
     ForkJoinPool pool = new ForkJoinPool(projectConfig.getParallelism());
     pool.submit(() -> {
       contexts.stream().parallel()
-          .map(context -> {
-            if (getLastUpdated != null)
-              return getLastUpdated.execute(context);
-            else
-              return context;
-          }).filter(context -> !context.isFailed())
+          .map(context -> getLastUpdated.map(x -> x.execute(context)).orElse(context)).filter(context -> !context.isFailed())
           .map(dataSelection::execute).filter(context -> !context.isFailed())
           .map(pseudonymization::execute).filter(context -> !context.isFailed())
           .map(dataStoring::execute).filter(context -> !context.isFailed())
-          .map(context -> {
-            if (setLastUpdated != null)
-              return setLastUpdated.execute(context);
-            else
-              return context;
-          }).filter(context -> !context.isFailed())
+          .map(context -> setLastUpdated.map(x -> x.execute(context)).orElse(context)).filter(context -> !context.isFailed())
           .forEach(context -> {
             context.getTransfer().getMap().put(context.getPatientId(), TransferStatus.completed());
             log.info(String.format("Transfer for patient id: '%s' finished successfully.",
