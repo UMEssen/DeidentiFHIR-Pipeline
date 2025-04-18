@@ -20,40 +20,11 @@ projects:
         config:
           url: config-url-123
 
-    #      via-file:
-    #        path: ./path/to/file    # one number / id per line
-
-    #      firemetrics:
-    #        host: &firemetrics-host <insert-host-here>
-    #        port: &firemetrics-port <insert-port-here>
-    #        database: &firemetrics-database <insert-database-here>
-    #        user: &firemetrics-user <insert-user-here>
-    #        password: &firemetrics-password <insert-password-here>
-    #        # config file with sql statements
-    #        # configFile: ./path/to/file
-    #        # or sql query
-    #        query: |
-    #          select b0.id
-    #          from biologicallyderivedproduct b0
-    #          order by b0.id asc
-    #          limit 1000 offset 0
-
     data-selection:
-      #      fhir-collector:
-      #        configurationFile: ./src/main/resources/fhir-collector.yaml
-      fhir-server:
-        url: http://localhost:8082/fhir
-        #        basic-auth:
-        #          user: <insert-user-here>
-        #          password: <insert-password-here>
-        #        token-auth:
-        #          token: <insert-token-here>
-        fhirIdQueryPlaceholder: <id>
-        fhirIdQuery: Patient?identifier=<id>
-        bundleQueryLastUpdatedPlaceholder: <lastUpdated>
-        bundleQueryPlaceholder: <fhir-id>
-        bundleQuery: Patient/<fhir-id>/$everything?_count=100000
-    #        bundleQuery: Patient?_id=<fhir-id>&_lastUpdated=ge<lastUpdated>
+      via-plugin:
+        implementation: plugin-implementation-a
+        config:
+          name: 1234-bla
 
     pseudonymization:
       #      use: false # false => no pseudonymization; true => (default) pseudonymization
@@ -68,16 +39,12 @@ projects:
     #          domain: test-project
     #          gpasServiceWsdlUrl: http://localhost:8081/gpas/gpasService?wsdl
     #          domainServiceWsdlUrl: http://localhost:8081/gpas/DomainService?wsdl
+
     data-storing:
-      #      folder:
-      #        path: /bla/
-      fhir-server:
-        url: http://localhost:8083/fhir
-  #        basic-auth:
-  #          user: <insert-user-here>
-  #          password: <insert-password-here>
-  #        token-auth:
-  #          token: <insert-token-here>
+      via-plugin:
+        implementation: plugin-implementation-b
+        config:
+          name: data-storing-plugin-implementation-b
 
   "test-project2":
     cohort-selection:

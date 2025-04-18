@@ -20,7 +20,7 @@ import java.util.Map;
 @Component
 public class ImplementationsFactory {
 
-  Environment env;
+  private final Environment env;
 
   private final Map<String, CohortSelection>  cohortSelectionImplementations;
   private final Map<String, GetLastUpdated>   getLastUpdatedImplementations;
@@ -103,9 +103,14 @@ public class ImplementationsFactory {
 
     dataSelectionConfig.keySet().forEach(s -> log.info("data-selection config: " + s));
     if (dataSelectionConfig.size() > 1)
-      throw new Exception("There are multiple cohort-selection configurations. Please check configuration!");
+      throw new Exception("There are multiple data-selection configurations. Please check configuration!");
     String dataSelectionString =
-        dataSelectionConfig.keySet().stream().findFirst().orElseThrow(() -> new Exception("Could not find a cohort-selection configuration"));
+        dataSelectionConfig.keySet().stream().findFirst().orElseThrow(() -> new Exception("Could not find a data-selection configuration"));
+
+    if ("via-plugin".equals(dataSelectionString)) {
+      String implementation = projectConfig.getDataSelection().getViaPlugin().getImplementation();
+      return dataSelectionImplementations.get("data-selection." + implementation);
+    }
 
     return dataSelectionImplementations.get("data-selection." + dataSelectionString);
   }
@@ -114,11 +119,16 @@ public class ImplementationsFactory {
     Binder binder = Binder.get(env);
     Map<String, Object> dataStoringConfig = binder.bind("projects." + projectConfig.getName() + ".data-storing", Map.class).orElse(Map.of());
 
-    dataStoringConfig.keySet().forEach(s -> log.info("data-selection config: " + s));
+    dataStoringConfig.keySet().forEach(s -> log.info("data-storing config: " + s));
     if (dataStoringConfig.size() > 1)
-      throw new Exception("There are multiple cohort-selection configurations. Please check configuration!");
+      throw new Exception("There are multiple data-storing configurations. Please check configuration!");
     String dataStoringString =
-        dataStoringConfig.keySet().stream().findFirst().orElseThrow(() -> new Exception("Could not find a cohort-selection configuration"));
+        dataStoringConfig.keySet().stream().findFirst().orElseThrow(() -> new Exception("Could not find a data-storing configuration"));
+
+    if ("via-plugin".equals(dataStoringString)) {
+      String implementation = projectConfig.getDataStoring().getViaPlugin().getImplementation();
+      return dataStoringImplementations.get("data-storing." + implementation);
+    }
 
     return dataStoringImplementations.get("data-storing." + dataStoringString);
   }
@@ -129,9 +139,14 @@ public class ImplementationsFactory {
 
     pseudonymizationConfig.keySet().forEach(s -> log.info("pseudonymization config: " + s));
     if (pseudonymizationConfig.size() > 1)
-      throw new Exception("There are multiple cohort-selection configurations. Please check configuration!");
+      throw new Exception("There are multiple pseudonymization configurations. Please check configuration!");
     String pseudonymizationString =
-        pseudonymizationConfig.keySet().stream().findFirst().orElseThrow(() -> new Exception("Could not find a cohort-selection configuration"));
+        pseudonymizationConfig.keySet().stream().findFirst().orElseThrow(() -> new Exception("Could not find a pseudonymization configuration"));
+
+    if ("via-plugin".equals(pseudonymizationString)) {
+      String implementation = projectConfig.getPseudonymization().getViaPlugin().getImplementation();
+      return pseudonymizationImplementations.get("pseudonymization." + implementation);
+    }
 
     return pseudonymizationImplementations.get("pseudonymization." + pseudonymizationString);
   }
