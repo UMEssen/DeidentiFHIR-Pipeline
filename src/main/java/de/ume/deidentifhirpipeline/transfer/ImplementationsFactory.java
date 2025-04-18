@@ -81,12 +81,18 @@ public class ImplementationsFactory {
   public CohortSelection getCohortSelection(ProjectConfig projectConfig) throws Exception {
     Binder binder = Binder.get(env);
     Map<String, Object> cohortSelectionConfig = binder.bind("projects." + projectConfig.getName() + ".cohort-selection", Map.class).orElse(Map.of());
+    log.info("cohort-selection config: " + cohortSelectionConfig.toString());
 
     cohortSelectionConfig.keySet().forEach(s -> log.info("cohort-selection config: " + s));
     if (cohortSelectionConfig.size() > 1)
       throw new Exception("There are multiple cohort-selection configurations. Please check configuration!");
     String cohortString =
         cohortSelectionConfig.keySet().stream().findFirst().orElseThrow(() -> new Exception("Could not find a cohort-selection configuration"));
+
+    if ("via-plugin".equals(cohortString)) {
+      String implementation = projectConfig.getCohortSelection().getViaPlugin().getImplementation();
+      return cohortSelectionImplementations.get("cohort-selection." + implementation);
+    }
 
     return cohortSelectionImplementations.get("cohort-selection." + cohortString);
   }

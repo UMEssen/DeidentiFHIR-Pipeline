@@ -3,7 +3,7 @@ server:
 logging:
   level:
     root: INFO
-#    de.ume: INFO
+    #    de.ume: INFO
     de.ume: DEBUG
   file.name: ./logs/application-debug.log
 
@@ -13,59 +13,50 @@ aop:
 projects:
   "test-project1":
     parallelism: 16
-#    lastUpdated:
-#      zone-id: "UTC"
-#      hashmap:
-#        domain: test-project
-#      gpas:
-#        domain: test-project
-#        gpasServiceWsdlUrl: http://localhost:8081/gpas/gpasService?wsdl
-#        domainServiceWsdlUrl: http://localhost:8081/gpas/DomainService?wsdl
+
     cohort-selection:
-      via-ids:
-        ids: ["1234-identifier", "234-identifier"]
-#      via-plugin:
-#        implementation: plugin-impl
-#        config:
-#          url: profile-url
+      via-plugin:
+        implementation: plugin-impl
+        config:
+          url: config-url-123
 
-#      via-file:
-#        path: ./path/to/file    # one number / id per line
+    #      via-file:
+    #        path: ./path/to/file    # one number / id per line
 
-#      firemetrics:
-#        host: &firemetrics-host <insert-host-here>
-#        port: &firemetrics-port <insert-port-here>
-#        database: &firemetrics-database <insert-database-here>
-#        user: &firemetrics-user <insert-user-here>
-#        password: &firemetrics-password <insert-password-here>
-#        # config file with sql statements
-#        # configFile: ./path/to/file
-#        # or sql query
-#        query: |
-#          select b0.id
-#          from biologicallyderivedproduct b0
-#          order by b0.id asc
-#          limit 1000 offset 0
+    #      firemetrics:
+    #        host: &firemetrics-host <insert-host-here>
+    #        port: &firemetrics-port <insert-port-here>
+    #        database: &firemetrics-database <insert-database-here>
+    #        user: &firemetrics-user <insert-user-here>
+    #        password: &firemetrics-password <insert-password-here>
+    #        # config file with sql statements
+    #        # configFile: ./path/to/file
+    #        # or sql query
+    #        query: |
+    #          select b0.id
+    #          from biologicallyderivedproduct b0
+    #          order by b0.id asc
+    #          limit 1000 offset 0
 
     data-selection:
-#      fhir-collector:
-#        configurationFile: ./src/main/resources/fhir-collector.yaml
+      #      fhir-collector:
+      #        configurationFile: ./src/main/resources/fhir-collector.yaml
       fhir-server:
         url: http://localhost:8082/fhir
-#        basic-auth:
-#          user: <insert-user-here>
-#          password: <insert-password-here>
-#        token-auth:
-#          token: <insert-token-here>
+        #        basic-auth:
+        #          user: <insert-user-here>
+        #          password: <insert-password-here>
+        #        token-auth:
+        #          token: <insert-token-here>
         fhirIdQueryPlaceholder: <id>
         fhirIdQuery: Patient?identifier=<id>
         bundleQueryLastUpdatedPlaceholder: <lastUpdated>
         bundleQueryPlaceholder: <fhir-id>
         bundleQuery: Patient/<fhir-id>/$everything?_count=100000
-#        bundleQuery: Patient?_id=<fhir-id>&_lastUpdated=ge<lastUpdated>
+    #        bundleQuery: Patient?_id=<fhir-id>&_lastUpdated=ge<lastUpdated>
 
     pseudonymization:
-#      use: false # false => no pseudonymization; true => (default) pseudonymization
+      #      use: false # false => no pseudonymization; true => (default) pseudonymization
       deidentifhir:
         scraperConfigFile: ./deidentifhir/mii/deidentiFHIR_IDScraper.profile
         pseudonymizationConfigFile: ./deidentifhir/mii/deidentiFHIR_CDtoTransport.profile
@@ -73,20 +64,20 @@ projects:
         dateShiftingInMillis: 2419200000
         hashmap:
           domain: test-project
-#        gpas:
-#          domain: test-project
-#          gpasServiceWsdlUrl: http://localhost:8081/gpas/gpasService?wsdl
-#          domainServiceWsdlUrl: http://localhost:8081/gpas/DomainService?wsdl
+    #        gpas:
+    #          domain: test-project
+    #          gpasServiceWsdlUrl: http://localhost:8081/gpas/gpasService?wsdl
+    #          domainServiceWsdlUrl: http://localhost:8081/gpas/DomainService?wsdl
     data-storing:
-#      folder:
-#        path: /bla/
+      #      folder:
+      #        path: /bla/
       fhir-server:
         url: http://localhost:8083/fhir
-#        basic-auth:
-#          user: <insert-user-here>
-#          password: <insert-password-here>
-#        token-auth:
-#          token: <insert-token-here>
+  #        basic-auth:
+  #          user: <insert-user-here>
+  #          password: <insert-password-here>
+  #        token-auth:
+  #          token: <insert-token-here>
 
   "test-project2":
     cohort-selection:

@@ -58,6 +58,11 @@ public class ProjectConfig {
 
     if (parallelism <= 0)
       this.parallelism = 1;
+
+    if (cohortSelection.getViaPlugin() != null) {
+      log.info("Plugin config implementation: " + cohortSelection.getViaPlugin().getImplementation());
+      log.info("Plugin config config: " + cohortSelection.getViaPlugin().getConfig());
+    }
   }
 
   public void setup(String name, ImplementationsFactory implementationsFactory) throws Exception {

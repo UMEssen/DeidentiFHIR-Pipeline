@@ -184,6 +184,8 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
 					<includeSystemScope>true</includeSystemScope>
+					<layout>ZIP</layout>
+					<classifier>runnable</classifier>
 				</configuration>
 				<executions>
 					<execution>
