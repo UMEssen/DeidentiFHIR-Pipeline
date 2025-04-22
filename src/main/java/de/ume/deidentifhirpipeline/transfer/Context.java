@@ -20,7 +20,6 @@ public class Context {
   @Setter OptionalLong newLastUpdated = OptionalLong.empty();
   @Setter Bundle       bundle;
   @Setter boolean      failed         = false;
-  @Setter Exception    exception;                            // TODO: Is this really necessary?
   @Setter Future       future;
 
   public Context(Transfer transfer, ProjectConfig projectConfig, String patientId) {

@@ -10,6 +10,7 @@ import de.ume.deidentifhirpipeline.transfer.lastupdated.GetLastUpdated;
 import de.ume.deidentifhirpipeline.transfer.lastupdated.SetLastUpdated;
 import de.ume.deidentifhirpipeline.transfer.pseudonymization.Pseudonymization;
 import lombok.extern.slf4j.Slf4j;
+import org.hl7.fhir.r4.model.Bundle;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -97,13 +98,14 @@ public class TransferProcess {
     if (!context.isFailed()) {
       try {
         context.getProjectConfig().getDataSelection().getSemaphore().acquire();
-        dataSelection.process(context);
+        Bundle bundle = dataSelection.process(context);
+        context.setBundle(bundle);
       } catch (InterruptedException e) {
         log.info("InterruptedException: " + e.getMessage());
         e.printStackTrace();
         Thread.currentThread().interrupt();
       } catch (Exception e) {
-        Utils.handle(context, e);
+        Utils.handleException(context, e);
       } finally {
         context.getProjectConfig().getDataSelection().getSemaphore().release();
       }
@@ -114,14 +116,14 @@ public class TransferProcess {
     if (!context.isFailed()) {
       try {
         context.getProjectConfig().getPseudonymization().getSemaphore().acquire();
-        // TODO: Handle execution error here
-        pseudonymization.process(context);
+        Bundle bundle = pseudonymization.process(context);
+        context.setBundle(bundle);
       } catch (InterruptedException e) {
         log.info("InterruptedException: " + e.getMessage());
         e.printStackTrace();
         Thread.currentThread().interrupt();
       } catch (Exception e) {
-        Utils.handle(context, e);
+        Utils.handleException(context, e);
       } finally {
         context.getProjectConfig().getPseudonymization().getSemaphore().release();
       }
@@ -138,7 +140,7 @@ public class TransferProcess {
         e.printStackTrace();
         Thread.currentThread().interrupt();
       } catch (Exception e) {
-        Utils.handle(context, e);
+        Utils.handleException(context, e);
       } finally {
         context.getProjectConfig().getDataStoring().getSemaphore().release();
       }

@@ -56,15 +56,7 @@ public class Utils {
     return parser.setPrettyPrint(true).encodeResourceToString(resource);
   }
 
-  public static Context handleException(Context context, Exception e) {
-    context.getTransfer().getMap().put(context.getPatientId(), TransferStatus.failed(e));
-    context.setFailed(true);
-    context.setException(e);
-    e.printStackTrace();
-    return context;
-  }
-
-  public static void handle(Context context, Exception e) {
+  public static void handleException(Context context, Exception e) {
     context.setFailed(true);
     context.getTransfer().setStatus(Status.FAILED);
     context.getTransfer().getMap().put(context.getPatientId(), TransferStatus.failed(e));

@@ -25,7 +25,7 @@ public class FiremetricsDataSelection implements DataSelection {
   }
 
   @Override
-  public void process(Context context) throws Exception {
+  public Bundle process(Context context) throws Exception {
     FiremetricsDataSelectionConfig config = context.getProjectConfig().getDataSelection().getFiremetrics();
 
     // load fhirql statement from variable if existent or from file
@@ -77,11 +77,12 @@ public class FiremetricsDataSelection implements DataSelection {
         IBaseResource resource = Utils.fctx.newJsonParser().parseResource(result);
         returnBundle.addEntry(new Bundle.BundleEntryComponent().setResource((Resource) resource));
       }
-      context.setBundle(returnBundle);
+      return returnBundle;
 
     } catch (SQLException e) {
       log.error("FHIRQL database connection failure.");
       e.printStackTrace();
+      throw e;
     }
   }
 }
