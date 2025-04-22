@@ -23,39 +23,34 @@ public class FhirServerDataSelection implements DataSelection {
   }
 
   @Override
-  public void process(Context context) {
-    try {
-      FhirServerDataSelectionConfig config = context.getProjectConfig().getDataSelection().getFhirServer();
+  public void process(Context context) throws Exception {
+    FhirServerDataSelectionConfig config = context.getProjectConfig().getDataSelection().getFhirServer();
 
-      // Setup fhir client
-      IGenericClient client = Utils.hapiClient(config.getUrl());
-      if (config.getBasicAuth() != null) {
-        client = Utils.hapiClient(config.getUrl(), config.getBasicAuth());
-      } else if (config.getTokenAuth() != null) {
-        client = Utils.hapiClient(config.getUrl(), config.getTokenAuth());
-      }
-
-      String fhirId = getFhirId(client, context.getPatientId(), config);
-      context.setNewLastUpdated(OptionalLong.of(ZonedDateTime.now().toInstant().toEpochMilli()));
-      Bundle bundle = getBundle(client, fhirId, config, context.getOldLastUpdated());
-
-      context.setBundle(bundle);
-
-      // FhirPathR4 fhirPathR4 = new FhirPathR4(Utils.fctx);
-      // List<IBase> list = fhirPathR4.evaluate(bundle, "Bundle.entry.resource.ofType(Patient)",
-      // IBase.class);
-      // for( IBase element : list ) {
-      // switch (element) {
-      // case DateType d -> System.out.println("Date: " + d.getValue());
-      // case BooleanType b -> System.out.println("BooleanType: " + b.getValue());
-      // case Patient p -> System.out.println("Patient: " + p.getIdPart() + p.fhirType());
-      // default -> System.out.println("Not found");
-      // }
-      // }
-
-    } catch (Exception e) {
-      Utils.handleException(context, e);
+    // Setup fhir client
+    IGenericClient client = Utils.hapiClient(config.getUrl());
+    if (config.getBasicAuth() != null) {
+      client = Utils.hapiClient(config.getUrl(), config.getBasicAuth());
+    } else if (config.getTokenAuth() != null) {
+      client = Utils.hapiClient(config.getUrl(), config.getTokenAuth());
     }
+
+    String fhirId = getFhirId(client, context.getPatientId(), config);
+    context.setNewLastUpdated(OptionalLong.of(ZonedDateTime.now().toInstant().toEpochMilli()));
+    Bundle bundle = getBundle(client, fhirId, config, context.getOldLastUpdated());
+
+    context.setBundle(bundle);
+
+    // FhirPathR4 fhirPathR4 = new FhirPathR4(Utils.fctx);
+    // List<IBase> list = fhirPathR4.evaluate(bundle, "Bundle.entry.resource.ofType(Patient)",
+    // IBase.class);
+    // for( IBase element : list ) {
+    // switch (element) {
+    // case DateType d -> System.out.println("Date: " + d.getValue());
+    // case BooleanType b -> System.out.println("BooleanType: " + b.getValue());
+    // case Patient p -> System.out.println("Patient: " + p.getIdPart() + p.fhirType());
+    // default -> System.out.println("Not found");
+    // }
+    // }
   }
 
   private static String getFhirId(IGenericClient client, String id, FhirServerDataSelectionConfig dataSelectionConfig) {

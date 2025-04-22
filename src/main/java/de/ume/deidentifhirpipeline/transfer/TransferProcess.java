@@ -33,77 +33,21 @@ public class TransferProcess {
     CohortSelection cohortSelection = implementationsFactory.getCohortSelection(projectConfig);
 
     List<String> ids = cohortSelection.before(projectConfig);
-    // CompletableFuture.supplyAsync(() -> processNew(uuid, ids, projectConfig));
     CompletableFuture.supplyAsync(() -> processWithVirtualThreads(uuid, ids, projectConfig));
 
     return uuid.toString();
   }
 
-  // public static String start(List<String> ids, ProjectConfig projectConfig) throws Exception {
-  // UUID uuid = UUID.randomUUID();
-  //
-  // beforeExecution(projectConfig);
-  // CompletableFuture.supplyAsync(() -> process(uuid, ids, projectConfig));
-  //
-  // return uuid.toString();
-  // }
-  //
-  // public static String start(ProjectConfig projectConfig) throws Exception {
-  // UUID uuid = UUID.randomUUID();
-  //
-  // beforeExecution(projectConfig);
-  //
-  // List<String> ids = CohortSelection.beforeExecution(projectConfig);
-  // CompletableFuture.supplyAsync(() -> process(uuid, ids, projectConfig));
-  //
-  // return uuid.toString();
-  // }
-
   private void beforeExecution(ProjectConfig projectConfig) throws Exception {
 
     if (projectConfig.getGetLastUpdatedImpl().isPresent())
       projectConfig.getGetLastUpdatedImpl().get().beforeExecution(projectConfig);
-    projectConfig.getDataSelectionImpl().beforeExecution(projectConfig);
-    projectConfig.getPseudonymizationImpl().beforeExecution(projectConfig);
-    projectConfig.getDataStoringImpl().beforeExecution(projectConfig);
+    projectConfig.getDataSelectionImpl().before(projectConfig);
+    projectConfig.getPseudonymizationImpl().before(projectConfig);
+    projectConfig.getDataStoringImpl().before(projectConfig);
     if (projectConfig.getSetLastUpdatedImpl().isPresent())
       projectConfig.getSetLastUpdatedImpl().get().beforeExecution(projectConfig);
   }
-
-  // private String processNew(UUID uuid, List<String> ids, ProjectConfig projectConfig) {
-  // log.debug("Starting transfer: " + uuid.toString());
-  //
-  // Transfer transfer = new Transfer(uuid);
-  // List<Context> contexts = setUpContexts(transfer, ids, projectConfig);
-  //
-  // log.info("Number of bundles: {}", contexts.size());
-  //
-  // Optional<GetLastUpdated> getLastUpdated = projectConfig.getGetLastUpdatedImpl();
-  // DataSelection dataSelection = projectConfig.getDataSelectionImpl();
-  // Pseudonymization pseudonymization = projectConfig.getPseudonymizationImpl();
-  // DataStoring dataStoring = projectConfig.getDataStoringImpl();
-  // Optional<SetLastUpdated> setLastUpdated = projectConfig.getSetLastUpdatedImpl();
-  //
-  // ForkJoinPool pool = new ForkJoinPool(projectConfig.getParallelism());
-  // pool.submit(() -> {
-  // contexts.stream().parallel()
-  // .map(context -> getLastUpdated.map(x -> x.execute(context)).orElse(context)).filter(context ->
-  // !context.isFailed())
-  // .map(dataSelection::execute).filter(context -> !context.isFailed())
-  // .map(pseudonymization::execute).filter(context -> !context.isFailed())
-  // .map(dataStoring::execute).filter(context -> !context.isFailed())
-  // .map(context -> setLastUpdated.map(x -> x.execute(context)).orElse(context)).filter(context ->
-  // !context.isFailed())
-  // .forEach(context -> {
-  // context.getTransfer().getMap().put(context.getPatientId(), TransferStatus.completed());
-  // log.info(String.format("Transfer for patient id: '%s' finished successfully.",
-  // context.getPatientId()));
-  // });
-  // transfer.setFinalStatus();
-  // });
-  //
-  // return uuid.toString();
-  // }
 
   private String processWithVirtualThreads(UUID uuid, List<String> ids, ProjectConfig projectConfig) {
     log.debug("Starting transfer: " + uuid.toString());
@@ -153,11 +97,13 @@ public class TransferProcess {
     if (!context.isFailed()) {
       try {
         context.getProjectConfig().getDataSelection().getSemaphore().acquire();
-        dataSelection.execute(context);
+        dataSelection.process(context);
       } catch (InterruptedException e) {
         log.info("InterruptedException: " + e.getMessage());
         e.printStackTrace();
         Thread.currentThread().interrupt();
+      } catch (Exception e) {
+        Utils.handle(context, e);
       } finally {
         context.getProjectConfig().getDataSelection().getSemaphore().release();
       }
@@ -169,11 +115,13 @@ public class TransferProcess {
       try {
         context.getProjectConfig().getPseudonymization().getSemaphore().acquire();
         // TODO: Handle execution error here
-        pseudonymization.execute(context);
+        pseudonymization.process(context);
       } catch (InterruptedException e) {
         log.info("InterruptedException: " + e.getMessage());
         e.printStackTrace();
         Thread.currentThread().interrupt();
+      } catch (Exception e) {
+        Utils.handle(context, e);
       } finally {
         context.getProjectConfig().getPseudonymization().getSemaphore().release();
       }
@@ -184,44 +132,18 @@ public class TransferProcess {
     if (!context.isFailed()) {
       try {
         context.getProjectConfig().getDataStoring().getSemaphore().acquire();
-        dataStoring.execute(context);
+        dataStoring.process(context);
       } catch (InterruptedException e) {
         log.info("InterruptedException: " + e.getMessage());
         e.printStackTrace();
         Thread.currentThread().interrupt();
+      } catch (Exception e) {
+        Utils.handle(context, e);
       } finally {
         context.getProjectConfig().getDataStoring().getSemaphore().release();
       }
     }
   }
-
-  // private static String process(UUID uuid, List<String> ids, ProjectConfig projectConfig) {
-  // log.debug("Starting transfer: " + uuid.toString());
-  //
-  // Transfer transfer = new Transfer(uuid);
-  // List<Context> contexts = setUpContexts(transfer, ids, projectConfig);
-  //
-  // log.info("Number of bundles: {}", contexts.size());
-  // log.info("Parallelism is set to: {}", projectConfig.getParallelism());
-  //
-  // ForkJoinPool pool = new ForkJoinPool(projectConfig.getParallelism());
-  // pool.submit(() -> {
-  // contexts.stream().parallel()
-  // .map(GetLastUpdated::execute).filter(context -> !context.isFailed())
-  // .map(DataSelection::execute).filter(context -> !context.isFailed())
-  // .map(Pseudonymization::execute).filter(context -> !context.isFailed())
-  // .map(DataStoring::execute).filter(context -> !context.isFailed())
-  // .map(SetLastUpdated::execute).filter(context -> !context.isFailed())
-  // .forEach(context -> {
-  // context.getTransfer().getMap().put(context.getPatientId(), TransferStatus.completed());
-  // log.info(String.format("Transfer for patient id: '%s' finished successfully.",
-  // context.getPatientId()));
-  // });
-  // transfer.setFinalStatus();
-  // });
-  //
-  // return uuid.toString();
-  // }
 
   private static List<Context> setUpContexts(Transfer transfer, List<String> ids, ProjectConfig projectConfig) {
     List<Context> contexts = new ArrayList<>();

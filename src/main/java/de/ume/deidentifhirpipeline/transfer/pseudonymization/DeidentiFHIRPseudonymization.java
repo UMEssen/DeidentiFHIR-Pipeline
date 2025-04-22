@@ -28,40 +28,34 @@ public class DeidentiFHIRPseudonymization implements Pseudonymization {
     pseudonymizationService.createIfDateShiftingDomainIsNotExistent(config.getDateShiftingInMillis());
   }
 
-  public void process(Context context) {
+  public void process(Context context) throws Exception {
     DeidentiFHIRPseudonymizationConfig config = context.getProjectConfig().getPseudonymization().getDeidentifhir();
-    try {
+    // Gather IDs
+    File scraperConfigFile = new File(config.getScraperConfigFile());
+    IDATScraper idScraper = new IDATScraper(scraperConfigFile, config.isGenerateIDScraperConfig());
+    List<String> gatheredIDs = idScraper.gatherIDs(
+        new CDtoTransportKeyCreator(context.getPatientId()), context.getBundle()).stream().toList();
 
-      // Gather IDs
-      File scraperConfigFile = new File(config.getScraperConfigFile());
-      IDATScraper idScraper = new IDATScraper(scraperConfigFile, config.isGenerateIDScraperConfig());
-      List<String> gatheredIDs = idScraper.gatherIDs(
-          new CDtoTransportKeyCreator(context.getPatientId()), context.getBundle()).stream().toList();
+    // Get pseudonyms from gPAS
+    PseudonymizationServiceInterface pseudonymizationService = config.getPseudonymizationService();
+    Map<String, String> pseudonymMap = pseudonymizationService.getOrCreatePseudonyms(gatheredIDs);
 
-      // Get pseudonyms from gPAS
-      PseudonymizationServiceInterface pseudonymizationService = config.getPseudonymizationService();
-      Map<String, String> pseudonymMap = pseudonymizationService.getOrCreatePseudonyms(gatheredIDs);
-
-      // Get date shifting values from gPAS
-      Map<String, Long> dateShiftValueMap;
-      if (config.getDateShiftingInMillis() != 0) {
-        long dateShiftValue = pseudonymizationService.getDateShiftingValue(context.getPatientId());
-        dateShiftValueMap = Map.of(context.getPatientId(), dateShiftValue);
-      } else {
-        dateShiftValueMap = Map.of();
-      }
-
-      // Replace IDs and get bundle
-      File pseudonymizationConfigFile = new File(config.getPseudonymizationConfigFile());
-      CDtoTransportDeidentiFHIR deidentiFHIR =
-          new CDtoTransportDeidentiFHIR(pseudonymizationConfigFile);
-      Bundle bundle =
-          (Bundle) deidentiFHIR.deidentify(context.getPatientId(), context.getPatientId(), context.getBundle(), pseudonymMap, dateShiftValueMap);
-
-      context.setBundle(bundle);
-    } catch (Exception e) {
-      e.printStackTrace();
-      Utils.handleException(context, e);
+    // Get date shifting values from gPAS
+    Map<String, Long> dateShiftValueMap;
+    if (config.getDateShiftingInMillis() != 0) {
+      long dateShiftValue = pseudonymizationService.getDateShiftingValue(context.getPatientId());
+      dateShiftValueMap = Map.of(context.getPatientId(), dateShiftValue);
+    } else {
+      dateShiftValueMap = Map.of();
     }
+
+    // Replace IDs and get bundle
+    File pseudonymizationConfigFile = new File(config.getPseudonymizationConfigFile());
+    CDtoTransportDeidentiFHIR deidentiFHIR =
+        new CDtoTransportDeidentiFHIR(pseudonymizationConfigFile);
+    Bundle bundle =
+        (Bundle) deidentiFHIR.deidentify(context.getPatientId(), context.getPatientId(), context.getBundle(), pseudonymMap, dateShiftValueMap);
+
+    context.setBundle(bundle);
   }
 }

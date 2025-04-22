@@ -1,27 +1,11 @@
 package de.ume.deidentifhirpipeline.transfer.pseudonymization;
 
-import de.ume.deidentifhirpipeline.api.data.Status;
-import de.ume.deidentifhirpipeline.api.data.TransferStatus;
 import de.ume.deidentifhirpipeline.config.ProjectConfig;
 import de.ume.deidentifhirpipeline.transfer.Context;
 
 public interface Pseudonymization {
   void before(ProjectConfig projectConfig) throws Exception;
 
-  void process(Context context);
+  void process(Context context) throws Exception;
 
-  default void beforeExecution(ProjectConfig projectConfig) throws Exception {
-    this.before(projectConfig);
-  }
-
-  default void execute(Context context) {
-    try {
-      this.process(context);
-    } catch (Exception e) {
-      e.printStackTrace();
-      context.setFailed(true);
-      context.getTransfer().setStatus(Status.FAILED);
-      context.getTransfer().getMap().put(context.getPatientId(), TransferStatus.failed(e));
-    }
-  }
 }

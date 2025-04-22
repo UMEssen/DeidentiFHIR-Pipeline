@@ -15,13 +15,9 @@ public class FhirServerDataStoring implements DataStoring {
     // Nothing to do before processing
   }
 
-  public void process(Context context) {
+  public void process(Context context) throws Exception {
     FhirServerDataStoringConfig config = context.getProjectConfig().getDataStoring().getFhirServer();
-    try {
-      storeBundle(config, context.getBundle());
-    } catch (Exception e) {
-      Utils.handleException(context, e);
-    }
+    storeBundle(config, context.getBundle());
   }
 
   private static void storeBundle(FhirServerDataStoringConfig config, Bundle bundle) {

@@ -6,6 +6,7 @@ import ca.uhn.fhir.rest.client.api.IGenericClient;
 import ca.uhn.fhir.rest.client.interceptor.BasicAuthInterceptor;
 import ca.uhn.fhir.rest.client.interceptor.BearerTokenAuthInterceptor;
 import ca.uhn.fhir.rest.client.interceptor.LoggingInterceptor;
+import de.ume.deidentifhirpipeline.api.data.Status;
 import de.ume.deidentifhirpipeline.api.data.TransferStatus;
 import de.ume.deidentifhirpipeline.config.auth.BasicAuthConfig;
 import de.ume.deidentifhirpipeline.config.auth.TokenAuthConfig;
@@ -61,6 +62,13 @@ public class Utils {
     context.setException(e);
     e.printStackTrace();
     return context;
+  }
+
+  public static void handle(Context context, Exception e) {
+    context.setFailed(true);
+    context.getTransfer().setStatus(Status.FAILED);
+    context.getTransfer().getMap().put(context.getPatientId(), TransferStatus.failed(e));
+    e.printStackTrace();
   }
 
   public static ZonedDateTime longToZonedDateTime(long millis, ZoneId zoneId) {

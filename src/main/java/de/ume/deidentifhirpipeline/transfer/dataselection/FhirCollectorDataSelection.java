@@ -19,22 +19,17 @@ public class FhirCollectorDataSelection implements DataSelection {
   }
 
   @Override
-  public void process(Context context) {
-    try {
-      FhirCollectorDataSelectionConfig config = context.getProjectConfig().getDataSelection().getFhirCollector();
-      FhirCollector fhirCollector = new FhirCollector(config.getConfigurationFile());
-      fhirCollector.fetchResources(context.getPatientId());
-      log.debug("Collected resources: {}", fhirCollector.toString());
-      log.debug(Utils.fhirBundleToString(fhirCollector.getBundle()));
-      Bundle bundle = fhirCollector.getBundle();
-      if (bundle == null || bundle.getEntry().isEmpty())
-        throw new Exception("Returned bundle is empty. No medical data for id: " + context.getPatientId());
+  public void process(Context context) throws Exception {
+    FhirCollectorDataSelectionConfig config = context.getProjectConfig().getDataSelection().getFhirCollector();
+    FhirCollector fhirCollector = new FhirCollector(config.getConfigurationFile());
+    fhirCollector.fetchResources(context.getPatientId());
+    log.debug("Collected resources: {}", fhirCollector.toString());
+    log.debug(Utils.fhirBundleToString(fhirCollector.getBundle()));
+    Bundle bundle = fhirCollector.getBundle();
+    if (bundle == null || bundle.getEntry().isEmpty())
+      throw new Exception("Returned bundle is empty. No medical data for id: " + context.getPatientId());
 
-      context.setBundle(bundle);
-    } catch (Exception e) {
-      Utils.handleException(context, e);
-    }
+    context.setBundle(bundle);
   }
-
 
 }

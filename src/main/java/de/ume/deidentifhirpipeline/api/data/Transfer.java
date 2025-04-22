@@ -3,6 +3,7 @@ package de.ume.deidentifhirpipeline.api.data;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -11,6 +12,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+@Slf4j
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Transfer {
@@ -54,31 +56,31 @@ public class Transfer {
 
   public void updateStatus() {
     // Update only, when processing is not finished. Final status is set after processing.
-    if (status == Status.PENDING) {
-      total     = map.values().size();
-      pending   = map.values().stream()
-          .filter(transferStatus -> transferStatus.getStatus() == Status.PENDING)
-          .toList()
-          .size();
-      completed = map.values().stream()
-          .filter(transferStatus -> transferStatus.getStatus() == Status.COMPLETED)
-          .toList()
-          .size();
-      failed    = map.values().stream()
-          .filter(transferStatus -> transferStatus.getStatus() == Status.FAILED)
-          .toList()
-          .size();
+    // if (status == Status.PENDING) {
+    total     = map.values().size();
+    pending   = map.values().stream()
+        .filter(transferStatus -> transferStatus.getStatus() == Status.PENDING)
+        .toList()
+        .size();
+    completed = map.values().stream()
+        .filter(transferStatus -> transferStatus.getStatus() == Status.COMPLETED)
+        .toList()
+        .size();
+    failed    = map.values().stream()
+        .filter(transferStatus -> transferStatus.getStatus() == Status.FAILED)
+        .toList()
+        .size();
 
-      errorMessagesWithCount = new HashMap<>();
-      map.values().stream()
-          .filter(transferStatus -> transferStatus.getException() != null) // && transferStatus.getException().getMessage() != null)
-          .forEach(transferStatus -> {
-            String message = transferStatus.getException().getClass().getSimpleName() + " - " + transferStatus.getException().getMessage();
-            errorMessagesWithCount.computeIfPresent(message, (key, value) -> value + 1);
-            errorMessagesWithCount.computeIfAbsent(message, key -> 1);
-          });
-      if (errorMessagesWithCount.isEmpty())
-        errorMessagesWithCount = null;
-    }
+    errorMessagesWithCount = new HashMap<>();
+    map.values().stream()
+        .filter(transferStatus -> transferStatus.getException() != null) // && transferStatus.getException().getMessage() != null)
+        .forEach(transferStatus -> {
+          String message = transferStatus.getException().getClass().getSimpleName() + " - " + transferStatus.getException().getMessage();
+          errorMessagesWithCount.computeIfPresent(message, (key, value) -> value + 1);
+          errorMessagesWithCount.computeIfAbsent(message, key -> 1);
+        });
+    if (errorMessagesWithCount.isEmpty())
+      errorMessagesWithCount = null;
+    // }
   }
 }

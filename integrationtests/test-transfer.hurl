@@ -41,6 +41,10 @@ retry-interval: 100
 HTTP 200
 [Asserts]
 jsonpath "$.status" == "PARTIALLY_FAILED" # because only one bundle was available in the fhir server, the second not
+jsonpath "$.total" == 2
+jsonpath "$.pending" == 0
+jsonpath "$.completed" == 1
+jsonpath "$.failed" == 1
 
 # Check if Patient resource was transfered
 GET http://localhost:8083/fhir/Patient
@@ -127,6 +131,10 @@ retry-interval: 100
 HTTP 200
 [Asserts]
 jsonpath "$.status" == "COMPLETED" # Now completed with second bundle also transfered
+jsonpath "$.total" == 2
+jsonpath "$.pending" == 0
+jsonpath "$.completed" == 2
+jsonpath "$.failed" == 0
 
 # Check if Patient resource was transfered
 GET http://localhost:8083/fhir/Patient
