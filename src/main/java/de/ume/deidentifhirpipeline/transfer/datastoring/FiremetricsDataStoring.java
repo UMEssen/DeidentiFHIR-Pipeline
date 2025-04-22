@@ -22,7 +22,7 @@ public class FiremetricsDataStoring implements DataStoring {
     // Nothing to do before processing
   }
 
-  public Context process(Context context) {
+  public void process(Context context) {
     FiremetricsDataStoringConfig config = context.getProjectConfig().getDataStoring().getFiremetrics();
     try {
       List<String> resourcesAsString = context.getBundle().getEntry().stream().map(e -> Utils.fhirResourceToString(e.getResource())).toList();
@@ -63,10 +63,9 @@ public class FiremetricsDataStoring implements DataStoring {
         log.error("FHIRQL database connection failure.");
         e.printStackTrace();
       }
-      return context;
     } catch (Exception e) {
       e.printStackTrace();
-      return Utils.handleException(context, e);
+      Utils.handleException(context, e);
     }
   }
 

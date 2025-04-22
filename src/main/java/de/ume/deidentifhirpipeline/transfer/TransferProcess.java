@@ -13,8 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.*;
 
 @Slf4j
 @Component
@@ -34,7 +33,8 @@ public class TransferProcess {
     CohortSelection cohortSelection = implementationsFactory.getCohortSelection(projectConfig);
 
     List<String> ids = cohortSelection.before(projectConfig);
-    CompletableFuture.supplyAsync(() -> processNew(uuid, ids, projectConfig));
+    // CompletableFuture.supplyAsync(() -> processNew(uuid, ids, projectConfig));
+    CompletableFuture.supplyAsync(() -> processWithVirtualThreads(uuid, ids, projectConfig));
 
     return uuid.toString();
   }
@@ -70,7 +70,42 @@ public class TransferProcess {
       projectConfig.getSetLastUpdatedImpl().get().beforeExecution(projectConfig);
   }
 
-  private String processNew(UUID uuid, List<String> ids, ProjectConfig projectConfig) {
+  // private String processNew(UUID uuid, List<String> ids, ProjectConfig projectConfig) {
+  // log.debug("Starting transfer: " + uuid.toString());
+  //
+  // Transfer transfer = new Transfer(uuid);
+  // List<Context> contexts = setUpContexts(transfer, ids, projectConfig);
+  //
+  // log.info("Number of bundles: {}", contexts.size());
+  //
+  // Optional<GetLastUpdated> getLastUpdated = projectConfig.getGetLastUpdatedImpl();
+  // DataSelection dataSelection = projectConfig.getDataSelectionImpl();
+  // Pseudonymization pseudonymization = projectConfig.getPseudonymizationImpl();
+  // DataStoring dataStoring = projectConfig.getDataStoringImpl();
+  // Optional<SetLastUpdated> setLastUpdated = projectConfig.getSetLastUpdatedImpl();
+  //
+  // ForkJoinPool pool = new ForkJoinPool(projectConfig.getParallelism());
+  // pool.submit(() -> {
+  // contexts.stream().parallel()
+  // .map(context -> getLastUpdated.map(x -> x.execute(context)).orElse(context)).filter(context ->
+  // !context.isFailed())
+  // .map(dataSelection::execute).filter(context -> !context.isFailed())
+  // .map(pseudonymization::execute).filter(context -> !context.isFailed())
+  // .map(dataStoring::execute).filter(context -> !context.isFailed())
+  // .map(context -> setLastUpdated.map(x -> x.execute(context)).orElse(context)).filter(context ->
+  // !context.isFailed())
+  // .forEach(context -> {
+  // context.getTransfer().getMap().put(context.getPatientId(), TransferStatus.completed());
+  // log.info(String.format("Transfer for patient id: '%s' finished successfully.",
+  // context.getPatientId()));
+  // });
+  // transfer.setFinalStatus();
+  // });
+  //
+  // return uuid.toString();
+  // }
+
+  private String processWithVirtualThreads(UUID uuid, List<String> ids, ProjectConfig projectConfig) {
     log.debug("Starting transfer: " + uuid.toString());
 
     Transfer transfer = new Transfer(uuid);
@@ -84,23 +119,80 @@ public class TransferProcess {
     DataStoring dataStoring = projectConfig.getDataStoringImpl();
     Optional<SetLastUpdated> setLastUpdated = projectConfig.getSetLastUpdatedImpl();
 
-    ForkJoinPool pool = new ForkJoinPool(projectConfig.getParallelism());
-    pool.submit(() -> {
-      contexts.stream().parallel()
-          .map(context -> getLastUpdated.map(x -> x.execute(context)).orElse(context)).filter(context -> !context.isFailed())
-          .map(dataSelection::execute).filter(context -> !context.isFailed())
-          .map(pseudonymization::execute).filter(context -> !context.isFailed())
-          .map(dataStoring::execute).filter(context -> !context.isFailed())
-          .map(context -> setLastUpdated.map(x -> x.execute(context)).orElse(context)).filter(context -> !context.isFailed())
-          .forEach(context -> {
+    try (ExecutorService executorService = Executors.newVirtualThreadPerTaskExecutor()) {
+      for (Context context : contexts) {
+        Future future = executorService.submit(() -> {
+          getLastUpdated.ifPresent(x -> x.execute(context));
+          executeDataSelection(dataSelection, context);
+          executePseudonymization(pseudonymization, context);
+          executeDataStoring(dataStoring, context);
+          setLastUpdated.ifPresent(x -> x.execute(context));
+          if (!context.isFailed()) {
             context.getTransfer().getMap().put(context.getPatientId(), TransferStatus.completed());
-            log.info(String.format("Transfer for patient id: '%s' finished successfully.",
-                context.getPatientId()));
-          });
-      transfer.setFinalStatus();
+            log.info(String.format("Transfer for patient id: '%s' finished successfully.", context.getPatientId()));
+          }
+        });
+        context.setFuture(future);
+      }
+    }
+    contexts.stream().forEach(context -> {
+      try {
+        context.getFuture().get();
+      } catch (InterruptedException e) {
+        throw new RuntimeException(e);
+      } catch (ExecutionException e) {
+        throw new RuntimeException(e);
+      }
     });
+    transfer.setFinalStatus();
 
     return uuid.toString();
+  }
+
+  private static void executeDataSelection(DataSelection dataSelection, Context context) {
+    if (!context.isFailed()) {
+      try {
+        context.getProjectConfig().getDataSelection().getSemaphore().acquire();
+        dataSelection.execute(context);
+      } catch (InterruptedException e) {
+        log.info("InterruptedException: " + e.getMessage());
+        e.printStackTrace();
+        Thread.currentThread().interrupt();
+      } finally {
+        context.getProjectConfig().getDataSelection().getSemaphore().release();
+      }
+    }
+  }
+
+  private static void executePseudonymization(Pseudonymization pseudonymization, Context context) {
+    if (!context.isFailed()) {
+      try {
+        context.getProjectConfig().getPseudonymization().getSemaphore().acquire();
+        // TODO: Handle execution error here
+        pseudonymization.execute(context);
+      } catch (InterruptedException e) {
+        log.info("InterruptedException: " + e.getMessage());
+        e.printStackTrace();
+        Thread.currentThread().interrupt();
+      } finally {
+        context.getProjectConfig().getPseudonymization().getSemaphore().release();
+      }
+    }
+  }
+
+  private static void executeDataStoring(DataStoring dataStoring, Context context) {
+    if (!context.isFailed()) {
+      try {
+        context.getProjectConfig().getDataStoring().getSemaphore().acquire();
+        dataStoring.execute(context);
+      } catch (InterruptedException e) {
+        log.info("InterruptedException: " + e.getMessage());
+        e.printStackTrace();
+        Thread.currentThread().interrupt();
+      } finally {
+        context.getProjectConfig().getDataStoring().getSemaphore().release();
+      }
+    }
   }
 
   // private static String process(UUID uuid, List<String> ids, ProjectConfig projectConfig) {

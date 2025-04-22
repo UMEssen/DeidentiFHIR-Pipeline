@@ -15,13 +15,12 @@ public class FhirServerDataStoring implements DataStoring {
     // Nothing to do before processing
   }
 
-  public Context process(Context context) {
+  public void process(Context context) {
     FhirServerDataStoringConfig config = context.getProjectConfig().getDataStoring().getFhirServer();
     try {
       storeBundle(config, context.getBundle());
-      return context;
     } catch (Exception e) {
-      return Utils.handleException(context, e);
+      Utils.handleException(context, e);
     }
   }
 

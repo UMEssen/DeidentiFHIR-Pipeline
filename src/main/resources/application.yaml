@@ -48,6 +48,7 @@ projects:
 #          limit 1000 offset 0
 
     data-selection:
+      parallelism: 10 # Can be set to limit the number of parallel connections
 #      fhir-collector:
 #        configurationFile: ./src/main/resources/fhir-collector.yaml
       fhir-server:
@@ -65,7 +66,8 @@ projects:
 #        bundleQuery: Patient?_id=<fhir-id>&_lastUpdated=ge<lastUpdated>
 
     pseudonymization:
-#      use: false # false => no pseudonymization; true => (default) pseudonymization
+      parallelism: 10 # Can be set to limit the number of parallel connections
+#      none: # for no pseudonymization
       deidentifhir:
         scraperConfigFile: ./deidentifhir/mii/deidentiFHIR_IDScraper.profile
         pseudonymizationConfigFile: ./deidentifhir/mii/deidentiFHIR_CDtoTransport.profile
@@ -78,6 +80,7 @@ projects:
 #          gpasServiceWsdlUrl: http://localhost:8081/gpas/gpasService?wsdl
 #          domainServiceWsdlUrl: http://localhost:8081/gpas/DomainService?wsdl
     data-storing:
+      parallelism: 10 # Can be set to limit the number of parallel connections
 #      folder:
 #        path: /bla/
       fhir-server:

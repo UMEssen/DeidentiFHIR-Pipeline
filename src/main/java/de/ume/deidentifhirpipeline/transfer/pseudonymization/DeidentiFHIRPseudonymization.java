@@ -28,7 +28,7 @@ public class DeidentiFHIRPseudonymization implements Pseudonymization {
     pseudonymizationService.createIfDateShiftingDomainIsNotExistent(config.getDateShiftingInMillis());
   }
 
-  public Context process(Context context) {
+  public void process(Context context) {
     DeidentiFHIRPseudonymizationConfig config = context.getProjectConfig().getPseudonymization().getDeidentifhir();
     try {
 
@@ -59,10 +59,9 @@ public class DeidentiFHIRPseudonymization implements Pseudonymization {
           (Bundle) deidentiFHIR.deidentify(context.getPatientId(), context.getPatientId(), context.getBundle(), pseudonymMap, dateShiftValueMap);
 
       context.setBundle(bundle);
-      return context;
     } catch (Exception e) {
       e.printStackTrace();
-      return Utils.handleException(context, e);
+      Utils.handleException(context, e);
     }
   }
 }

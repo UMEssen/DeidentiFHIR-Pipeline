@@ -23,7 +23,7 @@ public class FhirServerDataSelection implements DataSelection {
   }
 
   @Override
-  public Context process(Context context) {
+  public void process(Context context) {
     try {
       FhirServerDataSelectionConfig config = context.getProjectConfig().getDataSelection().getFhirServer();
 
@@ -38,6 +38,7 @@ public class FhirServerDataSelection implements DataSelection {
       String fhirId = getFhirId(client, context.getPatientId(), config);
       context.setNewLastUpdated(OptionalLong.of(ZonedDateTime.now().toInstant().toEpochMilli()));
       Bundle bundle = getBundle(client, fhirId, config, context.getOldLastUpdated());
+
       context.setBundle(bundle);
 
       // FhirPathR4 fhirPathR4 = new FhirPathR4(Utils.fctx);
@@ -52,9 +53,8 @@ public class FhirServerDataSelection implements DataSelection {
       // }
       // }
 
-      return context;
     } catch (Exception e) {
-      return Utils.handleException(context, e);
+      Utils.handleException(context, e);
     }
   }
 

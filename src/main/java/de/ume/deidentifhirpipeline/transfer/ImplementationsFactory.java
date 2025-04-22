@@ -14,6 +14,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
+import java.util.List;
 
 @Slf4j
 @Getter
@@ -101,11 +102,12 @@ public class ImplementationsFactory {
     Binder binder = Binder.get(env);
     Map<String, Object> dataSelectionConfig = binder.bind("projects." + projectConfig.getName() + ".data-selection", Map.class).orElse(Map.of());
 
-    dataSelectionConfig.keySet().forEach(s -> log.info("data-selection config: " + s));
-    if (dataSelectionConfig.size() > 1)
+    List<String> configWithoutParallelism = dataSelectionConfig.keySet().stream().filter(s -> !"parallelism".equals(s)).toList();
+    configWithoutParallelism.forEach(s -> log.info("data-selection config: " + s));
+    if (configWithoutParallelism.size() > 1)
       throw new Exception("There are multiple data-selection configurations. Please check configuration!");
     String dataSelectionString =
-        dataSelectionConfig.keySet().stream().findFirst().orElseThrow(() -> new Exception("Could not find a data-selection configuration"));
+        configWithoutParallelism.stream().findFirst().orElseThrow(() -> new Exception("Could not find a data-selection configuration"));
 
     if ("via-plugin".equals(dataSelectionString)) {
       String implementation = projectConfig.getDataSelection().getViaPlugin().getImplementation();
@@ -119,11 +121,12 @@ public class ImplementationsFactory {
     Binder binder = Binder.get(env);
     Map<String, Object> dataStoringConfig = binder.bind("projects." + projectConfig.getName() + ".data-storing", Map.class).orElse(Map.of());
 
-    dataStoringConfig.keySet().forEach(s -> log.info("data-storing config: " + s));
-    if (dataStoringConfig.size() > 1)
+    List<String> configWithoutParallelism = dataStoringConfig.keySet().stream().filter(s -> !"parallelism".equals(s)).toList();
+    configWithoutParallelism.forEach(s -> log.info("data-storing config: " + s));
+    if (configWithoutParallelism.size() > 1)
       throw new Exception("There are multiple data-storing configurations. Please check configuration!");
     String dataStoringString =
-        dataStoringConfig.keySet().stream().findFirst().orElseThrow(() -> new Exception("Could not find a data-storing configuration"));
+        configWithoutParallelism.stream().findFirst().orElseThrow(() -> new Exception("Could not find a data-storing configuration"));
 
     if ("via-plugin".equals(dataStoringString)) {
       String implementation = projectConfig.getDataStoring().getViaPlugin().getImplementation();
@@ -137,11 +140,12 @@ public class ImplementationsFactory {
     Binder binder = Binder.get(env);
     Map<String, Object> pseudonymizationConfig = binder.bind("projects." + projectConfig.getName() + ".pseudonymization", Map.class).orElse(Map.of());
 
-    pseudonymizationConfig.keySet().forEach(s -> log.info("pseudonymization config: " + s));
-    if (pseudonymizationConfig.size() > 1)
+    List<String> configWithoutParallelism = pseudonymizationConfig.keySet().stream().filter(s -> !"parallelism".equals(s)).toList();
+    configWithoutParallelism.forEach(s -> log.info("pseudonymization config: " + s));
+    if (configWithoutParallelism.size() > 1)
       throw new Exception("There are multiple pseudonymization configurations. Please check configuration!");
     String pseudonymizationString =
-        pseudonymizationConfig.keySet().stream().findFirst().orElseThrow(() -> new Exception("Could not find a pseudonymization configuration"));
+        configWithoutParallelism.stream().findFirst().orElseThrow(() -> new Exception("Could not find a pseudonymization configuration"));
 
     if ("via-plugin".equals(pseudonymizationString)) {
       String implementation = projectConfig.getPseudonymization().getViaPlugin().getImplementation();

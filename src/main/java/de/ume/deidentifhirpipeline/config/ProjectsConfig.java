@@ -1,6 +1,7 @@
 package de.ume.deidentifhirpipeline.config;
 
 import de.ume.deidentifhirpipeline.transfer.ImplementationsFactory;
+import jakarta.annotation.PostConstruct;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ public class ProjectsConfig {
 
   @Autowired private ImplementationsFactory implementationsFactory;
 
+  @PostConstruct
   public void setup() throws Exception {
     for (Map.Entry<String, ProjectConfig> projectConfig : projects.entrySet()) {
       projectConfig.getValue().setup(projectConfig.getKey(), implementationsFactory);

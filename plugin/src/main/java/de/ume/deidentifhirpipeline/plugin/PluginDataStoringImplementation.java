@@ -13,17 +13,16 @@ public class PluginDataStoringImplementation implements DataStoring {
 
   @Override
   public void before(ProjectConfig projectConfig) throws Exception {
-    // Nothing
+    // Nothing to do
   }
 
   @Override
-  public Context process(Context context) {
+  public void process(Context context) {
     log.info("data-storing plugin implementation called");
     log.info("Config as map: " + context.getProjectConfig().getDataSelection().getViaPlugin().getConfig().toString());
 
     log.info("ID:" + context.getPatientId());
 
     log.info("Bundle to store: " + context.getBundle().getIdPart());
-    return context;
   }
 }

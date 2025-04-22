@@ -19,7 +19,7 @@ public class FolderDataStoring implements DataStoring {
     // Nothing to do before processing
   }
 
-  public Context process(Context context) {
+  public void process(Context context) {
     FolderDataStoringConfig config = context.getProjectConfig().getDataStoring().getFolder();
     try {
       // Create directories
@@ -41,9 +41,8 @@ public class FolderDataStoring implements DataStoring {
       else
         Files.writeString(file, bundleAsString, StandardOpenOption.CREATE);
 
-      return context;
     } catch (Exception e) {
-      return Utils.handleException(context, e);
+      Utils.handleException(context, e);
     }
   }
 

@@ -27,7 +27,7 @@ projects:
           name: 1234-bla
 
     pseudonymization:
-      #      use: false # false => no pseudonymization; true => (default) pseudonymization
+#      none: # for no pseudonymization
       deidentifhir:
         scraperConfigFile: ./deidentifhir/mii/deidentiFHIR_IDScraper.profile
         pseudonymizationConfigFile: ./deidentifhir/mii/deidentiFHIR_CDtoTransport.profile

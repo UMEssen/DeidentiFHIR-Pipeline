@@ -19,7 +19,7 @@ public class FhirCollectorDataSelection implements DataSelection {
   }
 
   @Override
-  public Context process(Context context) {
+  public void process(Context context) {
     try {
       FhirCollectorDataSelectionConfig config = context.getProjectConfig().getDataSelection().getFhirCollector();
       FhirCollector fhirCollector = new FhirCollector(config.getConfigurationFile());
@@ -29,11 +29,10 @@ public class FhirCollectorDataSelection implements DataSelection {
       Bundle bundle = fhirCollector.getBundle();
       if (bundle == null || bundle.getEntry().isEmpty())
         throw new Exception("Returned bundle is empty. No medical data for id: " + context.getPatientId());
-      context.setBundle(bundle);
 
-      return context;
+      context.setBundle(bundle);
     } catch (Exception e) {
-      return Utils.handleException(context, e);
+      Utils.handleException(context, e);
     }
   }
 

@@ -21,6 +21,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Optional;
+import java.util.concurrent.Semaphore;
 
 @Slf4j
 @Getter
@@ -67,6 +68,11 @@ public class ProjectConfig {
 
   public void setup(String name, ImplementationsFactory implementationsFactory) throws Exception {
     this.name = name;
+
+    dataSelection.setSemaphore(new Semaphore(dataSelection.getParallelism()));
+    pseudonymization.setSemaphore(new Semaphore(pseudonymization.getParallelism()));
+    dataStoring.setSemaphore(new Semaphore(dataStoring.getParallelism()));
+
     this.setCohortSelectionImpl(implementationsFactory.getCohortSelection(this));
     this.setGetLastUpdatedImpl(Optional.ofNullable(implementationsFactory.getLastUpdated(this)));
     this.setDataSelectionImpl(implementationsFactory.getDataSelection(this));
@@ -87,6 +93,7 @@ public class ProjectConfig {
     // @formatter:on
   }
 
+  // TODO
   public ProjectConfig apply(ProjectConfig projectConfig) throws Exception {
     if (projectConfig == null) {
       return this;

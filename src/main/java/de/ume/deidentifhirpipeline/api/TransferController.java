@@ -18,11 +18,16 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Semaphore;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 
 @RestController
@@ -32,26 +37,10 @@ public class TransferController {
   @Autowired TransferProcess        transferProcess;
   @Autowired ImplementationsFactory implementationsFactory;
 
-  // @PostMapping(value = "/start", consumes = "application/json", produces = "application/json")
-  // public ResponseEntity<TransferResponse> start(@RequestBody TransferRequest transferRequest)
-  // throws Exception {
-  //
-  // ProjectConfig projectConfig = projectsConfig.getProjects().get(transferRequest.getProject());
-  //
-  // if (projectConfig == null) {
-  // return new ResponseEntity<>(new TransferResponse(String.format("Project '%s' not configured",
-  // transferRequest.getProject())), HttpStatus.NOT_FOUND);
-  // } else {
-  // String response = TransferProcess.start(projectConfig);
-  // return new ResponseEntity<>(new TransferResponse(response), HttpStatusCode.valueOf(200));
-  // }
-  // }
-
   @PostMapping(value = "/start", consumes = "application/json", produces = "application/json")
   public ResponseEntity<TransferResponse> startTest(@RequestBody TransferRequest transferRequest) throws Exception {
 
     ProjectConfig projectConfig = projectsConfig.getProjects().get(transferRequest.getProject());
-    projectConfig.setup(transferRequest.getProject(), implementationsFactory);
 
     if (projectConfig == null) {
       return new ResponseEntity<>(new TransferResponse(String.format("Project '%s' not configured", transferRequest.getProject())), HttpStatus.NOT_FOUND);
@@ -138,6 +127,42 @@ public class TransferController {
 
   @GetMapping(value = "/healthcheck")
   public ResponseEntity<String> healthcheck() {
+    return new ResponseEntity<>("OK", HttpStatusCode.valueOf(200));
+  }
+
+  @GetMapping(value = "/virtual-threads-test")
+  public ResponseEntity<String> virtualThreadsTest() {
+    ExecutorService executorService = Executors.newVirtualThreadPerTaskExecutor();
+
+    Semaphore semaphore = new Semaphore(100);
+    Semaphore semaphoreA = new Semaphore(5);
+    Semaphore semaphoreB = new Semaphore(100);
+
+    List<Integer> range = IntStream.rangeClosed(1, 100_000)
+        .boxed().toList();
+    for (int x : range) {
+      executorService.submit(() -> {
+        try {
+          semaphore.acquire();
+          System.out.println("Thread: " + x + "Semaphore");
+          Thread.sleep(10000);
+          semaphore.release();
+          semaphoreA.acquire();
+          System.out.println("Thread: " + x + "SemaphoreA");
+          Thread.sleep(5000);
+          semaphoreA.release();
+          semaphoreB.acquire();
+          System.out.println("Thread: " + x + "SemaphoreB");
+          Thread.sleep(10000);
+          semaphoreB.release();
+
+        } catch (InterruptedException e) {
+          throw new RuntimeException(e);
+        }
+      });
+    }
+
+
     return new ResponseEntity<>("OK", HttpStatusCode.valueOf(200));
   }
 

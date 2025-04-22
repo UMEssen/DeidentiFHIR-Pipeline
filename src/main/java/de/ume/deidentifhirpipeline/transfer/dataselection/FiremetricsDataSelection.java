@@ -25,7 +25,7 @@ public class FiremetricsDataSelection implements DataSelection {
   }
 
   @Override
-  public Context process(Context context) throws Exception {
+  public void process(Context context) throws Exception {
     FiremetricsDataSelectionConfig config = context.getProjectConfig().getDataSelection().getFiremetrics();
 
     // load fhirql statement from variable if existent or from file
@@ -83,6 +83,5 @@ public class FiremetricsDataSelection implements DataSelection {
       log.error("FHIRQL database connection failure.");
       e.printStackTrace();
     }
-    return context;
   }
 }

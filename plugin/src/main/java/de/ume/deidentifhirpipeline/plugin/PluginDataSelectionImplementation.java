@@ -14,11 +14,11 @@ public class PluginDataSelectionImplementation implements DataSelection {
 
   @Override
   public void before(ProjectConfig projectConfig) throws Exception {
-    // Nothing
+    // Nothing to do
   }
 
   @Override
-  public Context process(Context context) throws Exception {
+  public void process(Context context) throws Exception {
     log.info("data-selection plugin implementation called");
     log.info("Config as map: " + context.getProjectConfig().getDataSelection().getViaPlugin().getConfig().toString());
 
@@ -28,6 +28,5 @@ public class PluginDataSelectionImplementation implements DataSelection {
     bundle.setId("1234");
 
     context.setBundle(bundle);
-    return context;
   }
 }

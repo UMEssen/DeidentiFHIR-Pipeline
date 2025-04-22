@@ -11,7 +11,7 @@ public class NoPseudonymization implements Pseudonymization {
 
   public void before(ProjectConfig projectConfig) throws Exception {}
 
-  public Context process(Context context) {
-    return context;
+  public void process(Context context) {
+    // Nothing to do.
   }
 }
