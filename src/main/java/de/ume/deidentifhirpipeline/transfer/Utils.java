@@ -58,7 +58,6 @@ public class Utils {
 
   public static void handleException(Context context, Exception e) {
     context.setFailed(true);
-    context.getTransfer().setStatus(Status.FAILED);
     context.getTransfer().getMap().put(context.getPatientId(), TransferStatus.failed(e));
     e.printStackTrace();
   }
