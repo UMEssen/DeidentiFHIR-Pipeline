@@ -34,10 +34,12 @@ public class TransferProcess {
     CohortSelection cohortSelection = implementationsFactory.getCohortSelection(projectConfig);
 
     List<String> ids = cohortSelection.before(projectConfig);
-    if (projectConfig.isUseVirtualThreads())
+    if (projectConfig.isUseVirtualThreads()) {
+      log.info("Virtual threads are used for processing");
       CompletableFuture.supplyAsync(() -> processWithVirtualThreads(uuid, ids, projectConfig));
-    else
+    } else {
       CompletableFuture.supplyAsync(() -> processWithParallelStream(uuid, ids, projectConfig));
+    }
 
     return uuid.toString();
   }
