@@ -18,7 +18,7 @@ public class PluginDataSelectionImplementation implements DataSelection {
   }
 
   @Override
-  public void process(Context context) throws Exception {
+  public Bundle process(Context context) throws Exception {
     log.info("data-selection plugin implementation called");
     log.info("Config as map: " + context.getProjectConfig().getDataSelection().getViaPlugin().getConfig().toString());
 
@@ -27,6 +27,6 @@ public class PluginDataSelectionImplementation implements DataSelection {
     Bundle bundle = new Bundle();
     bundle.setId("1234");
 
-    context.setBundle(bundle);
+    return bundle;
   }
 }
