@@ -3,6 +3,7 @@ package de.ume.deidentifhirpipeline.transfer.cohortselection;
 import de.ume.deidentifhirpipeline.config.ProjectConfig;
 import de.ume.deidentifhirpipeline.config.cohortselection.FiremetricsCohortSelectionConfig;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -11,7 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
-public class FiremetricsCohortSelection extends CohortSelection {
+@Component("cohort-selection.firemetrics")
+public class FiremetricsCohortSelection implements CohortSelection {
 
   @Override
   public List<String> before(ProjectConfig projectConfig) throws Exception {

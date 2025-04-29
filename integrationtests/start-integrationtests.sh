@@ -1,6 +1,9 @@
 #!/bin/bash
 
 docker_up_options=(-d --quiet-pull)
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+NC='\033[0m' # No Color
 
 failure=0
 
@@ -10,10 +13,10 @@ docker compose up "${docker_up_options[@]}"
 #hurl --verbose --test test-transfer.hurl
 hurl --test test-transfer.hurl
 if [[ $? -ne 0 ]] ; then
-    printf "xxx There are integrationtests with hashmap failures xxx\n\n"
+    printf "${RED}xxx There are integrationtests with hashmap failures xxx${NC}\n\n"
     failure=1
 else
-    printf "✔✔✔ Finished integrationtests with hashmap successfully without errors ✔✔✔\n\n"
+    printf "${GREEN}✔✔✔ Finished integrationtests with hashmap successfully without errors ✔✔✔${NC}\n\n"
 fi
 docker compose down -v
 
@@ -23,10 +26,10 @@ docker compose -f docker-compose-with-gpas.yml up "${docker_up_options[@]}"
 #hurl --verbose --test test-transfer.hurl
 hurl --test test-transfer.hurl
 if [[ $? -ne 0 ]] ; then
-    printf "xxx There are integrationtests with gPAS failures xxx\n\n"
+    printf "${RED}xxx There are integrationtests with gPAS failures xxx${NC}\n\n"
     failure=1
 else
-    printf "✔✔✔ Finished integrationtests with gPAS successfully without errors ✔✔✔\n\n"
+    printf "${GREEN}✔✔✔ Finished integrationtests with gPAS successfully without errors ✔✔✔${NC}\n\n"
 fi
 docker compose -f docker-compose-with-gpas.yml down -v
 
@@ -36,10 +39,10 @@ docker compose -f docker-compose-no-pseudonymization.yml up "${docker_up_options
 #hurl --verbose --test test-transfer-no-pseudonymization.hurl
 hurl --test test-transfer-no-pseudonymization.hurl
 if [[ $? -ne 0 ]] ; then
-    printf "xxx There are integrationtests with no pseudonymization failures xxx\n\n"
+    printf "${RED}xxx There are integrationtests with no pseudonymization failures xxx${NC}\n\n"
     failure=1
 else
-    printf "✔✔✔ Finished integrationtests with no pseudonymization successfully without errors ✔✔✔\n\n"
+    printf "${GREEN}✔✔✔ Finished integrationtests with no pseudonymization successfully without errors ✔✔✔${NC}\n\n"
 fi
 docker compose -f docker-compose-no-pseudonymization.yml down -v
 
@@ -48,18 +51,24 @@ echo "=== Starting integrationtests with fhir-collector and basic auth ==="
 docker compose -f docker-compose-fhir-collector.yml up "${docker_up_options[@]}"
 hurl --test test-transfer.hurl
 if [[ $? -ne 0 ]] ; then
-    printf "xxx There are integrationtests with fhir-collector and basic auth failures xxx\n\n"
+    printf "${RED}xxx There are integrationtests with fhir-collector and basic auth failures xxx${NC}\n\n"
     failure=1
 else
-    printf "✔✔✔ Finished integrationtests with fhir-collector and basic auth successfully without errors ✔✔✔\n\n"
+    printf "${GREEN}✔✔✔ Finished integrationtests with fhir-collector and basic auth successfully without errors ✔✔✔${NC}\n\n"
 fi
 docker compose -f docker-compose-fhir-collector.yml down -v
 
 # test if there were any failure
 if [[ failure -ne 0 ]] ; then
-    printf "xxx There are integrationtests failures xxx\n\n"
+    printf "\n${RED}xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx${NC}"
+    printf "\n${RED}xxx There are integrationtests failures xxx${NC}"
+    printf "\n${RED}xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx${NC}"
+    printf "\n\n"
     exit 1
 else
-    printf "✔✔✔ Integrationtests completed successfully without errors ✔✔✔\n\n"
+    printf "\n${GREEN}✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔${NC}"
+    printf "\n${GREEN}✔✔✔ Integrationtests completed successfully without errors ✔✔✔${NC}"
+    printf "\n${GREEN}✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔${NC}"
+    printf "\n\n"
     exit 0
 fi

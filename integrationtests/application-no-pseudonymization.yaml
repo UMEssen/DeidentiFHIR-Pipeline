@@ -31,7 +31,7 @@ projects:
         bundleQuery: Patient/<fhir-id>/$everything?_count=100000
 #        bundleQuery: Patient?_id=<fhir-id>&_lastUpdated=ge<lastUpdated>
     pseudonymization:
-      use: false
+      none:
 #      deidentifhir:
 #        scraperConfigFile: ./deidentifhir/mii/deidentiFHIR_IDScraper.profile
 #        pseudonymizationConfigFile: ./deidentifhir/mii/deidentiFHIR_CDtoTransport.profile

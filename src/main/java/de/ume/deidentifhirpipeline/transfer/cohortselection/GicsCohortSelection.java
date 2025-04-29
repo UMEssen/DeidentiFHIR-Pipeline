@@ -2,10 +2,12 @@ package de.ume.deidentifhirpipeline.transfer.cohortselection;
 
 import de.ume.deidentifhirpipeline.config.ProjectConfig;
 import de.ume.deidentifhirpipeline.service.GicsService;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-public class GicsCohortSelection extends CohortSelection {
+@Component("cohort-selection.gics")
+public class GicsCohortSelection implements CohortSelection {
 
   @Override
   public List<String> before(ProjectConfig projectConfig) throws Exception {

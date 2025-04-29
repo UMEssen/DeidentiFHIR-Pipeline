@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.hl7.fhir.r4.model.Bundle;
 
 import java.util.OptionalLong;
+import java.util.concurrent.Future;
 
 @Getter
 @NoArgsConstructor
@@ -19,7 +20,7 @@ public class Context {
   @Setter OptionalLong newLastUpdated = OptionalLong.empty();
   @Setter Bundle       bundle;
   @Setter boolean      failed         = false;
-  @Setter Exception    exception;
+  @Setter Future       future;
 
   public Context(Transfer transfer, ProjectConfig projectConfig, String patientId) {
     this.transfer      = transfer;

@@ -7,9 +7,14 @@ logging:
     de.ume: DEBUG
   file.name: ./logs/application-debug.log
 
+aop:
+  method-logging: false
+
 projects:
   "test-project1":
-    parallelism: 16
+    use-virtual-threads: true # default value: false,
+                               # if set to true, parallelism can be set for data-selection, pseudonymization, data-storing separately
+    parallelism: 16 # is used only, if use-virtual-threads is set to false
 #    lastUpdated:
 #      zone-id: "UTC"
 #      hashmap:
@@ -21,6 +26,10 @@ projects:
     cohort-selection:
       via-ids:
         ids: ["1234-identifier", "234-identifier"]
+#      via-plugin:
+#        implementation: plugin-impl
+#        config:
+#          url: profile-url
 
 #      via-file:
 #        path: ./path/to/file    # one number / id per line
@@ -41,6 +50,7 @@ projects:
 #          limit 1000 offset 0
 
     data-selection:
+      parallelism: 10 # Can be set to limit the number of parallel connections
 #      fhir-collector:
 #        configurationFile: ./src/main/resources/fhir-collector.yaml
       fhir-server:
@@ -58,7 +68,8 @@ projects:
 #        bundleQuery: Patient?_id=<fhir-id>&_lastUpdated=ge<lastUpdated>
 
     pseudonymization:
-#      use: false # false => no pseudonymization; true => (default) pseudonymization
+      parallelism: 10 # Can be set to limit the number of parallel connections
+#      none: # for no pseudonymization
       deidentifhir:
         scraperConfigFile: ./deidentifhir/mii/deidentiFHIR_IDScraper.profile
         pseudonymizationConfigFile: ./deidentifhir/mii/deidentiFHIR_CDtoTransport.profile
@@ -71,6 +82,7 @@ projects:
 #          gpasServiceWsdlUrl: http://localhost:8081/gpas/gpasService?wsdl
 #          domainServiceWsdlUrl: http://localhost:8081/gpas/DomainService?wsdl
     data-storing:
+      parallelism: 10 # Can be set to limit the number of parallel connections
 #      folder:
 #        path: /bla/
       fhir-server:

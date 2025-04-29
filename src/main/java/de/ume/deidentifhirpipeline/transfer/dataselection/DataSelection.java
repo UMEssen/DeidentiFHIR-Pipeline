@@ -1,28 +1,13 @@
 package de.ume.deidentifhirpipeline.transfer.dataselection;
 
-import de.ume.deidentifhirpipeline.api.data.Status;
-import de.ume.deidentifhirpipeline.api.data.TransferStatus;
 import de.ume.deidentifhirpipeline.config.ProjectConfig;
 import de.ume.deidentifhirpipeline.transfer.Context;
+import org.hl7.fhir.r4.model.Bundle;
 
-public abstract class DataSelection {
-  public abstract void before(ProjectConfig projectConfig) throws Exception;
+public interface DataSelection {
 
-  public abstract Context process(Context context) throws Exception;
+  void before(ProjectConfig projectConfig) throws Exception;
 
-  public static void beforeExecution(ProjectConfig projectConfig) throws Exception {
-    projectConfig.getDataSelectionImpl().before(projectConfig);
-  }
+  Bundle process(Context context) throws Exception;
 
-  public static Context execute(Context context) {
-    try {
-      return context.getProjectConfig().getDataSelectionImpl().process(context);
-    } catch (Exception e) {
-      e.printStackTrace();
-      context.setFailed(true);
-      context.getTransfer().setStatus(Status.FAILED);
-      context.getTransfer().getMap().put(context.getPatientId(), TransferStatus.failed(e));
-      return context;
-    }
-  }
 }

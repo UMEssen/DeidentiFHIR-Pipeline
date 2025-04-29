@@ -1,5 +1,6 @@
 package de.ume.deidentifhirpipeline.config.cohortselection;
 
+import de.ume.deidentifhirpipeline.config.plugin.PluginConfig;
 import de.ume.deidentifhirpipeline.config.service.GicsServiceConfig;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,4 +12,5 @@ public class CohortSelectionConfig {
   private FiremetricsCohortSelectionConfig firemetrics;
   private IdCohortSelectionConfig          viaIds;
   private FileCohortSelectionConfig        viaFile;
+  private PluginConfig                     viaPlugin;
 }

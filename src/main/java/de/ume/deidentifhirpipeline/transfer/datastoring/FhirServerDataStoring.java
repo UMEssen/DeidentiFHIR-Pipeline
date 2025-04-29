@@ -6,21 +6,18 @@ import de.ume.deidentifhirpipeline.config.datastoring.FhirServerDataStoringConfi
 import de.ume.deidentifhirpipeline.transfer.Utils;
 import de.ume.deidentifhirpipeline.transfer.Context;
 import org.hl7.fhir.r4.model.Bundle;
+import org.springframework.stereotype.Component;
 
-public class FhirServerDataStoring extends DataStoring {
+@Component("data-storing.fhir-server")
+public class FhirServerDataStoring implements DataStoring {
 
   public void before(ProjectConfig projectConfig) throws Exception {
     // Nothing to do before processing
   }
 
-  public Context process(Context context) {
+  public void process(Context context) throws Exception {
     FhirServerDataStoringConfig config = context.getProjectConfig().getDataStoring().getFhirServer();
-    try {
-      storeBundle(config, context.getBundle());
-      return context;
-    } catch (Exception e) {
-      return Utils.handleException(context, e);
-    }
+    storeBundle(config, context.getBundle());
   }
 
   private static void storeBundle(FhirServerDataStoringConfig config, Bundle bundle) {

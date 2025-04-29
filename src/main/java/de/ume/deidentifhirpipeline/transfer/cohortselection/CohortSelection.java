@@ -4,10 +4,7 @@ import de.ume.deidentifhirpipeline.config.ProjectConfig;
 
 import java.util.List;
 
-public abstract class CohortSelection {
-  public abstract List<String> before(ProjectConfig projectConfig) throws Exception;
+public interface CohortSelection {
 
-  public static List<String> beforeExecution(ProjectConfig projectConfig) throws Exception {
-    return projectConfig.getCohortSelectionImpl().before(projectConfig);
-  }
+  List<String> before(ProjectConfig projectConfig) throws Exception;
 }
