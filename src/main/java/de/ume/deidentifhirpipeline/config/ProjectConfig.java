@@ -26,8 +26,9 @@ import java.util.concurrent.Semaphore;
 @Slf4j
 @Getter
 public class ProjectConfig {
-  private int    parallelism = 1;
-  private String name;
+  private boolean useVirtualThreads = false;
+  private int     parallelism       = 1;
+  private String  name;
 
   @Setter private LastUpdatedConfig      lastUpdated;
   @Setter private CohortSelectionConfig  cohortSelection;
@@ -43,6 +44,7 @@ public class ProjectConfig {
   @Setter private DataStoring              dataStoringImpl;
 
   public ProjectConfig(
+      boolean useVirtualThreads,
       int parallelism,
       LastUpdatedConfig lastUpdated,
       CohortSelectionConfig cohortSelection,
@@ -50,12 +52,13 @@ public class ProjectConfig {
       PseudonymizationConfig pseudonymization,
       DataStoringConfig dataStoring) throws Exception {
 
-    this.parallelism      = parallelism;
-    this.lastUpdated      = lastUpdated;
-    this.cohortSelection  = cohortSelection;
-    this.dataSelection    = dataSelection;
-    this.pseudonymization = pseudonymization;
-    this.dataStoring      = dataStoring;
+    this.useVirtualThreads = useVirtualThreads;
+    this.parallelism       = parallelism;
+    this.lastUpdated       = lastUpdated;
+    this.cohortSelection   = cohortSelection;
+    this.dataSelection     = dataSelection;
+    this.pseudonymization  = pseudonymization;
+    this.dataStoring       = dataStoring;
 
     if (parallelism <= 0)
       this.parallelism = 1;
@@ -98,6 +101,7 @@ public class ProjectConfig {
     if (projectConfig == null) {
       return this;
     }
+
     int configuredParallelism = projectConfig.getParallelism() != 0 ? projectConfig.getParallelism() : this.parallelism;
 
     // @formatter:off
@@ -109,6 +113,7 @@ public class ProjectConfig {
     // @formatter:on
 
     return new ProjectConfig(
+        projectConfig.isUseVirtualThreads(),
         configuredParallelism,
         lastUpdatedConfig,
         cohortSelectionConfig,

@@ -12,7 +12,9 @@ aop:
 
 projects:
   "test-project1":
-    parallelism: 16
+    use-virtual-threads: true # default value: false,
+                               # if set to true, parallelism can be set for data-selection, pseudonymization, data-storing separately
+    parallelism: 16 # is used only, if use-virtual-threads is set to false
 #    lastUpdated:
 #      zone-id: "UTC"
 #      hashmap:

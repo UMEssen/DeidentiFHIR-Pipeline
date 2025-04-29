@@ -34,7 +34,10 @@ public class TransferProcess {
     CohortSelection cohortSelection = implementationsFactory.getCohortSelection(projectConfig);
 
     List<String> ids = cohortSelection.before(projectConfig);
-    CompletableFuture.supplyAsync(() -> processWithVirtualThreads(uuid, ids, projectConfig));
+    if (projectConfig.isUseVirtualThreads())
+      CompletableFuture.supplyAsync(() -> processWithVirtualThreads(uuid, ids, projectConfig));
+    else
+      CompletableFuture.supplyAsync(() -> processWithParallelStream(uuid, ids, projectConfig));
 
     return uuid.toString();
   }
@@ -48,6 +51,41 @@ public class TransferProcess {
     projectConfig.getDataStoringImpl().before(projectConfig);
     if (projectConfig.getSetLastUpdatedImpl().isPresent())
       projectConfig.getSetLastUpdatedImpl().get().beforeExecution(projectConfig);
+  }
+
+  private String processWithParallelStream(UUID uuid, List<String> ids, ProjectConfig projectConfig) {
+    log.debug("Starting transfer: " + uuid.toString());
+
+    Transfer transfer = new Transfer(uuid);
+    List<Context> contexts = setUpContexts(transfer, ids, projectConfig);
+
+    log.info("Number of bundles: {}", contexts.size());
+
+    Optional<GetLastUpdated> getLastUpdated = projectConfig.getGetLastUpdatedImpl();
+    DataSelection dataSelection = projectConfig.getDataSelectionImpl();
+    Pseudonymization pseudonymization = projectConfig.getPseudonymizationImpl();
+    DataStoring dataStoring = projectConfig.getDataStoringImpl();
+    Optional<SetLastUpdated> setLastUpdated = projectConfig.getSetLastUpdatedImpl();
+
+    log.info("Parallelism is set to: {}", projectConfig.getParallelism());
+
+    ForkJoinPool pool = new ForkJoinPool(projectConfig.getParallelism());
+    pool.submit(() -> {
+      contexts.stream().parallel()
+          .map(context -> executeGetLastUpdated(getLastUpdated, context)).filter(context -> !context.isFailed())
+          .map(context -> executeDataSelection(dataSelection, context)).filter(context -> !context.isFailed())
+          .map(context -> executePseudonymization(pseudonymization, context)).filter(context -> !context.isFailed())
+          .map(context -> executeDataStoring(dataStoring, context)).filter(context -> !context.isFailed())
+          .map(context -> executeSetLastUpdated(setLastUpdated, context)).filter(context -> !context.isFailed())
+          .forEach(context -> {
+            context.getTransfer().getMap().put(context.getPatientId(), TransferStatus.completed());
+            log.info(String.format("Transfer for patient id: '%s' finished successfully.",
+                context.getPatientId()));
+          });
+      transfer.setFinalStatus();
+    });
+
+    return uuid.toString();
   }
 
   private String processWithVirtualThreads(UUID uuid, List<String> ids, ProjectConfig projectConfig) {
@@ -67,11 +105,11 @@ public class TransferProcess {
     try (ExecutorService executorService = Executors.newVirtualThreadPerTaskExecutor()) {
       for (Context context : contexts) {
         Future future = executorService.submit(() -> {
-          getLastUpdated.ifPresent(x -> x.execute(context));
-          executeDataSelection(dataSelection, context);
-          executePseudonymization(pseudonymization, context);
-          executeDataStoring(dataStoring, context);
-          setLastUpdated.ifPresent(x -> x.execute(context));
+          executeGetLastUpdated(getLastUpdated, context);
+          executeDataSelectionWithSemaphore(dataSelection, context);
+          executePseudonymizationWithSemaphore(pseudonymization, context);
+          executeDataStoringWithSemaphore(dataStoring, context);
+          executeSetLastUpdated(setLastUpdated, context);
           if (!context.isFailed()) {
             context.getTransfer().getMap().put(context.getPatientId(), TransferStatus.completed());
             log.info(String.format("Transfer for patient id: '%s' finished successfully.", context.getPatientId()));
@@ -94,57 +132,106 @@ public class TransferProcess {
     return uuid.toString();
   }
 
-  private static void executeDataSelection(DataSelection dataSelection, Context context) {
+  private static Context executeGetLastUpdated(Optional<GetLastUpdated> getLastUpdated, Context context) {
+    if (!context.isFailed() && getLastUpdated.isPresent()) {
+      try {
+        context = getLastUpdated.get().process(context);
+      } catch (Exception e) {
+        Utils.handleException(context, e);
+      }
+    }
+    return context;
+  }
+
+  private static Context executeSetLastUpdated(Optional<SetLastUpdated> setLastUpdated, Context context) {
+    if (!context.isFailed() && setLastUpdated.isPresent()) {
+      try {
+        context = setLastUpdated.get().process(context);
+      } catch (Exception e) {
+        Utils.handleException(context, e);
+      }
+    }
+    return context;
+  }
+
+  private static void executeDataSelectionWithSemaphore(DataSelection dataSelection, Context context) {
     if (!context.isFailed()) {
       try {
         context.getProjectConfig().getDataSelection().getSemaphore().acquire();
-        Bundle bundle = dataSelection.process(context);
-        context.setBundle(bundle);
+        executeDataSelection(dataSelection, context);
       } catch (InterruptedException e) {
         log.info("InterruptedException: " + e.getMessage());
         e.printStackTrace();
         Thread.currentThread().interrupt();
-      } catch (Exception e) {
-        Utils.handleException(context, e);
       } finally {
         context.getProjectConfig().getDataSelection().getSemaphore().release();
       }
     }
   }
 
-  private static void executePseudonymization(Pseudonymization pseudonymization, Context context) {
+  private static Context executeDataSelection(DataSelection dataSelection, Context context) {
+    if (!context.isFailed()) {
+      try {
+        Bundle bundle = dataSelection.process(context);
+        context.setBundle(bundle);
+      } catch (Exception e) {
+        Utils.handleException(context, e);
+      }
+    }
+    return context;
+  }
+
+  private static void executePseudonymizationWithSemaphore(Pseudonymization pseudonymization, Context context) {
     if (!context.isFailed()) {
       try {
         context.getProjectConfig().getPseudonymization().getSemaphore().acquire();
-        Bundle bundle = pseudonymization.process(context);
-        context.setBundle(bundle);
+        executePseudonymization(pseudonymization, context);
       } catch (InterruptedException e) {
         log.info("InterruptedException: " + e.getMessage());
         e.printStackTrace();
         Thread.currentThread().interrupt();
-      } catch (Exception e) {
-        Utils.handleException(context, e);
       } finally {
         context.getProjectConfig().getPseudonymization().getSemaphore().release();
       }
     }
   }
 
-  private static void executeDataStoring(DataStoring dataStoring, Context context) {
+  private static Context executePseudonymization(Pseudonymization pseudonymization, Context context) {
+    if (!context.isFailed()) {
+      try {
+        Bundle bundle = pseudonymization.process(context);
+        context.setBundle(bundle);
+      } catch (Exception e) {
+        Utils.handleException(context, e);
+      }
+    }
+    return context;
+  }
+
+  private static void executeDataStoringWithSemaphore(DataStoring dataStoring, Context context) {
     if (!context.isFailed()) {
       try {
         context.getProjectConfig().getDataStoring().getSemaphore().acquire();
-        dataStoring.process(context);
+        executeDataStoring(dataStoring, context);
       } catch (InterruptedException e) {
         log.info("InterruptedException: " + e.getMessage());
         e.printStackTrace();
         Thread.currentThread().interrupt();
-      } catch (Exception e) {
-        Utils.handleException(context, e);
       } finally {
         context.getProjectConfig().getDataStoring().getSemaphore().release();
       }
     }
+  }
+
+  private static Context executeDataStoring(DataStoring dataStoring, Context context) {
+    if (!context.isFailed()) {
+      try {
+        dataStoring.process(context);
+      } catch (Exception e) {
+        Utils.handleException(context, e);
+      }
+    }
+    return context;
   }
 
   private static List<Context> setUpContexts(Transfer transfer, List<String> ids, ProjectConfig projectConfig) {
