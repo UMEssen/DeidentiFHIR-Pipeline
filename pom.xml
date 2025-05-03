@@ -317,4 +317,12 @@
 		</repository>
 	</repositories>
 
+	<distributionManagement>
+		<repository>
+			<id>github</id>
+			<name>GitHub UMEssen Apache Maven Packages</name>
+			<url>https://maven.pkg.github.com/UMEssen/DeidentiFHIR-Pipeline</url>
+		</repository>
+	</distributionManagement>
+
 </project>
