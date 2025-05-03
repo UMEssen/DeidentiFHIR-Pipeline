@@ -3,10 +3,6 @@ name: Build and test
 on:
   push
 
-env:
-  MAVEN_USERNAME: ${{ secrets.USER }}
-  MAVEN_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
-
 jobs:
   check-code-style:
     runs-on: ubuntu-latest
@@ -22,12 +18,12 @@ jobs:
           java-version: '24'
           distribution: 'temurin'
           cache: 'maven'
-          server-id: github-ume # Value of the distributionManagement/repository/id field of the pom.xml
-          settings-path: $GITHUB_WORKSPACE/.github/ # location for the settings.xml file
 
       - name: Check code style
         run:
-          mvn spotless:check --batch-mode --no-transfer-progress --file $GITHUB_WORKSPACE/pom.xml -s $GITHUB_WORKSPACE/.github/settings.xml
+          mvn spotless:check --batch-mode --no-transfer-progress --file $GITHUB_WORKSPACE/pom.xml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   build-and-test:
     runs-on: ubuntu-latest
@@ -42,12 +38,12 @@ jobs:
           java-version: '24'
           distribution: 'temurin'
           cache: 'maven'
-          server-id: github-ume # Value of the distributionManagement/repository/id field of the pom.xml
-          settings-path: $GITHUB_WORKSPACE/.github/ # location for the settings.xml file
       - uses: gacts/install-hurl@v1
       - name: Build jar
         run:
           mvn -U clean package --batch-mode --no-transfer-progress --file $GITHUB_WORKSPACE/pom.xml -s $GITHUB_WORKSPACE/.github/settings.xml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
