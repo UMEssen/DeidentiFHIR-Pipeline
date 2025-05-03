@@ -306,7 +306,7 @@
 
 	<repositories>
 		<repository>
-			<id>github-ume</id>
+			<id>github</id>
 			<url>https://maven.pkg.github.com/UMEssen/*</url>
 			<releases>
 				<enabled>true</enabled>
