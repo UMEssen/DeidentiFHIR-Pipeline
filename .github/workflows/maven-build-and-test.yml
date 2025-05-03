@@ -56,6 +56,7 @@ jobs:
         run: cd integrationtests && ./start-integrationtests.sh
 
   deploy-jar:
+    needs: build-and-test
     runs-on: ubuntu-latest
     permissions:
       contents: read
