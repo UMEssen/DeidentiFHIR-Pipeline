@@ -41,7 +41,7 @@ jobs:
       - uses: gacts/install-hurl@v1
       - name: Build jar
         run:
-          mvn -U clean package --batch-mode --no-transfer-progress --file $GITHUB_WORKSPACE/pom.xml -s $GITHUB_WORKSPACE/.github/settings.xml
+          mvn -U clean package --batch-mode --no-transfer-progress --file $GITHUB_WORKSPACE/pom.xml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
