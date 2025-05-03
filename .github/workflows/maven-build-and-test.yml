@@ -5,7 +5,7 @@ on:
 
 env:
   MAVEN_USERNAME: ${{ secrets.USER }}
-  MAVEN_PASSWORD: ${{ secrets.TOKEN }}
+  MAVEN_PASSWORD: ${{ GITHUB_TOKEN }}
 
 jobs:
   check-code-style:
