@@ -72,8 +72,6 @@ jobs:
           java-version: '24'
           distribution: 'temurin'
           cache: 'maven'
-          server-id: github-ume
-          settings-path: $GITHUB_WORKSPACE/.github/
       - name: Deploy jar
         run:
           mvn -U clean deploy --batch-mode --no-transfer-progress --file $GITHUB_WORKSPACE/pom.xml
