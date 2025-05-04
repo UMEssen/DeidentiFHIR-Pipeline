@@ -55,8 +55,9 @@ jobs:
       - name: Integrationtests
         run: cd integrationtests && ./start-integrationtests.sh
 
-  deploy-jar:
+  publish-jar-and-image:
     needs: build-and-test
+    if: github.event_name == 'release'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -71,6 +72,7 @@ jobs:
           cache: 'maven'
       - name: Deploy jar
         run:
-          mvn -U clean deploy --batch-mode --no-transfer-progress --file $GITHUB_WORKSPACE/pom.xml
+          mvn -U clean deploy --batch-mode --no-transfer-progress --file $GITHUB_WORKSPACE/pom.xml -Djar.version=${{ github.event.release.tag_name }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
