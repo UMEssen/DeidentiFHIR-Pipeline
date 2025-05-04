@@ -29,7 +29,7 @@ docker compose up -d
 ```
 Post testbundles to FHIR server:
 ```bash
-./post-testbundle1-to-fhir-server.sh
+./post-testbundles-to-fhir-server.sh
 ```
 Start transfer: 
 ```bash
