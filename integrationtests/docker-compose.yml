@@ -5,7 +5,7 @@ services:
     image: eclipse-temurin:24_36-jre
     container_name: dp-deidentifhir-pipeline
     volumes:
-      - ../target/deidentifhir-pipeline-0.1.4-runnable.jar:/deidentifhir-pipeline.jar
+      - ../target/deidentifhir-pipeline-0.0.0-SNAPSHOT-runnable.jar:/deidentifhir-pipeline.jar
       - ../src/main/resources/application.yaml:/conf/application.yaml
       - ../deidentifhir:/deidentifhir
     entrypoint: /bin/bash
