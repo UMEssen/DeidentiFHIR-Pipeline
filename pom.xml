@@ -5,7 +5,7 @@
 	<packaging>jar</packaging>
 	<groupId>de.ume</groupId>
 	<artifactId>deidentifhir-pipeline</artifactId>
-	<version>0.1.4</version>
+	<version>${jar.version}</version>
 	<name>deidentifhir-pipeline</name>
 	<licenses>
 		<license>
@@ -14,6 +14,7 @@
 		</license>
 	</licenses>
 	<properties>
+		<jar.version>0.0.0-SNAPSHOT</jar.version>
 		<maven.compiler.proc>full</maven.compiler.proc>
 		<java.version>24</java.version>
 		<hapi.version>8.0.0</hapi.version>
@@ -306,7 +307,7 @@
 
 	<repositories>
 		<repository>
-			<id>github-ume</id>
+			<id>github</id>
 			<url>https://maven.pkg.github.com/UMEssen/*</url>
 			<releases>
 				<enabled>true</enabled>
@@ -316,5 +317,13 @@
 			</snapshots>
 		</repository>
 	</repositories>
+
+	<distributionManagement>
+		<repository>
+			<id>github</id>
+			<name>GitHub UMEssen Apache Maven Packages</name>
+			<url>https://maven.pkg.github.com/UMEssen/DeidentiFHIR-Pipeline</url>
+		</repository>
+	</distributionManagement>
 
 </project>
