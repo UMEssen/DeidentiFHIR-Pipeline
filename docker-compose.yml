@@ -25,6 +25,7 @@ services:
     volumes:
       - ./src/main/resources/application.yaml:/conf/application.yaml
       - ./deidentifhir:/deidentifhir
+      - ./plugin/target/:/plugin/ # plugin jars must be placed in /plugin folder
     network_mode: "host"
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8042/healthcheck" ]

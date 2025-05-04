@@ -4,4 +4,4 @@ COPY ./target/deidentifhir-pipeline-${deidentifhir_pipeline_version}-runnable.ja
 COPY ./src/main/resources/application.yaml /conf/application.yaml
 COPY ./deidentifhir /deidentifhir
 EXPOSE 8042
-ENTRYPOINT ["java","-jar","/deidentifhir-pipeline.jar","--spring.config.location=/conf/application.yaml"]
+ENTRYPOINT ["java","-Dloader.path=/plugin/","-jar","/deidentifhir-pipeline.jar","--spring.config.location=/conf/application.yaml"]
