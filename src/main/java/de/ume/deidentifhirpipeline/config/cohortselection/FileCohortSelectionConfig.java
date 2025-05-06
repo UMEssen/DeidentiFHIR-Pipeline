@@ -7,4 +7,5 @@ import lombok.Setter;
 @Setter
 public class FileCohortSelectionConfig {
   String path;
+  String delimiter;
 }
