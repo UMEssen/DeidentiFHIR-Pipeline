@@ -118,6 +118,12 @@
 			<version>${jackson.version}</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-csv</artifactId>
+			<version>1.14.0</version>
+		</dependency>
+
 		<!-- SOAP WSDL Class Generation -->
 		<dependency>
 			<groupId>jakarta.jws</groupId>
