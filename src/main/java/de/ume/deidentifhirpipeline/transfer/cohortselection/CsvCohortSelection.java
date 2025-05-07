@@ -42,12 +42,14 @@ public class CsvCohortSelection implements CohortSelection {
   private static List<String> byColumnName(CSVParser csvParser, String columnName) {
     return csvParser.getRecords().stream()
         .map(record -> record.get(columnName))
+        .filter(value -> !value.isBlank())
         .toList();
   }
 
   private static List<String> byColumnNumber(CSVParser csvParser, int columnNumber) {
     return csvParser.getRecords().stream()
         .map(record -> record.get(columnNumber))
+        .filter(value -> !value.isBlank())
         .toList();
   }
 }
