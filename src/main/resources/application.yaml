@@ -36,10 +36,11 @@ projects:
 #        delimiter: ","          # delimiter regex expression, leading and trailing white spaces are removed
 
 #      via-csv:
-#        path: ./nngm-diginet-fallnummern.csv
+#        path: ./path/to/file
 #        delimiter: ";"          # delimiter regex expression, leading and trailing white spaces are removed
 #        column-name: "Aufnahme-Nr."
 #        column-number: 3       # if set, column-name is ignored
+#        skip-first-row: true  # default: false, only applicable if column-number is set
 
 #      firemetrics:
 #        host: &firemetrics-host <insert-host-here>

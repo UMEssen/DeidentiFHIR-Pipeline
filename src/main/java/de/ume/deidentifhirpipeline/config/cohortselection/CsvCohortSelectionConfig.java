@@ -10,4 +10,5 @@ public class CsvCohortSelectionConfig {
   String  delimiter;
   String  columnName;
   Integer columnNumber;
+  boolean skipFirstRow = false;
 }

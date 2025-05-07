@@ -18,13 +18,19 @@ public class CsvCohortSelection implements CohortSelection {
     String delimiter = projectConfig.getCohortSelection().getViaCsv().getDelimiter();
     String columnName = projectConfig.getCohortSelection().getViaCsv().getColumnName();
     Integer columnNumber = projectConfig.getCohortSelection().getViaCsv().getColumnNumber();
+    boolean skipFirstRow = projectConfig.getCohortSelection().getViaCsv().isSkipFirstRow();
 
     CSVFormat.Builder builder = CSVFormat.DEFAULT.builder()
         .setDelimiter(delimiter)
         .setIgnoreSurroundingSpaces(true)
-        .setAllowMissingColumnNames(true)
-        .setHeader()
-        .setSkipHeaderRecord(true);
+        .setIgnoreEmptyLines(true)
+        .setAllowMissingColumnNames(true);
+
+    if (columnNumber == null || skipFirstRow) {
+      builder = builder
+          .setHeader()
+          .setSkipHeaderRecord(true);
+    }
 
     try (Reader reader = new FileReader(path); CSVParser csvParser = CSVParser.builder().setReader(reader).setFormat(builder.get()).get()) {
       if (columnNumber != null)
