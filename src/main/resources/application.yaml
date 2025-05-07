@@ -32,7 +32,14 @@ projects:
 #          url: profile-url
 
 #      via-file:
-#        path: ./path/to/file    # one number / id per line
+#        path: ./path/to/file
+#        delimiter: ","          # delimiter regex expression, leading and trailing white spaces are removed
+
+#      via-csv:
+#        path: ./nngm-diginet-fallnummern.csv
+#        delimiter: ";"          # delimiter regex expression, leading and trailing white spaces are removed
+#        column-name: "Aufnahme-Nr."
+#        column-number: 3       # if set, column-name is ignored
 
 #      firemetrics:
 #        host: &firemetrics-host <insert-host-here>

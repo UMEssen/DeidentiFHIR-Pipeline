@@ -12,5 +12,6 @@ public class CohortSelectionConfig {
   private FiremetricsCohortSelectionConfig firemetrics;
   private IdCohortSelectionConfig          viaIds;
   private FileCohortSelectionConfig        viaFile;
+  private CsvCohortSelectionConfig         viaCsv;
   private PluginConfig                     viaPlugin;
 }
