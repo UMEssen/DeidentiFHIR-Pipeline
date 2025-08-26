@@ -1,0 +1,23 @@
+include:
+  - ../integrationtests/docker-compose-include-fhir-servers.yml
+services:
+  dp-deidentifhir-pipeline:
+    image: eclipse-temurin:24_36-jre
+    container_name: dp-deidentifhir-pipeline
+    volumes:
+      - ../target/deidentifhir-pipeline-0.0.0-SNAPSHOT-runnable.jar:/deidentifhir-pipeline.jar
+      - ./application.yaml:/conf/application.yaml
+      - ./target:/plugin
+      - ../deidentifhir:/deidentifhir
+    entrypoint: /bin/bash
+    command: -c "java -Dloader.path=/plugin/ -jar /deidentifhir-pipeline.jar --spring.config.location=/conf/application.yaml"
+    network_mode: "host"
+#    depends_on:
+#      dp-gpas:
+#        condition: service_healthy
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8042/healthcheck" ]
+      interval: 5s
+      timeout: 5s
+      retries: 100
+      start_period: 5s
