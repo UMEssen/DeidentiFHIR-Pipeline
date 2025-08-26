@@ -57,7 +57,7 @@ services:
       start_period: 60s
 
   dp-deidentifhir-pipeline:
-    image: eclipse-temurin:24_36-jre
+    image: eclipse-temurin:24.0.2_12-jre
     container_name: dp-deidentifhir-pipeline
     volumes:
       - ../target/deidentifhir-pipeline-0.0.0-SNAPSHOT-runnable.jar:/deidentifhir-pipeline.jar
