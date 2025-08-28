@@ -2,6 +2,7 @@ package de.ume.deidentifhirpipeline.transfer.cohortselection;
 
 import de.ume.deidentifhirpipeline.config.ProjectConfig;
 import de.ume.deidentifhirpipeline.config.cohortselection.FiremetricsCohortSelectionConfig;
+import de.ume.deidentifhirpipeline.transfer.Cohort;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +17,7 @@ import java.util.List;
 public class FiremetricsCohortSelection implements CohortSelection {
 
   @Override
-  public List<String> before(ProjectConfig projectConfig) throws Exception {
+  public Cohort before(ProjectConfig projectConfig) throws Exception {
     FiremetricsCohortSelectionConfig config = projectConfig.getCohortSelection().getFiremetrics();
 
     // read fhirql statement from variable if provided or from file
@@ -52,7 +53,7 @@ public class FiremetricsCohortSelection implements CohortSelection {
       e.printStackTrace();
     }
 
-    return patientList;
+    return new Cohort(patientList, null);
   }
 
 }

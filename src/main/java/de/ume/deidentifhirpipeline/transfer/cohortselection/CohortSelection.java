@@ -1,10 +1,9 @@
 package de.ume.deidentifhirpipeline.transfer.cohortselection;
 
 import de.ume.deidentifhirpipeline.config.ProjectConfig;
-
-import java.util.List;
+import de.ume.deidentifhirpipeline.transfer.Cohort;
 
 public interface CohortSelection {
 
-  List<String> before(ProjectConfig projectConfig) throws Exception;
+  Cohort before(ProjectConfig projectConfig) throws Exception;
 }

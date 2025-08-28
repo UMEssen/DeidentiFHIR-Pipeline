@@ -33,12 +33,12 @@ public class TransferProcess {
 
     CohortSelection cohortSelection = implementationsFactory.getCohortSelection(projectConfig);
 
-    List<String> ids = cohortSelection.before(projectConfig);
+    Cohort cohort = cohortSelection.before(projectConfig);
     if (projectConfig.isUseVirtualThreads()) {
       log.info("Virtual threads are used for processing");
-      CompletableFuture.supplyAsync(() -> processWithVirtualThreads(uuid, ids, projectConfig));
+      CompletableFuture.supplyAsync(() -> processWithVirtualThreads(uuid, cohort, projectConfig));
     } else {
-      CompletableFuture.supplyAsync(() -> processWithParallelStream(uuid, ids, projectConfig));
+      CompletableFuture.supplyAsync(() -> processWithParallelStream(uuid, cohort, projectConfig));
     }
 
     return uuid.toString();
@@ -55,11 +55,11 @@ public class TransferProcess {
       projectConfig.getSetLastUpdatedImpl().get().beforeExecution(projectConfig);
   }
 
-  private String processWithParallelStream(UUID uuid, List<String> ids, ProjectConfig projectConfig) {
+  private String processWithParallelStream(UUID uuid, Cohort cohort, ProjectConfig projectConfig) {
     log.debug("Starting transfer: " + uuid.toString());
 
-    Transfer transfer = new Transfer(uuid);
-    List<Context> contexts = setUpContexts(transfer, ids, projectConfig);
+    Transfer transfer = new Transfer(uuid, cohort.filteredOutIdsWithErrorMessages());
+    List<Context> contexts = setUpContexts(transfer, cohort.ids(), projectConfig);
 
     log.info("Number of bundles: {}", contexts.size());
 
@@ -90,11 +90,11 @@ public class TransferProcess {
     return uuid.toString();
   }
 
-  private String processWithVirtualThreads(UUID uuid, List<String> ids, ProjectConfig projectConfig) {
+  private String processWithVirtualThreads(UUID uuid, Cohort cohort, ProjectConfig projectConfig) {
     log.debug("Starting transfer: " + uuid.toString());
 
-    Transfer transfer = new Transfer(uuid);
-    List<Context> contexts = setUpContexts(transfer, ids, projectConfig);
+    Transfer transfer = new Transfer(uuid, cohort.filteredOutIdsWithErrorMessages());
+    List<Context> contexts = setUpContexts(transfer, cohort.ids(), projectConfig);
 
     log.info("Number of bundles: {}", contexts.size());
 

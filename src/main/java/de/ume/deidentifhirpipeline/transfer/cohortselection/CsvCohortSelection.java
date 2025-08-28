@@ -1,6 +1,7 @@
 package de.ume.deidentifhirpipeline.transfer.cohortselection;
 
 import de.ume.deidentifhirpipeline.config.ProjectConfig;
+import de.ume.deidentifhirpipeline.transfer.Cohort;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.springframework.stereotype.Component;
@@ -8,12 +9,11 @@ import org.springframework.stereotype.Component;
 import java.io.FileReader;
 import java.io.Reader;
 import java.util.List;
-import java.util.Optional;
 
 @Component("cohort-selection.via-csv")
 public class CsvCohortSelection implements CohortSelection {
   @Override
-  public List<String> before(ProjectConfig projectConfig) throws Exception {
+  public Cohort before(ProjectConfig projectConfig) throws Exception {
     String path = projectConfig.getCohortSelection().getViaCsv().getPath();
     String delimiter = projectConfig.getCohortSelection().getViaCsv().getDelimiter();
     String columnName = projectConfig.getCohortSelection().getViaCsv().getColumnName();
@@ -34,8 +34,8 @@ public class CsvCohortSelection implements CohortSelection {
 
     try (Reader reader = new FileReader(path); CSVParser csvParser = CSVParser.builder().setReader(reader).setFormat(builder.get()).get()) {
       if (columnNumber != null)
-        return byColumnNumber(csvParser, columnNumber);
-      return byColumnName(csvParser, columnName);
+        return new Cohort(byColumnNumber(csvParser, columnNumber), null);
+      return new Cohort(byColumnName(csvParser, columnName), null);
     }
   }
 

@@ -25,14 +25,23 @@ public class Transfer {
   @Setter private int           pending;
   @Setter private int           completed;
   @Setter private int           failed;
-
-  private Map<String, Integer> errorMessagesWithCount;
+  private Map<String, String>   filteredOutCohortIdsWithErrorMessages;
+  private Map<String, Integer>  cohortErrorMessagesWithCount;
+  private Map<String, Integer>  errorMessagesWithCount;
 
   private final ConcurrentMap<String, TransferStatus> map = new ConcurrentHashMap<>();
 
-  public Transfer(UUID uuid) {
-    this.startDateTime = LocalDateTime.now();
-    this.status        = Status.PENDING;
+  public Transfer(UUID uuid, Map<String, String> filteredOutIds) {
+    this.startDateTime                         = LocalDateTime.now();
+    this.status                                = Status.PENDING;
+    this.filteredOutCohortIdsWithErrorMessages = filteredOutIds;
+    if (this.filteredOutCohortIdsWithErrorMessages != null && !this.filteredOutCohortIdsWithErrorMessages.isEmpty()) {
+      cohortErrorMessagesWithCount = new HashMap<>();
+      this.filteredOutCohortIdsWithErrorMessages.forEach((id, errorMessage) -> {
+        cohortErrorMessagesWithCount.computeIfPresent(errorMessage, (_, value) -> value + 1);
+        cohortErrorMessagesWithCount.computeIfAbsent(errorMessage, _ -> 1);
+      });
+    }
     Transfers.getMap().put(uuid.toString(), this);
   }
 
