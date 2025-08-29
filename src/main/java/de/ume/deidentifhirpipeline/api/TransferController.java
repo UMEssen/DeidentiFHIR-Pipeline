@@ -76,6 +76,21 @@ public class TransferController {
     return new ResponseEntity<>(new TransferResponse(response), HttpStatusCode.valueOf(200));
   }
 
+  @PostMapping(value = "/retry", consumes = "application/json", produces = "application/json")
+  public ResponseEntity<TransferResponse> retry(@RequestBody Transfer transfer) throws Exception {
+
+
+    ProjectConfig projectConfig = projectsConfig.getProjects().get(transfer.getProject());
+
+    if (projectConfig == null) {
+      return new ResponseEntity<>(new TransferResponse(String.format("Project '%s' not configured", transfer.getProject())), HttpStatus.NOT_FOUND);
+    } else {
+      String response = transferProcess.retry(projectConfig, transfer);
+      return new ResponseEntity<>(new TransferResponse(response), HttpStatusCode.valueOf(200));
+    }
+
+  }
+
   @GetMapping(value = "/transfer")
   public ResponseEntity<Set<String>> getTransfers() {
     return new ResponseEntity<>(Transfers.getMap().keySet(), HttpStatusCode.valueOf(200));

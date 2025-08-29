@@ -1,7 +1,9 @@
 package de.ume.deidentifhirpipeline.transfer;
 
+import de.ume.deidentifhirpipeline.api.data.Status;
 import de.ume.deidentifhirpipeline.api.data.Transfer;
 import de.ume.deidentifhirpipeline.api.data.TransferStatus;
+import de.ume.deidentifhirpipeline.api.data.Transfers;
 import de.ume.deidentifhirpipeline.config.ProjectConfig;
 import de.ume.deidentifhirpipeline.transfer.cohortselection.CohortSelection;
 import de.ume.deidentifhirpipeline.transfer.dataselection.DataSelection;
@@ -44,6 +46,26 @@ public class TransferProcess {
     return uuid.toString();
   }
 
+  public String retry(ProjectConfig projectConfig, Transfer transfer) throws Exception {
+    UUID uuid = UUID.randomUUID();
+
+    beforeExecution(projectConfig);
+
+    Cohort cohort = new Cohort(transfer.getMap().entrySet().stream()
+        .filter(entry -> entry.getValue().getStatus().equals(Status.FAILED))
+        .map(entry -> entry.getKey())
+        .toList(),
+        transfer.getFilteredOutCohortIdsWithErrorMessages());
+    if (projectConfig.isUseVirtualThreads()) {
+      log.info("Virtual threads are used for processing");
+      CompletableFuture.supplyAsync(() -> processWithVirtualThreads(uuid, cohort, projectConfig, transfer));
+    } else {
+      CompletableFuture.supplyAsync(() -> processWithParallelStream(uuid, cohort, projectConfig, transfer));
+    }
+
+    return uuid.toString();
+  }
+
   private void beforeExecution(ProjectConfig projectConfig) throws Exception {
 
     if (projectConfig.getGetLastUpdatedImpl().isPresent())
@@ -56,10 +78,19 @@ public class TransferProcess {
   }
 
   private String processWithParallelStream(UUID uuid, Cohort cohort, ProjectConfig projectConfig) {
+    return processWithParallelStream(uuid, cohort, projectConfig, null);
+  }
+
+  private String processWithParallelStream(UUID uuid, Cohort cohort, ProjectConfig projectConfig, Transfer transfer) {
     log.debug("Starting transfer: " + uuid.toString());
 
-    Transfer transfer = new Transfer(uuid, cohort.filteredOutIdsWithErrorMessages());
-    List<Context> contexts = setUpContexts(transfer, cohort.ids(), projectConfig);
+    final Transfer transferToBeExecuted;
+    if (transfer == null)
+      transferToBeExecuted = new Transfer(projectConfig.getName(), cohort.filteredOutIdsWithErrorMessages());
+    else
+      transferToBeExecuted = transfer;
+
+    List<Context> contexts = setUpContexts(uuid, transferToBeExecuted, cohort.ids(), projectConfig);
 
     log.info("Number of bundles: {}", contexts.size());
 
@@ -84,17 +115,23 @@ public class TransferProcess {
             log.info(String.format("Transfer for patient id: '%s' finished successfully.",
                 context.getPatientId()));
           });
-      transfer.setFinalStatus();
+      transferToBeExecuted.setFinalStatus();
     });
 
     return uuid.toString();
   }
 
   private String processWithVirtualThreads(UUID uuid, Cohort cohort, ProjectConfig projectConfig) {
+    return processWithVirtualThreads(uuid, cohort, projectConfig, null);
+  }
+
+  private String processWithVirtualThreads(UUID uuid, Cohort cohort, ProjectConfig projectConfig, Transfer transfer) {
     log.debug("Starting transfer: " + uuid.toString());
 
-    Transfer transfer = new Transfer(uuid, cohort.filteredOutIdsWithErrorMessages());
-    List<Context> contexts = setUpContexts(transfer, cohort.ids(), projectConfig);
+    if (transfer == null)
+      transfer = new Transfer(projectConfig.getName(), cohort.filteredOutIdsWithErrorMessages());
+
+    List<Context> contexts = setUpContexts(uuid, transfer, cohort.ids(), projectConfig);
 
     log.info("Number of bundles: {}", contexts.size());
 
@@ -236,7 +273,8 @@ public class TransferProcess {
     return context;
   }
 
-  private static List<Context> setUpContexts(Transfer transfer, List<String> ids, ProjectConfig projectConfig) {
+  private static List<Context> setUpContexts(UUID uuid, Transfer transfer, List<String> ids, ProjectConfig projectConfig) {
+    Transfers.getMap().put(uuid.toString(), transfer);
     List<Context> contexts = new ArrayList<>();
     for (String id : ids) {
       transfer.getMap().put(id, new TransferStatus());

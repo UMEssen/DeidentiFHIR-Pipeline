@@ -96,7 +96,7 @@ public class Utils {
     fctx.getRestfulClientFactory().setSocketTimeout(60000);
     fctx.getRestfulClientFactory().setConnectionRequestTimeout(60000);
     IGenericClient hapiClient = fctx.newRestfulGenericClient(url);
-    hapiClient.registerInterceptor(new LoggingInterceptor(true));
+    // hapiClient.registerInterceptor(new LoggingInterceptor(true));
 
     return hapiClient;
   }

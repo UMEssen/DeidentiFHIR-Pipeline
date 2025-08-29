@@ -2,6 +2,7 @@ package de.ume.deidentifhirpipeline.api.data;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -15,9 +16,10 @@ import java.util.concurrent.ConcurrentMap;
 @Slf4j
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@NoArgsConstructor
 public class Transfer {
-
-  private final LocalDateTime   startDateTime;
+  private String                project;
+  private LocalDateTime         startDateTime;
   @Setter private LocalDateTime endDateTime;
   @Setter private LocalDateTime statusDateTime;
   @Setter private Status        status;
@@ -31,7 +33,8 @@ public class Transfer {
 
   private final ConcurrentMap<String, TransferStatus> map = new ConcurrentHashMap<>();
 
-  public Transfer(UUID uuid, Map<String, String> filteredOutIds) {
+  public Transfer(String project, Map<String, String> filteredOutIds) {
+    this.project                               = project;
     this.startDateTime                         = LocalDateTime.now();
     this.status                                = Status.PENDING;
     this.filteredOutCohortIdsWithErrorMessages = filteredOutIds;
@@ -42,7 +45,6 @@ public class Transfer {
         cohortErrorMessagesWithCount.computeIfAbsent(errorMessage, _ -> 1);
       });
     }
-    Transfers.getMap().put(uuid.toString(), this);
   }
 
   public String toString() {
