@@ -1,3 +1,4 @@
+spring.threads.virtual.enabled: true
 server:
   port: 8042
 logging:
