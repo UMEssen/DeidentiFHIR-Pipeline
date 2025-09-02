@@ -19,7 +19,7 @@
 		<java.version>24</java.version>
 		<hapi.version>8.4.0</hapi.version>
 		<lombok.version>1.18.38</lombok.version>
-		<jackson.version>2.19.2</jackson.version>
+		<jackson.version>2.20.0</jackson.version>
     <spotless.version>2.46.1</spotless.version>
 	</properties>
 	<parent>
