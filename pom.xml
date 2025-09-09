@@ -19,7 +19,6 @@
 		<java.version>24</java.version>
 		<hapi.version>8.4.0</hapi.version>
 		<lombok.version>1.18.40</lombok.version>
-		<jackson.version>2.20.0</jackson.version>
     <spotless.version>2.46.1</spotless.version>
 	</properties>
 	<parent>
@@ -111,22 +110,6 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-math3</artifactId>
 			<version>3.6.1</version>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.dataformat</groupId>
-			<artifactId>jackson-dataformat-yaml</artifactId>
-			<version>${jackson.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-			<version>${jackson.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-csv</artifactId>
-			<version>1.14.1</version>
 		</dependency>
 
 		<!-- SOAP WSDL Class Generation -->
