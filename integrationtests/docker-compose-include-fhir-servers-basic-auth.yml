@@ -1,7 +1,7 @@
 services:
 
   dp-cd-fhir-server:
-    image: samply/blaze:1.1.0
+    image: samply/blaze:1.1.1
     container_name: dp-cd-fhir-server
     environment:
       BASE_URL: "http://localhost:8082"
@@ -19,7 +19,7 @@ services:
       - dp-cd-fhir-server
 
   dp-rd-fhir-server:
-    image: samply/blaze:1.1.0
+    image: samply/blaze:1.1.1
     container_name: dp-rd-fhir-server
     ports:
       - 8083:8080
