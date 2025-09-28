@@ -2,7 +2,7 @@ include:
   - ../integrationtests/docker-compose-include-fhir-servers.yml
 services:
   dp-deidentifhir-pipeline:
-    image: eclipse-temurin:24.0.2_12-jre
+    image: eclipse-temurin:25_36-jre
     container_name: dp-deidentifhir-pipeline
     volumes:
       - ../target/deidentifhir-pipeline-0.0.0-SNAPSHOT-runnable.jar:/deidentifhir-pipeline.jar
